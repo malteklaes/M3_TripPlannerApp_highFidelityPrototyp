@@ -13,6 +13,9 @@
         android:theme="@style/Theme.M3_TripPlannerApp_highFidelityPrototyp"
         tools:targetApi="31">
         <activity
+            android:name=".resultScreen4"
+            android:exported="true" />
+        <activity
             android:name=".mainScreen2"
             android:exported="true" />
         <activity
