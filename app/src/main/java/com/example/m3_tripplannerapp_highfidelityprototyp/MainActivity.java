@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("logger", "Ergebnis: " + dataConnection.toString());
         Log.d("logger", "Ergebnis: " + dataConnection2.toString());
+        Log.d("logger", "Test Malte");
 
 
     }
