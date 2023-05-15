@@ -359,4 +359,10 @@ public class DataConnection {
                 ", transportProperties=" + transportProperties +
                 '}';
     }
+
+    public String toStringShort() {
+        return "(City: " + startCity +
+                ", time: " + startTime + ") ";
+
+    }
 }

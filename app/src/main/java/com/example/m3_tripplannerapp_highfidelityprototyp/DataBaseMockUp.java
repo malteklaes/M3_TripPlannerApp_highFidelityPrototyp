@@ -178,6 +178,22 @@ public class DataBaseMockUp {
     }
 
     /**
+     * retrieves data which is equal than this date
+     * @param database
+     * @param date
+     * @return
+     */
+    public List<DataConnection> retrieveDataByStartDateEqual(List<DataConnection> database, DataDate date){
+        List<DataConnection> result = new ArrayList<>();
+        for (DataConnection connection : database) {
+            if(connection.getStartDate().compareThisDateToThatDate(date) == DataEnumTimeComparison.Equal){
+                result.add(connection);
+            }
+        }
+        return result;
+    }
+
+    /**
      * retrieves data which is earlier than this date
      * @param database
      * @param date
@@ -244,6 +260,24 @@ public class DataBaseMockUp {
     }
 
 
+    /**
+     * filters database due to startCity and startLocation
+     * @param database
+     * @param startCity
+     * @param startLocation
+     * @return
+     */
+    public List<DataConnection> retrieveDataByStartCityAndLocation(List<DataConnection> database, String startCity, String startLocation){
+        List<DataConnection> result = new ArrayList<>();
+        for (DataConnection connection : database) {
+            if(connection.getStartCity().equals(startCity) && connection.getStartLocation().equals(startLocation)){
+                result.add(connection);
+            }
+        }
+        return result;
+    }
+
+
 
 
     // HELP FUNCTIONS -----------------------------------------------------------------------
@@ -277,5 +311,13 @@ public class DataBaseMockUp {
         return "DataBaseMockUp{" +
                 "dataBaseMockUp=" + dataBaseMockUp.toString() +
                 '}';
+    }
+
+    public String toStringShort(){
+        String result = "DataBaseMockUp{ ";
+        for (DataConnection connection: dataBaseMockUp) {
+            result += connection.toStringShort();
+        }
+        return result + " }";
     }
 }
