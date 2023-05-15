@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="212dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Select Start"
-        android:completionThreshold="1"
         android:completionHint="Select Start"
+        android:completionThreshold="1"
+        android:ems="10"
+        android:hint="Select Start"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,41 +26,48 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="12dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Select Destination"
-        android:completionThreshold="1"
         android:completionHint="Select Destination"
+        android:completionThreshold="1"
+        android:ems="10"
+        android:hint="Select Destination"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startCity_input" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/switch_CityInputs_button"
         android:layout_width="57dp"
         android:layout_height="62dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="232dp"
+        android:onClick="switch_CityInputs"
         android:text="Button"
         app:layout_constraintStart_toEndOf="@+id/startCity_input"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/chip4"
-        android:layout_width="34dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chip5" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip5"
+        android:id="@+id/oneWay_chip"
         android:layout_width="34dp"
         android:layout_height="33dp"
         android:layout_marginStart="92dp"
         android:layout_marginTop="56dp"
+        android:checkable="true"
+        android:onClick="select_chip_oneWay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/destinationCity_input" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/bothWays_chip"
+        android:layout_width="34dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="20dp"
+        android:checkable="true"
+        android:onClick="select_chip_bothWays"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/oneWay_chip" />
+
+
 
     <TextView
         android:id="@+id/textView"
@@ -68,8 +75,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginTop="384dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/chip5"
+        android:text="hin"
+        app:layout_constraintStart_toEndOf="@+id/oneWay_chip"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -78,19 +85,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="55dp"
         android:layout_marginTop="32dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/chip4"
+        android:text="hin und zurück"
+        app:layout_constraintStart_toEndOf="@+id/bothWays_chip"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:id="@+id/editTextTime"
+        android:id="@+id/editTextTime1"
         android:layout_width="98dp"
         android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="500dp"
         android:ems="10"
         android:inputType="time"
-        app:layout_constraintStart_toEndOf="@+id/editTextDate"
+        app:layout_constraintStart_toEndOf="@+id/editTextDate1"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -102,10 +109,10 @@
         android:ems="10"
         android:inputType="time"
         app:layout_constraintStart_toEndOf="@+id/editTextDate2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTime1" />
 
     <EditText
-        android:id="@+id/editTextDate"
+        android:id="@+id/editTextDate1"
         android:layout_width="190dp"
         android:layout_height="47dp"
         android:layout_marginStart="48dp"
@@ -124,6 +131,6 @@
         android:ems="10"
         android:inputType="date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDate1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
