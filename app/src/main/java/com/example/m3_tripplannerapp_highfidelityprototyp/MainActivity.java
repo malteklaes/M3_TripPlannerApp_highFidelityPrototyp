@@ -16,6 +16,6 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("logger", "Ergebnis: " + dataConnection.toString());
         Log.d("logger", "Test Martina");
-
+        Log.d("logger", "Test Martina2");
     }
 }
