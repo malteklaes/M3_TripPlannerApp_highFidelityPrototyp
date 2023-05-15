@@ -3,6 +3,7 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import com.google.android.material.chip.Chip;
 
@@ -48,15 +50,15 @@ public class mainScreen2 extends AppCompatActivity {
         date2 = findViewById(R.id.editTextDate2); //initializing date1 with EditText editTextDate2
         date2.setVisibility(View.INVISIBLE);   //sets date2 invisible
 
-        date1.setOnClickListener(new View.OnClickListener() {  //manages onClick from date1 to diplay Calendar and output selected date on date1
+        date1.setOnClickListener(new View.OnClickListener() {  //managing onClick from date1 to diplay Calendar and output selected date on date1
                                      @Override
-                                     public void onClick(View view) {  //actionthat happens upon clicking on date1
+                                     public void onClick(View view) {  //action that happens upon clicking on date1
                                          final Calendar calendar = Calendar.getInstance(); //get instance Calendar
                                          int year = calendar.get(Calendar.YEAR);  //get year
                                          int month = calendar.get(Calendar.MONTH);   //get month
                                          int day = calendar.get(Calendar.DAY_OF_MONTH);  //get day
 
-                                         DatePickerDialog datePickerDialog = new DatePickerDialog( //constructs and initializes DatePickerDialog, which presents graphical calendar interface and manages displayed output
+                                         DatePickerDialog datePickerDialog = new DatePickerDialog( //constructing and initializing DatePickerDialog, which presents graphical calendar interface and manages displayed output
                                                  mainScreen2.this,
                                                  new DatePickerDialog.OnDateSetListener() {
                                                      @Override
@@ -64,21 +66,23 @@ public class mainScreen2 extends AppCompatActivity {
                                                          date1.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
                                                      }
                                                  },
-                                                 year, month, day);  //recieved variables from Calendar initialized
+                                                 year, month, day);  //recieved variables from calendar
 
                                          datePickerDialog.show(); //displaying DatePickerDialog
                                      }
         });
 
-        date2.setOnClickListener(new View.OnClickListener() {  //manages onClick from date2 to diplay Calendar and output selected date on date2
+        date2.setOnClickListener(new View.OnClickListener() {  //managing onClick from date2 to diplay Calendar and output selected date
             @Override
-            public void onClick(View view) {  //actionthat happens upon clicking on date1
+            public void onClick(View view) {  //action that happens upon clicking on date1
                 final Calendar calendar = Calendar.getInstance(); //get instance Calendar
                 int year = calendar.get(Calendar.YEAR);  //get year
                 int month = calendar.get(Calendar.MONTH);   //get month
                 int day = calendar.get(Calendar.DAY_OF_MONTH);  //get day
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog( //constructs and initializes DatePickerDialog, which presents graphical calendar interface and manages displayed output
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog( //constructing and initializing DatePickerDialog, which presents graphical calendar interface and manages displayed output
                         mainScreen2.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -86,7 +90,7 @@ public class mainScreen2 extends AppCompatActivity {
                                 date2.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
                             }
                         },
-                        year, month, day);  //recieved variables from Calendar initialized
+                        year, month, day);  //recieved variables from calendar
 
                 datePickerDialog.show(); //displaying DatePickerDialog
             }
@@ -96,6 +100,50 @@ public class mainScreen2 extends AppCompatActivity {
         time1 = findViewById(R.id.editTextTime1); //initializing time1 with EditText editTextTime1
         time2 = findViewById(R.id.editTextTime2); //initializing time2 with EditText editTextTime2
         time2.setVisibility(View.INVISIBLE);  //sets time2 invisible
+
+        time1.setOnClickListener(new View.OnClickListener() {  //managing onClick from time1 to diplay TimeInput graphically and output selected time
+            @Override
+            public void onClick(View view) {
+                final Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog( //constructing and initializing TimePickerDialog, which presents graphical Time interface and manages displayed output
+                        mainScreen2.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                time1.setText(hourOfDay + " : " + minute);
+                            }
+                        },
+                        hour, minute, true); //recieved variables from calendar and setting 24Hour Format
+
+                timePickerDialog.show();
+            }
+        });
+
+        time2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        mainScreen2.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                time2.setText(hourOfDay + " : " + minute);
+                            }
+                        },
+                        hour, minute, true);
+
+                timePickerDialog.show();
+            }
+        });
+
 
     }
 
