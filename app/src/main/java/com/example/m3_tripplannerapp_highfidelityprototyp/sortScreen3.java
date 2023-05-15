@@ -26,7 +26,7 @@ public class sortScreen3 extends AppCompatActivity {
         filterSpinner = findViewById(R.id.filterSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options);
         filterSpinner.setAdapter(adapter);
-        this.interactFilter(selectedOption, options);
+        this.interactWithFilter();
 
         // result of filter
         Log.d("malte", "Ergebnis spinner: " + filterResult);
@@ -34,20 +34,23 @@ public class sortScreen3 extends AppCompatActivity {
     }
 
 
-
-    private void interactFilter(String[] selectedOption, String[] options){
+    /**
+     * interacts with filter drop down and updates variable resultFilter
+     */
+    private void interactWithFilter(){
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedOption[0] = (String) options[position];
-                // Hier kannst du den ausgewählten Eintrag verarbeiten
-                Log.d("malte", "Ergebnis spinner: " + selectedOption[0]);
                 filterResult = selectedOption[0];
+                Log.d("malte", "Ergebnis filter drop down: " + selectedOption[0]);
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Code hier ausführen, wenn nichts ausgewählt ist
+                filterResult = selectedOption[0];
+                Log.d("malte", "Ergebnis, dass nichts gemacht wurde: " + filterResult);
             }
         });
     }
