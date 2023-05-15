@@ -94,6 +94,7 @@ public class DataBaseMockUp {
     public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, double prize){
         Random random = new Random();
         int randomMinute = random.nextInt(60);
+
         for (int i = 0; i < 24; i++) {
             DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i));
             connection.setType(transportType);

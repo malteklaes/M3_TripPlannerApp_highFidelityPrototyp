@@ -22,14 +22,13 @@ public class sortScreen3 extends AppCompatActivity {
     Spinner filterSpinner;
     String filterResult = "";
     final String[] selectedOption = {""};
-    String[] options = {"eco-friendly", "fast", "cheapest", "least stops", "earliest"};
+    String[] options = {"eco-friendly", "fast", "reliable", "comfortable", "cheap", "few stops"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // [0] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
         DataConnection incomingDataMock = new DataConnection("vienna", "hbf", "frankfurt", "hbf", new DataDate(15,5,2023), new DataTime(30,15), new DataDate(16,5,2023), new DataTime(30,18));
-        //dataBaseMock = this.dataBaseMock();
-        //Log.d("malte", "Ergbnis mock: " + incomingDataMock.toString());
+        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "frankfurt", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
         Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
 
 
@@ -69,39 +68,5 @@ public class sortScreen3 extends AppCompatActivity {
         });
     }
 
-    private List<DataConnection> dataBaseMock(){
-        //List<DataConnection> dataBaseMock = new ArrayList<>();
 
-        // [1] route: vienna->frankfurt, 15.5.2023
-        for (int i = 0; i < 24; i++) {
-            dataBaseMock.add(new DataConnection("vienna", "hbf", "frankfurt", "hbf", new DataDate(15,5,2023), new DataTime(30,i)));
-        }
-
-        // [2] route: frankfurt->vienna, 16.5.2023
-        for (int i = 0; i < 24; i++) {
-            dataBaseMock.add(new DataConnection("frankfurt", "hbf", "vienna", "hbf", new DataDate(16,5,2023), new DataTime(30,i)));
-        }
-
-        // [3] route: vienna->paris, 15.5.2023
-        for (int i = 0; i < 24; i++) {
-            dataBaseMock.add(new DataConnection("vienna", "hbf", "paris", "Gare du Nord", new DataDate(15,5,2023), new DataTime(30,i)));
-        }
-
-        // [3] route: paris->vienna, 16.5.2023
-        for (int i = 0; i < 24; i++) {
-            dataBaseMock.add(new DataConnection("paris", "Gare du Nord", "vienna", "hbf", new DataDate(16,5,2023), new DataTime(30,i)));
-        }
-
-        DataConnection probe = new DataConnection("bla","bla","bla","bla");
-        boolean getEarliestTime = false;
-        for (DataConnection connect : dataBaseMock) {
-            if(!getEarliestTime && connect.getStartCity().equals("vienna") && connect.getDestinationCity().equals("paris") && connect.getStartDate().compareThisDateToThatDate(new DataDate(15,5,2023)) == DataEnumTimeComparison.Equal && connect.getDestinationCity().equals("paris") && connect.getStartTime().compareThisTimeToThatTime(new DataTime(27,5)) == DataEnumTimeComparison.Later){
-                probe = connect;
-                getEarliestTime = true;
-            }
-        }
-
-        Log.d("malte", "Ergebnis vienna->paris: " + probe.toString());
-        return dataBaseMock;
-    }
 }
