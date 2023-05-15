@@ -6,29 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".mainScreen2">
 
-    <EditText
-        android:id="@+id/editTextText"
+    <AutoCompleteTextView
+        android:id="@+id/startCity_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="212dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:hint="Select Start"
+        android:completionThreshold="1"
+        android:completionHint="Select Start"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextText2"
+    <AutoCompleteTextView
+        android:id="@+id/destinationCity_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:hint="Select Destination"
+        android:completionThreshold="1"
+        android:completionHint="Select Destination"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/startCity_input" />
 
     <Button
         android:id="@+id/button"
@@ -37,7 +41,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="232dp"
         android:text="Button"
-        app:layout_constraintStart_toEndOf="@+id/editTextText"
+        app:layout_constraintStart_toEndOf="@+id/startCity_input"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.chip.Chip
@@ -56,7 +60,7 @@
         android:layout_marginStart="92dp"
         android:layout_marginTop="56dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/destinationCity_input" />
 
     <TextView
         android:id="@+id/textView"
@@ -109,7 +113,7 @@
         android:ems="10"
         android:inputType="date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/destinationCity_input" />
 
     <EditText
         android:id="@+id/editTextDate2"
