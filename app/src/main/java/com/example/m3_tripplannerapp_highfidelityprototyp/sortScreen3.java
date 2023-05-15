@@ -20,6 +20,8 @@ public class sortScreen3 extends AppCompatActivity {
     List<DataConnection> special = new ArrayList<>();
     List<DataEnumTransportProperties> properties = new ArrayList<>();
 
+    List<DataConnection> incomingData = new ArrayList<>();
+
     // filter dropdown
     Spinner filterSpinner;
     String filterResult = "";
@@ -29,6 +31,10 @@ public class sortScreen3 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // incoming data
+        incomingData.add(new DataConnection("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), new DataTime(42,12)));
+        incomingData.add(new DataConnection("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), new DataTime(42,18)));
+
         // [0] general set up
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_screen3);
@@ -38,6 +44,7 @@ public class sortScreen3 extends AppCompatActivity {
         dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
         dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
         dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+
         Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
 
 
@@ -53,19 +60,24 @@ public class sortScreen3 extends AppCompatActivity {
         Log.d("malte", "Ergebnis spinner: " + filterResult);
 
         // DATABASE example
-        // hier wird ein Ergebnis gefiltert
-        //List<DataConnection> special = new ArrayList<>();
         List<DataEnumTransportProperties> properties = new ArrayList<>();
         properties.add(DataEnumTransportProperties.Nothing);
-        /*special = dataBaseMockUp.retrieveDataByTransportProperties(dataBaseMockUp.getDataBaseMockUp(), properties);
-        special = dataBaseMockUp.retrieveDataByStartTimeEarlier(special, new DataTime(40,17));
-        special = dataBaseMockUp.retrieveDataByStartTimeLater(special, new DataTime(40,12));*/
 
 
 
         // ------------------------------------------------------------------------------------------------------------------
-        // [2] set up drop down filter menu and interaction
+        // [3] show data to the tablayouts
 
+        /*
+        => diese Stelle in externe Methode auslagern, weil sie sich mit dem DropDown-Menu ändern muss
+        an dieser Stelle 3 Daten weitergeben:
+        - filterResultProperty
+        - database
+        - dataConnection aus der incomingData (0 für hin und 1 für zurück)
+        => Daten filtern und dann als Ergebnis List<DataConnection> weiterschicken
+
+        [schließlich wird in jedem Fragment der tabLayout eigentlich gefiltert
+         */
     }
 
 
@@ -87,15 +99,25 @@ public class sortScreen3 extends AppCompatActivity {
                 dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "frankfurt", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train);
                 Log.d("malte", "Ergebnis database size: " + dataBaseMockUp.getDataBaseMockUp().size());
                 // filter database
                 special = dataBaseMockUp.retrieveDataByTransportProperties(dataBaseMockUp.getDataBaseMockUp(), properties);
                 Log.d("malte", "special details: "  + special.toString());
 
-                special = dataBaseMockUp.retrieveDataByStartTimeEarlier(special, new DataTime(40,17));
-                special = dataBaseMockUp.retrieveDataByStartTimeLater(special, new DataTime(40,12));
+                // actual filter due to incoming data
+                special = dataBaseMockUp.retrieveDataByStartDateEqual(special, incomingData.get(0).getStartDate());
+                special = dataBaseMockUp.retrieveDataByStartTimeLater(special, incomingData.get(0).getStartTime());
+                //special = dataBaseMockUp.retrieveDataByStartTimeLater(special, new DataTime(40,12));
+                special = dataBaseMockUp.retrieveDataByStartCityAndLocation(special, incomingData.get(0).getStartCity(), incomingData.get(0).getStartLocation());
 
-                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + special.toString());
+                String loggerResult = "Result { ";
+                for (DataConnection c: special) {
+                    loggerResult += c.toStringShort();
+                }
+                loggerResult += " }";
+                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + loggerResult);
                 Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + special.size());
 
 

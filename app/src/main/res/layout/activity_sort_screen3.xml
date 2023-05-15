@@ -15,5 +15,23 @@
         android:layout_marginTop="145dp"
         android:layout_marginEnd="139dp" />
 
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/filterSpinner"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="return" />
+
+    </com.google.android.material.tabs.TabLayout>
+
 
 </RelativeLayout>

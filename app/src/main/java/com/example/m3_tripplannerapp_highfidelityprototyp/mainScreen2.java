@@ -3,24 +3,40 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import com.google.android.material.chip.Chip;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class mainScreen2 extends AppCompatActivity {
+
+    private List<DataConnection> inputDataConnections=new ArrayList<DataConnection>();
+
+    private DataConnection outwardConnection;
+    private DataConnection inwardConnection;
 
     private static final String[] Cities = new String[]{"Wien", "Prag", "Paris", "Berlin", "Rom", "Warschau", "Budapest"}; //String[] Cities that are in AutoCompleteTextview startCity_input and destinationCity_input
     private AutoCompleteTextView editStart;
     private AutoCompleteTextView editDestination;
+    private String startCity;
+    private String destinationCity;
+    private DataDate startDate;
+    private DataTime startTime;
+    private DataDate returnDate;
+    private DataTime returnTime;
 
     private Chip oneWay;
     private Chip bothWay;
@@ -40,6 +56,19 @@ public class mainScreen2 extends AppCompatActivity {
         editStart.setAdapter(adapter); //adds String[] Citeies to AutoCompleteTextView startCity_input
         editDestination.setAdapter(adapter); //adds String[] Citeies to AutoCompleteTextView destinationCity_input
 
+        editStart.setOnItemClickListener(new AdapterView.OnItemClickListener(){    //onItemClick of editStart String startCity gets overwritten with the text of editStart
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){     //overriding of startCity
+                startCity = editStart.getText().toString();
+            }
+        });
+        editDestination.setOnItemClickListener(new AdapterView.OnItemClickListener(){     //onItemClick of editDestination String destinationCity gets overwritten with the text of editDestination
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){    //overriding of destinationCity
+                destinationCity = editDestination.getText().toString();
+            }
+        });
+
         oneWay = findViewById(R.id.oneWay_chip); //initializing oneWay with Chip oneWay_chip
         bothWay = findViewById(R.id.bothWays_chip); //initializing oneWay with Chip bothWays_chip
         oneWay.setChecked(true);
@@ -48,15 +77,15 @@ public class mainScreen2 extends AppCompatActivity {
         date2 = findViewById(R.id.editTextDate2); //initializing date1 with EditText editTextDate2
         date2.setVisibility(View.INVISIBLE);   //sets date2 invisible
 
-        date1.setOnClickListener(new View.OnClickListener() {  //manages onClick from date1 to diplay Calendar and output selected date on date1
+        date1.setOnClickListener(new View.OnClickListener() {  //managing onClick from date1 to diplay Calendar and output selected date on date1
                                      @Override
-                                     public void onClick(View view) {  //actionthat happens upon clicking on date1
+                                     public void onClick(View view) {  //action that happens upon clicking on date1
                                          final Calendar calendar = Calendar.getInstance(); //get instance Calendar
                                          int year = calendar.get(Calendar.YEAR);  //get year
                                          int month = calendar.get(Calendar.MONTH);   //get month
                                          int day = calendar.get(Calendar.DAY_OF_MONTH);  //get day
 
-                                         DatePickerDialog datePickerDialog = new DatePickerDialog( //constructs and initializes DatePickerDialog, which presents graphical calendar interface and manages displayed output
+                                         DatePickerDialog datePickerDialog = new DatePickerDialog( //constructing and initializing DatePickerDialog, which presents graphical calendar interface and manages displayed output
                                                  mainScreen2.this,
                                                  new DatePickerDialog.OnDateSetListener() {
                                                      @Override
@@ -64,21 +93,25 @@ public class mainScreen2 extends AppCompatActivity {
                                                          date1.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
                                                      }
                                                  },
-                                                 year, month, day);  //recieved variables from Calendar initialized
+                                                 year, month, day);  //recieved variables from calendar
+
+                                         startDate = new DataDate(day, month, year); //initializing startDate
 
                                          datePickerDialog.show(); //displaying DatePickerDialog
                                      }
         });
 
-        date2.setOnClickListener(new View.OnClickListener() {  //manages onClick from date2 to diplay Calendar and output selected date on date2
+        date2.setOnClickListener(new View.OnClickListener() {  //managing onClick from date2 to diplay Calendar and output selected date
             @Override
-            public void onClick(View view) {  //actionthat happens upon clicking on date1
+            public void onClick(View view) {  //action that happens upon clicking on date1
                 final Calendar calendar = Calendar.getInstance(); //get instance Calendar
                 int year = calendar.get(Calendar.YEAR);  //get year
                 int month = calendar.get(Calendar.MONTH);   //get month
                 int day = calendar.get(Calendar.DAY_OF_MONTH);  //get day
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog( //constructs and initializes DatePickerDialog, which presents graphical calendar interface and manages displayed output
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog( //constructing and initializing DatePickerDialog, which presents graphical calendar interface and manages displayed output
                         mainScreen2.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -86,7 +119,9 @@ public class mainScreen2 extends AppCompatActivity {
                                 date2.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
                             }
                         },
-                        year, month, day);  //recieved variables from Calendar initialized
+                        year, month, day);  //recieved variables from calendar
+
+                returnDate = new DataDate(day, month, year);  //initializing returnDate
 
                 datePickerDialog.show(); //displaying DatePickerDialog
             }
@@ -97,13 +132,63 @@ public class mainScreen2 extends AppCompatActivity {
         time2 = findViewById(R.id.editTextTime2); //initializing time2 with EditText editTextTime2
         time2.setVisibility(View.INVISIBLE);  //sets time2 invisible
 
+        time1.setOnClickListener(new View.OnClickListener() {  //managing onClick from time1 to diplay TimeInput graphically and output selected time
+            @Override
+            public void onClick(View view) {
+                final Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog( //constructing and initializing TimePickerDialog, which presents graphical Time interface and manages displayed output
+                        mainScreen2.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                time1.setText(hourOfDay + " : " + minute);
+                            }
+                        },
+                        hour, minute, true); //recieved variables from calendar and setting 24Hour Format
+
+                startTime = new DataTime(minute, hour);  //initializing startTime
+
+                timePickerDialog.show();
+            }
+        });
+
+        time2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        mainScreen2.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                time2.setText(hourOfDay + " : " + minute);
+                            }
+                        },
+                        hour, minute, true);
+
+                returnTime = new DataTime(minute, hour);  //initializing returnTime
+
+                timePickerDialog.show();
+            }
+        });
+
     }
 
     public void switch_CityInputs (View view) {
         String startText = editStart.getText().toString();
         String destinationText = editDestination.getText().toString();
+        startCity = destinationText;
+        destinationCity = startText;
         editStart.setText(destinationText);
         editDestination.setText(startText);
+
     }
 
     public void select_chip_oneWay (View view) {
