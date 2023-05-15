@@ -27,9 +27,25 @@ public class sortScreen3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // [0] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
-        DataConnection incomingDataMock = new DataConnection("vienna", "hbf", "frankfurt", "hbf", new DataDate(15,5,2023), new DataTime(30,15), new DataDate(16,5,2023), new DataTime(30,18));
-        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "frankfurt", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
+        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
         Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
+        // hier wird ein Ergebnis gefiltert
+        List<DataConnection> special = new ArrayList<>();
+        List<DataEnumTransportProperties> properties = new ArrayList<>();
+        properties.add(DataEnumTransportProperties.Eco_friendly);
+        special = dataBaseMockUp.retrieveDataByTransportProperties(dataBaseMockUp.getDataBaseMockUp(), properties);
+        special = dataBaseMockUp.retrieveDataByStartTimeEarlier(special, new DataTime(40,17));
+        special = dataBaseMockUp.retrieveDataByStartTimeLater(special, new DataTime(40,12));
+
+        Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + special.toString());
+        Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + special.size());
+
+
+        // ------------------------------------------------------------------------------------------------------------------
+
+
 
 
         super.onCreate(savedInstanceState);
