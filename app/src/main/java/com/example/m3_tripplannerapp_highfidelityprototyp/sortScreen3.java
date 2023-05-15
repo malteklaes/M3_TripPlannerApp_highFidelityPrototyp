@@ -16,6 +16,7 @@ public class sortScreen3 extends AppCompatActivity {
 
     // mocked dataBase
     List<DataConnection> dataBaseMock = new ArrayList<>();
+    DataBaseMockUp dataBaseMockUp = new DataBaseMockUp();
 
     // filter dropdown
     Spinner filterSpinner;
@@ -27,9 +28,9 @@ public class sortScreen3 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // [0] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
         DataConnection incomingDataMock = new DataConnection("vienna", "hbf", "frankfurt", "hbf", new DataDate(15,5,2023), new DataTime(30,15), new DataDate(16,5,2023), new DataTime(30,18));
-        dataBaseMock = this.dataBaseMock();
-        Log.d("malte", "Ergbnis mock: " + incomingDataMock.toString());
-        Log.d("malte", "Ergbnis mocked db: " + dataBaseMock.toString());
+        //dataBaseMock = this.dataBaseMock();
+        //Log.d("malte", "Ergbnis mock: " + incomingDataMock.toString());
+        Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
 
 
         super.onCreate(savedInstanceState);

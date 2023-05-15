@@ -2,7 +2,9 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import android.util.Log;
 
+
 import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -116,19 +118,19 @@ public class DataBaseMockUp {
 
         Random randomTransport1 = new Random();
         int index1 = randomTransport1.nextInt(transports.length);
-        this.addAnotherDay("vienna", "hbf", "frankfurt", "hbf", this.calulateActualDate(), transports[index1]);
+        this.addAnotherDay("vienna", "hbf", "frankfurt", "hbf", this.calculateRandomDate(), transports[index1]);
 
         Random randomTransport2 = new Random();
         int index2 = randomTransport2.nextInt(transports.length);
-        this.addAnotherDay("frankfurt", "hbf", "vienna", "hbf", this.calulateActualDate(), transports[index2]);
+        this.addAnotherDay("frankfurt", "hbf", "vienna", "hbf", this.calculateRandomDate(), transports[index2]);
 
         Random randomTransport3 = new Random();
         int index3 = randomTransport3.nextInt(transports.length);
-        this.addAnotherDay("vienna", "hbf", "paris", "Gare du Nord", this.calulateActualDate(), transports[index3]);
+        this.addAnotherDay("vienna", "hbf", "paris", "Gare du Nord", this.calculateRandomDate(), transports[index3]);
 
         Random randomTransport4 = new Random();
         int index4 = randomTransport4.nextInt(transports.length);
-        this.addAnotherDay("paris", "Gare du Nord", "vienna", "hbf", this.calulateActualDate(), transports[index4]);
+        this.addAnotherDay("paris", "Gare du Nord", "vienna", "hbf", this.calculateRandomDate(), transports[index4]);
 
 
         /*DataConnection probe = new DataConnection("bla","bla","bla","bla");
@@ -144,10 +146,28 @@ public class DataBaseMockUp {
     }
 
 
-    private DataDate calulateActualDate(){
-        Date date = new Date();
-        return new DataDate(date.getDay(), date.getMonth(), date.getYear());
+    /**
+     * calculates random date
+     * @return
+     */
+    private DataDate calculateRandomDate(){
+        // random day
+        Random randomD = new Random();
+        int randomDay = randomD.nextInt(28);
+        randomDay = (randomDay == 0) ? 1 : randomDay;
+        // random month
+        Random randomM = new Random();
+        int randomMonth = randomM.nextInt(12);
+        randomMonth = (randomMonth == 0) ? 1 : randomMonth;
+
+        return new DataDate(randomDay, randomMonth, 2023);
     }
 
 
+    @Override
+    public String toString() {
+        return "DataBaseMockUp{" +
+                "dataBaseMockUp=" + dataBaseMockUp.toString() +
+                '}';
+    }
 }
