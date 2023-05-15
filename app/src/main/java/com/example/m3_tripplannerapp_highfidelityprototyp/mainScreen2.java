@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -16,13 +17,26 @@ import android.widget.TimePicker;
 
 import com.google.android.material.chip.Chip;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class mainScreen2 extends AppCompatActivity {
+
+    private List<DataConnection> inputDataConnections=new ArrayList<DataConnection>();
+
+    private DataConnection outwardConnection;
+    private DataConnection inwardConnection;
 
     private static final String[] Cities = new String[]{"Wien", "Prag", "Paris", "Berlin", "Rom", "Warschau", "Budapest"}; //String[] Cities that are in AutoCompleteTextview startCity_input and destinationCity_input
     private AutoCompleteTextView editStart;
     private AutoCompleteTextView editDestination;
+    private String startCity;
+    private String destinationCity;
+    private DataDate startDate;
+    private DataTime startTime;
+    private DataDate returnDate;
+    private DataTime returnTime;
 
     private Chip oneWay;
     private Chip bothWay;
@@ -41,6 +55,19 @@ public class mainScreen2 extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Cities); //prepares to add String[] Cities to AutoCompleteTextView
         editStart.setAdapter(adapter); //adds String[] Citeies to AutoCompleteTextView startCity_input
         editDestination.setAdapter(adapter); //adds String[] Citeies to AutoCompleteTextView destinationCity_input
+
+        editStart.setOnItemClickListener(new AdapterView.OnItemClickListener(){    //onItemClick of editStart String startCity gets overwritten with the text of editStart
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){     //overriding of startCity
+                startCity = editStart.getText().toString();
+            }
+        });
+        editDestination.setOnItemClickListener(new AdapterView.OnItemClickListener(){     //onItemClick of editDestination String destinationCity gets overwritten with the text of editDestination
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){    //overriding of destinationCity
+                destinationCity = editDestination.getText().toString();
+            }
+        });
 
         oneWay = findViewById(R.id.oneWay_chip); //initializing oneWay with Chip oneWay_chip
         bothWay = findViewById(R.id.bothWays_chip); //initializing oneWay with Chip bothWays_chip
@@ -68,6 +95,8 @@ public class mainScreen2 extends AppCompatActivity {
                                                  },
                                                  year, month, day);  //recieved variables from calendar
 
+                                         startDate = new DataDate(day, month, year); //initializing startDate
+
                                          datePickerDialog.show(); //displaying DatePickerDialog
                                      }
         });
@@ -91,6 +120,8 @@ public class mainScreen2 extends AppCompatActivity {
                             }
                         },
                         year, month, day);  //recieved variables from calendar
+
+                returnDate = new DataDate(day, month, year);  //initializing returnDate
 
                 datePickerDialog.show(); //displaying DatePickerDialog
             }
@@ -119,6 +150,8 @@ public class mainScreen2 extends AppCompatActivity {
                         },
                         hour, minute, true); //recieved variables from calendar and setting 24Hour Format
 
+                startTime = new DataTime(minute, hour);  //initializing startTime
+
                 timePickerDialog.show();
             }
         });
@@ -140,18 +173,22 @@ public class mainScreen2 extends AppCompatActivity {
                         },
                         hour, minute, true);
 
+                returnTime = new DataTime(minute, hour);  //initializing returnTime
+
                 timePickerDialog.show();
             }
         });
-
 
     }
 
     public void switch_CityInputs (View view) {
         String startText = editStart.getText().toString();
         String destinationText = editDestination.getText().toString();
+        startCity = destinationText;
+        destinationCity = startText;
         editStart.setText(destinationText);
         editDestination.setText(startText);
+
     }
 
     public void select_chip_oneWay (View view) {
