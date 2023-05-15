@@ -37,6 +37,8 @@ public class DataConnection {
     private double CO2Bilance; // in
     private double distance; // in kg pro CO2
 
+    private List<DataEnumTransportProperties> transportProperties;
+
 
     public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation) {
         this.startCity = startCity;
@@ -51,6 +53,8 @@ public class DataConnection {
         this.prize = 0.;
         this.distance = 0.;
         this.duration = new DataTime(0,0);
+        this.transportProperties = new ArrayList<>();
+        this.calculateTransportProperties();
     }
 
     /**
@@ -77,6 +81,8 @@ public class DataConnection {
         this.prize = 0.;
         this.distance = 0.;
         this.duration = new DataTime(0,0);
+        this.transportProperties = new ArrayList<>();
+        this.calculateTransportProperties();
     }
 
     /**
@@ -107,6 +113,8 @@ public class DataConnection {
         this.prize = 0.;
         this.distance = 0.;
         this.duration = new DataTime(0,0);
+        this.transportProperties = new ArrayList<>();
+        this.calculateTransportProperties();
     }
 
     // internal logic ---------------------------------------------------------------
@@ -164,6 +172,43 @@ public class DataConnection {
     private DataTime calculateActualTime(){
         Date date = new Date();
         return new DataTime(date.getMinutes(), date.getHours());
+    }
+
+    private void calculateTransportProperties(){
+        switch (this.type) {
+            case Car:
+                this.transportProperties.add(DataEnumTransportProperties.Fast);
+                this.transportProperties.add(DataEnumTransportProperties.Reliable);
+                this.transportProperties.add(DataEnumTransportProperties.Few_stops);
+                break;
+            case Bus:
+                this.transportProperties.add(DataEnumTransportProperties.Cheap);
+                this.transportProperties.add(DataEnumTransportProperties.Eco_friendly);
+                break;
+            case Ship:
+                this.transportProperties.add(DataEnumTransportProperties.Comfortable);
+                this.transportProperties.add(DataEnumTransportProperties.Reliable);
+                break;
+            case Train:
+                this.transportProperties.add(DataEnumTransportProperties.Cheap);
+                this.transportProperties.add(DataEnumTransportProperties.Comfortable);
+                this.transportProperties.add(DataEnumTransportProperties.Eco_friendly);
+                break;
+            case Plane:
+                this.transportProperties.add(DataEnumTransportProperties.Fast);
+                this.transportProperties.add(DataEnumTransportProperties.Comfortable);
+                this.transportProperties.add(DataEnumTransportProperties.Few_stops);
+                break;
+            case Mix:
+                this.transportProperties.add(DataEnumTransportProperties.Fast);
+                this.transportProperties.add(DataEnumTransportProperties.Reliable);
+                break;
+            default:
+                this.transportProperties.add(DataEnumTransportProperties.Eco_friendly);
+                this.transportProperties.add(DataEnumTransportProperties.Cheap);
+                this.transportProperties.add(DataEnumTransportProperties.Reliable);
+                break;
+        }
     }
 
     // SETTER -----------------------------------------------------------------------
@@ -283,6 +328,13 @@ public class DataConnection {
         return distance;
     }
 
+    public List<DataEnumTransportProperties> getTransportProperties() {
+        return transportProperties;
+    }
+
+    public boolean hasTransportProperty(DataEnumTransportProperties property){
+        return this.transportProperties.contains(property);
+    }
 
     @Override
     public String toString() {
@@ -304,6 +356,7 @@ public class DataConnection {
                 ", switchTransfer=" + switchTransfer +
                 ", CO2Bilance=" + CO2Bilance +
                 ", distance=" + distance +
+                ", transportProperties=" + transportProperties +
                 '}';
     }
 }

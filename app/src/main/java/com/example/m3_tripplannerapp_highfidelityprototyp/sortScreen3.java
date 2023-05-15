@@ -17,26 +17,33 @@ public class sortScreen3 extends AppCompatActivity {
     // mocked dataBase
     List<DataConnection> dataBaseMock = new ArrayList<>();
     DataBaseMockUp dataBaseMockUp = new DataBaseMockUp();
+    List<DataConnection> special = new ArrayList<>();
+    List<DataEnumTransportProperties> properties = new ArrayList<>();
 
     // filter dropdown
     Spinner filterSpinner;
     String filterResult = "";
+    DataEnumTransportProperties filterResultProperty = DataEnumTransportProperties.Nothing;
     final String[] selectedOption = {""};
-    String[] options = {"eco-friendly", "fast", "cheapest", "least stops", "earliest"};
+    String[] options = {"eco-friendly", "fast", "reliable", "comfortable", "cheap", "few stops", "nothing"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // [0] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
-        DataConnection incomingDataMock = new DataConnection("vienna", "hbf", "frankfurt", "hbf", new DataDate(15,5,2023), new DataTime(30,15), new DataDate(16,5,2023), new DataTime(30,18));
-        //dataBaseMock = this.dataBaseMock();
-        //Log.d("malte", "Ergbnis mock: " + incomingDataMock.toString());
-        Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
-
-
+        // [0] general set up
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_screen3);
 
-        // [1] set up drop down filter menu and interaction
+        // ------------------------------------------------------------------------------------------------------------------
+        // [1] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
+        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+        Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
+
+
+
+        // ------------------------------------------------------------------------------------------------------------------
+        // [2] set up drop down filter menu and interaction
         filterSpinner = findViewById(R.id.filterSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options);
         filterSpinner.setAdapter(adapter);
@@ -44,6 +51,20 @@ public class sortScreen3 extends AppCompatActivity {
 
         // result of filter
         Log.d("malte", "Ergebnis spinner: " + filterResult);
+
+        // DATABASE example
+        // hier wird ein Ergebnis gefiltert
+        //List<DataConnection> special = new ArrayList<>();
+        List<DataEnumTransportProperties> properties = new ArrayList<>();
+        properties.add(DataEnumTransportProperties.Nothing);
+        /*special = dataBaseMockUp.retrieveDataByTransportProperties(dataBaseMockUp.getDataBaseMockUp(), properties);
+        special = dataBaseMockUp.retrieveDataByStartTimeEarlier(special, new DataTime(40,17));
+        special = dataBaseMockUp.retrieveDataByStartTimeLater(special, new DataTime(40,12));*/
+
+
+
+        // ------------------------------------------------------------------------------------------------------------------
+        // [2] set up drop down filter menu and interaction
 
     }
 
@@ -58,6 +79,27 @@ public class sortScreen3 extends AppCompatActivity {
                 selectedOption[0] = (String) options[position];
                 filterResult = selectedOption[0];
                 Log.d("malte", "Ergebnis filter drop down: " + selectedOption[0]);
+                // database related
+                filterResultProperty = convertStringToTransportProperty(filterResult);
+                properties.clear();
+                properties.add(filterResultProperty);
+                // refill data base
+                dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+                Log.d("malte", "Ergebnis database size: " + dataBaseMockUp.getDataBaseMockUp().size());
+                // filter database
+                special = dataBaseMockUp.retrieveDataByTransportProperties(dataBaseMockUp.getDataBaseMockUp(), properties);
+                Log.d("malte", "special details: "  + special.toString());
+
+                special = dataBaseMockUp.retrieveDataByStartTimeEarlier(special, new DataTime(40,17));
+                special = dataBaseMockUp.retrieveDataByStartTimeLater(special, new DataTime(40,12));
+
+                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + special.toString());
+                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + special.size());
+
+
+
 
             }
 
@@ -69,39 +111,24 @@ public class sortScreen3 extends AppCompatActivity {
         });
     }
 
-    private List<DataConnection> dataBaseMock(){
-        //List<DataConnection> dataBaseMock = new ArrayList<>();
-
-        // [1] route: vienna->frankfurt, 15.5.2023
-        for (int i = 0; i < 24; i++) {
-            dataBaseMock.add(new DataConnection("vienna", "hbf", "frankfurt", "hbf", new DataDate(15,5,2023), new DataTime(30,i)));
+    private static DataEnumTransportProperties convertStringToTransportProperty(String property){
+        switch (property) {
+            case "eco-friendly":
+                return DataEnumTransportProperties.Eco_friendly;
+            case "fast":
+                return DataEnumTransportProperties.Fast;
+            case "reliable":
+                return DataEnumTransportProperties.Reliable;
+            case "comfortable":
+                return DataEnumTransportProperties.Comfortable;
+            case "cheap":
+                return DataEnumTransportProperties.Cheap;
+            case "few stops":
+                return DataEnumTransportProperties.Few_stops;
+            default:
+                return DataEnumTransportProperties.Nothing;
         }
-
-        // [2] route: frankfurt->vienna, 16.5.2023
-        for (int i = 0; i < 24; i++) {
-            dataBaseMock.add(new DataConnection("frankfurt", "hbf", "vienna", "hbf", new DataDate(16,5,2023), new DataTime(30,i)));
-        }
-
-        // [3] route: vienna->paris, 15.5.2023
-        for (int i = 0; i < 24; i++) {
-            dataBaseMock.add(new DataConnection("vienna", "hbf", "paris", "Gare du Nord", new DataDate(15,5,2023), new DataTime(30,i)));
-        }
-
-        // [3] route: paris->vienna, 16.5.2023
-        for (int i = 0; i < 24; i++) {
-            dataBaseMock.add(new DataConnection("paris", "Gare du Nord", "vienna", "hbf", new DataDate(16,5,2023), new DataTime(30,i)));
-        }
-
-        DataConnection probe = new DataConnection("bla","bla","bla","bla");
-        boolean getEarliestTime = false;
-        for (DataConnection connect : dataBaseMock) {
-            if(!getEarliestTime && connect.getStartCity().equals("vienna") && connect.getDestinationCity().equals("paris") && connect.getStartDate().compareThisDateToThatDate(new DataDate(15,5,2023)) == DataEnumTimeComparison.Equal && connect.getDestinationCity().equals("paris") && connect.getStartTime().compareThisTimeToThatTime(new DataTime(27,5)) == DataEnumTimeComparison.Later){
-                probe = connect;
-                getEarliestTime = true;
-            }
-        }
-
-        Log.d("malte", "Ergebnis vienna->paris: " + probe.toString());
-        return dataBaseMock;
     }
+
+
 }

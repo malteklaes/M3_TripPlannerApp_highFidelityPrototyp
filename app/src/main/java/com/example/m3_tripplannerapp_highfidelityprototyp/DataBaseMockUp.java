@@ -41,6 +41,10 @@ public class DataBaseMockUp {
         this.addAnotherDay(startCity, startLocation, destinationCity, destinationLocation, startDate, transportType, company, randomPrize);
     }
 
+
+
+    // ADDER -----------------------------------------------------------------------
+
     /**
      * adds a new whole 24h day with a specific start-destination route and a transportType
      * hourly intervall
@@ -49,6 +53,7 @@ public class DataBaseMockUp {
      * @param destinationCity
      * @param destinationLocation
      * @param startDate
+     * @param transportType
      */
     public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType){
         Random random = new Random();
@@ -69,6 +74,9 @@ public class DataBaseMockUp {
      * @param destinationCity
      * @param destinationLocation
      * @param startDate
+     * @param transportType
+     * @param company
+     * @param prize
      */
     public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, String company, double prize){
         Random random = new Random();
@@ -90,10 +98,13 @@ public class DataBaseMockUp {
      * @param destinationCity
      * @param destinationLocation
      * @param startDate
+     * @param transportType
+     * @param prize
      */
     public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, double prize){
         Random random = new Random();
         int randomMinute = random.nextInt(60);
+
         for (int i = 0; i < 24; i++) {
             DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i));
             connection.setType(transportType);
@@ -101,6 +112,8 @@ public class DataBaseMockUp {
             dataBaseMockUp.add(connection);
         }
     }
+
+
 
     /**
      * adds multiple connections to this database
@@ -146,6 +159,94 @@ public class DataBaseMockUp {
     }
 
 
+    // RETRIEVER -----------------------------------------------------------------------
+
+    /**
+     * retrieves data which is later than this date
+     * @param database
+     * @param date
+     * @return
+     */
+    public List<DataConnection> retrieveDataByStartDateLater(List<DataConnection> database, DataDate date){
+        List<DataConnection> result = new ArrayList<>();
+        for (DataConnection connection : database) {
+            if(connection.getStartDate().compareThisDateToThatDate(date) == DataEnumTimeComparison.Later){
+                result.add(connection);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * retrieves data which is earlier than this date
+     * @param database
+     * @param date
+     * @return
+     */
+    public List<DataConnection> retrieveDataByStartDateEarlier(List<DataConnection> database, DataDate date){
+        List<DataConnection> result = new ArrayList<>();
+        for (DataConnection connection : database) {
+            if(connection.getStartDate().compareThisDateToThatDate(date) == DataEnumTimeComparison.Earlier){
+                result.add(connection);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * retrieves data which is later than this time
+     * @param database
+     * @param time
+     * @return
+     */
+    public List<DataConnection> retrieveDataByStartTimeLater(List<DataConnection> database, DataTime time){
+        List<DataConnection> result = new ArrayList<>();
+        for (DataConnection connection : database) {
+            if(connection.getStartTime().compareThisTimeToThatTime(time) == DataEnumTimeComparison.Later){
+                result.add(connection);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * retrieves data which is earlier than this time
+     * @param database
+     * @param time
+     * @return
+     */
+    public List<DataConnection> retrieveDataByStartTimeEarlier(List<DataConnection> database, DataTime time){
+        List<DataConnection> result = new ArrayList<>();
+        for (DataConnection connection : database) {
+            if(connection.getStartTime().compareThisTimeToThatTime(time) == DataEnumTimeComparison.Earlier){
+                result.add(connection);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * looks out for any property and those connections which incorporates this property to the result
+     * @param database
+     * @param transportProperties
+     * @return
+     */
+    public List<DataConnection> retrieveDataByTransportProperties(List<DataConnection> database, List<DataEnumTransportProperties> transportProperties){
+        List<DataConnection> result = new ArrayList<>();
+        for (DataConnection connection : database) {
+            for (DataEnumTransportProperties property: transportProperties) {
+                if(connection.hasTransportProperty(property)){
+                    result.add(connection);
+                }
+            }
+        }
+        return result;
+    }
+
+
+
+
+    // HELP FUNCTIONS -----------------------------------------------------------------------
     /**
      * calculates random date
      * @return
@@ -163,6 +264,13 @@ public class DataBaseMockUp {
         return new DataDate(randomDay, randomMonth, 2023);
     }
 
+    public List<DataConnection> getDataBaseMockUp() {
+        return dataBaseMockUp;
+    }
+
+    public void setDataBaseMockUp(List<DataConnection> dataBaseMockUp) {
+        this.dataBaseMockUp = dataBaseMockUp;
+    }
 
     @Override
     public String toString() {
