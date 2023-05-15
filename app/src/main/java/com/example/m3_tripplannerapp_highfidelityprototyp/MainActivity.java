@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         DataConnection dataConnection = new DataConnection("Vienna", "Hbf", "Köln", "Hbf");
 
         Log.d("logger", "Ergebnis: " + dataConnection.toString());
-
+        Log.d("logger", "Test Martina");
 
     }
 }
