@@ -37,6 +37,7 @@ public class DataConnection {
     private double CO2Bilance; // in
     private double distance; // in kg pro CO2
 
+
     public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation) {
         this.startCity = startCity;
         this.startLocation = startLocation;

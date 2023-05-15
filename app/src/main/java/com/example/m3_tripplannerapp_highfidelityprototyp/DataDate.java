@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
  * structures a date due to format: day-month-year
  * @author TripPlannerApp-Team
  */
-public class DataDate {
+public class DataDate implements Comparable<DataDate> {
 
     private int day;
     private int month;
@@ -31,6 +31,43 @@ public class DataDate {
     public int getYear() {
         return year;
     }
+
+
+    @Override
+    public int compareTo(DataDate other) {
+        if (this.year < other.year) {
+            return -1;
+        } else if (this.year > other.year) {
+            return 1;
+        } else {
+            if (this.month < other.month) {
+                return -1;
+            } else if (this.month > other.month) {
+                return 1;
+            } else {
+                if (this.day < other.day) {
+                    return -1;
+                } else if (this.day > other.day) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    public DataEnumTimeComparison compareThisDateToThatDate(DataDate thatDate){
+        if(this == null) return DataEnumTimeComparison.Later;
+        if(thatDate == null) return DataEnumTimeComparison.Earlier;
+        if (this.compareTo(thatDate) < 0) {
+            return DataEnumTimeComparison.Earlier;
+        } else if (this.compareTo(thatDate) > 0) {
+            return DataEnumTimeComparison.Later;
+        } else {
+            return DataEnumTimeComparison.Equal;
+        }
+    }
+
 
     /**
      * a representation as String for testing and viewing purpose
