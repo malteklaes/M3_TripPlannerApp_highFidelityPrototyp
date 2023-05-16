@@ -39,7 +39,11 @@ public class sortScreen3 extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapterView;
+    private static DataConnection resultFrag1Data = new DataConnection("","","","");
+    private static DataConnection resultFrag2Data = new DataConnection("","","","");
 
+    private static List<DataConnection> dtoResultTo = new ArrayList<>();
+    private static List<DataConnection> dtoResultReturn = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // incoming data
@@ -91,9 +95,13 @@ public class sortScreen3 extends AppCompatActivity {
         setupButtonListeners(); //Buttons Listener Method
 
         // ------------------------------------------------------------------------------------------------------------------
-        // [3] show data to the tablayouts
+        // [3] RESULT-DATEN
 
-
+        Log.d("malte4", " Ergebnis der Auswahl: " + resultFrag1Data.toString());
+        Log.d("malte4", " Ergebnis der Auswahl: " + resultFrag2Data.toString());
+        /*
+        hier dtoResultTo und dtoResultReturn (bei dem vorher noch testen, ob überhaupt return gewählt) abgreifen
+         */
     }
 
 
@@ -187,6 +195,22 @@ public class sortScreen3 extends AppCompatActivity {
         }
     }
 
+    public void setResultFrag1Data(DataConnection resultFrag1Data) {
+        //Log.d("malte4", " resultFrag1Data: " + this.resultFrag1Data);
+        this.resultFrag1Data = resultFrag1Data;
+        dtoResultTo.clear();
+        dtoResultTo.add(resultFrag1Data);
+        /*Log.d("malte4", " Ergebnis der result.size(): " + dtoResultTo.size());
+        Log.d("malte4", " Ergebnis der result: " + dtoResultTo.toString());*/
+    }
+
+    public void setResultFrag2Data(DataConnection resultFrag2Data) {
+        this.resultFrag2Data = resultFrag2Data;
+        dtoResultTo.clear();
+        dtoResultTo.add(resultFrag1Data);
+        /*Log.d("malte4", " Ergebnis der result.size(): " + dtoResultTo.size());
+        Log.d("malte4", " Ergebnis der result: " + dtoResultTo.toString());*/
+    }
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
         Button LetsGo = findViewById(R.id.button_letsgo);

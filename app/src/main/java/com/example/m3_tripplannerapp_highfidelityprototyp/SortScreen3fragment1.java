@@ -2,7 +2,10 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +28,8 @@ public class SortScreen3fragment1 extends Fragment {
 
     private static String ARG_PARAM1 = "param1";
     private static List<DataConnection> ARG_PARAM = new ArrayList<>();
+
+
 
 
     public SortScreen3fragment1() {
@@ -57,9 +62,19 @@ public class SortScreen3fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sort_screen3fragment1, container, false);
-        shownText = v.findViewById(R.id.screen3frag1textView);
-        shownText.setText(ARG_PARAM.toString());
+        RecyclerView recyclerView = v.findViewById(R.id.RecyclerViewFrag1);
 
+        if(ARG_PARAM != null && ARG_PARAM.size() > 0) {
+            SortScreen3RecylerViewAdapter adapter = new SortScreen3RecylerViewAdapter(getActivity(), ARG_PARAM);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            ((sortScreen3) getActivity()).setResultFrag1Data(new DataConnection("", "", "", ""));
+        } else {
+            shownText = v.findViewById(R.id.screen3frag1textView);
+            shownText.setText("nothing found!");
+        }
         return v;
     }
+
+
 }

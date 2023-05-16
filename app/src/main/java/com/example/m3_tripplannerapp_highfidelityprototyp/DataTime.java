@@ -79,7 +79,19 @@ public class DataTime implements Comparable<DataTime>{
     @NonNull
     @Override
     public String toString() {
-        return "["+hour+":"+minute+"]";
+        String minuteString = "";
+        if(minute < 10){
+            minuteString = "0" + minute;
+        } else {
+            minuteString = minute + "";
+        }
+        String hourString = "";
+        if(hour < 10){
+            hourString = "0" + hour;
+        } else {
+            hourString = hour + "";
+        }
+        return " "+hourString+":"+minuteString+" Uhr";
     }
 
 

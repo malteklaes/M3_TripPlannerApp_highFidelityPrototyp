@@ -11,9 +11,14 @@
         android:id="@+id/screen3frag2textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="TAB 2"
+        android:text=""
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="40dp"/>
+        android:textSize="20dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewFrag2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>
