@@ -35,11 +35,12 @@ public class DataBaseMockUp {
      */
     public DataBaseMockUp(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType) {
         this.dataBaseMockUp = new ArrayList<>();
-        Random random = new Random();
-        int randomPrize = random.nextInt(500); // in euro
+        double randomPrize = this.calculateRandomPrizeDependingOnType(transportType); // in euro
         String company = "randomTransportCompany";
         this.addAnotherDay(startCity, startLocation, destinationCity, destinationLocation, startDate, transportType, company, randomPrize);
     }
+
+
 
 
 
@@ -145,17 +146,6 @@ public class DataBaseMockUp {
         int index4 = randomTransport4.nextInt(transports.length);
         this.addAnotherDay("paris", "Gare du Nord", "vienna", "hbf", this.calculateRandomDate(), transports[index4]);
 
-
-        /*DataConnection probe = new DataConnection("bla","bla","bla","bla");
-        boolean getEarliestTime = false;
-        for (DataConnection connect : dataBaseMockUp) {
-            if(!getEarliestTime && connect.getStartCity().equals("vienna") && connect.getDestinationCity().equals("paris") && connect.getStartDate().compareThisDateToThatDate(this.calulateActualDate()) == DataEnumTimeComparison.Equal && connect.getDestinationCity().equals("paris") && connect.getStartTime().compareThisTimeToThatTime(new DataTime(27,5)) == DataEnumTimeComparison.Later){
-                probe = connect;
-                getEarliestTime = true;
-            }
-        }
-
-        Log.d("malte", "Ergebnis vienna->paris: " + probe.toString());*/
     }
 
 
@@ -251,6 +241,7 @@ public class DataBaseMockUp {
         List<DataConnection> result = new ArrayList<>();
         for (DataConnection connection : database) {
             for (DataEnumTransportProperties property: transportProperties) {
+                //Log.d("malte6" , "property: " + )
                 if(connection.hasTransportProperty(property)){
                     result.add(connection);
                 }
@@ -277,18 +268,43 @@ public class DataBaseMockUp {
         return result;
     }
 
+    public List<DataConnection> retrieveDataByStartCityAndDestinatioCity(List<DataConnection> database, String startCity, String destinationCity){
+        List<DataConnection> result = new ArrayList<>();
+        for (DataConnection connection : database) {
+            if(connection.getStartCity().equals(startCity) && connection.getDestinationCity().equals(destinationCity)){
+                result.add(connection);
+            }
+        }
+        return result;
+    }
+
     // FILTER FUNCTIONS -----------------------------------------------------------------------
-    public List<DataConnection> filterByParameters(List<DataConnection> database, List<DataEnumTransportProperties> filterProperties, DataDate filterDate, DataTime filterTime, String filterCity, String filterLocation){
+    public List<DataConnection> filterByParameters(List<DataConnection> database, List<DataEnumTransportProperties> filterProperties, DataDate filterDate, DataTime filterTime, String filterStartCity, String filterDestinationCity){
         List<DataConnection> filteredResult = new ArrayList<>();
+        filteredResult = this.deepCopyListOfDataConnection(database);
         // [1] filter by property
-        filteredResult = this.retrieveDataByTransportProperties(database, filterProperties);
+        filteredResult = this.retrieveDataByTransportProperties(filteredResult, filterProperties);
+        Log.d("malte5", "Ergebnis: " + filteredResult.size());
         // [2] fitler by date
         filteredResult = this.retrieveDataByStartDateEqual(filteredResult, filterDate);
+        Log.d("malte5", "Ergebnis: " + filteredResult.size());
         // [3] fitler by time
         filteredResult = this.retrieveDataByStartTimeLater(filteredResult, filterTime);
+        Log.d("malte5", "Ergebnis: " + filteredResult.size());
         // [4] fitler by city and location
-        filteredResult = this.retrieveDataByStartCityAndLocation(filteredResult, filterCity, filterLocation);
+        filteredResult = this.retrieveDataByStartCityAndDestinatioCity(filteredResult, filterStartCity, filterDestinationCity);
+        Log.d("malte5", "Ergebnis: " + filteredResult.size());
         return filteredResult;
+    }
+
+    private List<DataConnection> deepCopyListOfDataConnection(List<DataConnection> source){
+        List<DataConnection> copyObject = new ArrayList<>();
+        if(source != null && source.size() > 0){
+            for (DataConnection connection : source) {
+                copyObject.add(new DataConnection(connection));
+            }
+        }
+        return copyObject;
     }
 
 
@@ -308,6 +324,27 @@ public class DataBaseMockUp {
         randomMonth = (randomMonth == 0) ? 1 : randomMonth;
 
         return new DataDate(randomDay, randomMonth, 2023);
+    }
+
+    private double calculateRandomPrizeDependingOnType(DataEnumTransport transportType){
+        Random random = new Random();
+        int randomElementPrize = random.nextInt(500) + 1;
+        switch (transportType){
+            case Car:
+                return randomElementPrize * 0.4;
+            case Bus:
+                return randomElementPrize * 0.2;
+            case Ship:
+                return randomElementPrize * 0.7;
+            case Train:
+                return randomElementPrize * 0.3;
+            case Plane:
+                return randomElementPrize * 0.8;
+            case Mix:
+                return randomElementPrize * 0.5;
+            default:
+                return randomElementPrize;
+        }
     }
 
     public List<DataConnection> getDataBaseMockUp() {

@@ -76,6 +76,12 @@ public class DataDate implements Comparable<DataDate> {
     @NonNull
     @Override
     public String toString() {
-        return "["+day+"-"+month+"-"+year+"]";
+        String monthString = "";
+        if(month < 10){
+            monthString = "0"+month;
+        } else {
+            monthString = month + "";
+        }
+        return ""+day+"."+monthString+"."+year+"";
     }
 }

@@ -1,10 +1,15 @@
 package com.example.m3_tripplannerapp_highfidelityprototyp;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * main data communication class
@@ -50,7 +55,7 @@ public class DataConnection {
         this.intermediatStations = new ArrayList<>();
         this.company = "noCompany";
         this.companyLogo = 0;
-        this.prize = 0.;
+        this.prize = this.calculateRandomPrizeDependingOnType(type);
         this.distance = 0.;
         this.duration = new DataTime(0,0);
         this.transportProperties = new ArrayList<>();
@@ -78,7 +83,7 @@ public class DataConnection {
         this.intermediatStations = new ArrayList<>();
         this.company = "noCompany";
         this.companyLogo = 0;
-        this.prize = 0.;
+        this.prize = this.calculateRandomPrizeDependingOnType(type);;
         this.distance = 0.;
         this.duration = new DataTime(0,0);
         this.transportProperties = new ArrayList<>();
@@ -110,11 +115,31 @@ public class DataConnection {
         this.intermediatStations = new ArrayList<>();
         this.company = "noCompany";
         this.companyLogo = 0;
-        this.prize = 0.;
+        this.prize = this.calculateRandomPrizeDependingOnType(type);;
         this.distance = 0.;
         this.duration = new DataTime(0,0);
         this.transportProperties = new ArrayList<>();
         this.calculateTransportProperties();
+    }
+
+    public DataConnection(DataConnection source){
+        this.startCity = source.getStartCity();
+        this.startLocation = source.getStartLocation();;
+        this.destinationCity = source.getDestinationCity();;
+        this.destinationLocation = source.getDestinationLocation();;
+        this.startDate = source.getStartDate();;
+        this.startTime = source.getStartTime();;
+        this.returnDate = source.getReturnDate();;
+        this.returnTime = source.getReturnTime();;
+        // default values
+        this.type = source.getType();
+        this.intermediatStations = source.getIntermediatStations();
+        this.company = source.getCompany();
+        this.companyLogo = source.getCompanyLogo();
+        this.prize = source.getPrize();;
+        this.distance = source.getDistance();
+        this.duration = source.getDuration();
+        this.transportProperties = source.getTransportProperties();
     }
 
     // internal logic ---------------------------------------------------------------
@@ -211,6 +236,27 @@ public class DataConnection {
         }
     }
 
+    private double calculateRandomPrizeDependingOnType(DataEnumTransport transportType){
+        Random random = new Random();
+        int randomElementPrize = random.nextInt(500) + 1;
+        switch (transportType){
+            case Car:
+                return randomElementPrize * 0.4;
+            case Bus:
+                return randomElementPrize * 0.2;
+            case Ship:
+                return randomElementPrize * 0.7;
+            case Train:
+                return randomElementPrize * 0.3;
+            case Plane:
+                return randomElementPrize * 0.8;
+            case Mix:
+                return randomElementPrize * 0.5;
+            default:
+                return randomElementPrize;
+        }
+    }
+
     // SETTER -----------------------------------------------------------------------
 
     public void setIntermediatStations(List<DataConnection> intermediatStations) {
@@ -219,6 +265,8 @@ public class DataConnection {
 
     public void setType(DataEnumTransport type) {
         this.type = type;
+        this.prize = this.calculateRandomPrizeDependingOnType(this.type);
+        this.calculateTransportProperties();
     }
 
     public void setCompany(String company) {
@@ -309,7 +357,11 @@ public class DataConnection {
     }
 
     public double getPrize() {
-        return prize;
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+        String formattedNumber = decimalFormat.format(prize);
+        double roundedNumber = Double.parseDouble(formattedNumber);
+        return roundedNumber;
     }
 
     public DataEnumTransport getType() {
@@ -333,6 +385,7 @@ public class DataConnection {
     }
 
     public boolean hasTransportProperty(DataEnumTransportProperties property){
+        Log.d("malte6", "hasTransportProperty(): this.transportProperties(): " + this.transportProperties.toString() + " with analyzer: " + property + ", result = " +this.transportProperties.contains(property));
         return this.transportProperties.contains(property);
     }
 

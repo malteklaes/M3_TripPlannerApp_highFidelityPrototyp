@@ -46,9 +46,9 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
         DataConnection data = this.connectionList.get(position);
         String prize = this.connectionList.get(position).getPrize()+"";
         String type = this.connectionList.get(position).getType()+"";
-        holder.tvDirection.setText(this.connectionList.get(position).getStartCity() + "→" + this.connectionList.get(position).getDestinationCity());
+        holder.tvDirection.setText("from: " + this.connectionList.get(position).getStartCity() + " " + this.connectionList.get(position).getStartLocation() + "\nto: " + this.connectionList.get(position).getDestinationCity() + " " + this.connectionList.get(position).getDestinationLocation());
         holder.tvPrize.setText(prize + " €");
-        holder.tvStartTime.setText("at: " + this.connectionList.get(position).getStartTime().toString() + ", on: " + this.connectionList.get(position).getStartDate().toString());
+        holder.tvStartTime.setText("at: " + this.connectionList.get(position).getStartTime().toString() + ",\non: " + this.connectionList.get(position).getStartDate().toString());
         holder.tvType.setText(type);
 
         // make each row element clickable

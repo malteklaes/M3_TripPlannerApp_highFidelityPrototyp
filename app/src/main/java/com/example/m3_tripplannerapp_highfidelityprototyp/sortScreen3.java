@@ -128,15 +128,19 @@ public class sortScreen3 extends AppCompatActivity {
                 dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+                dataBaseMockUp.addAnotherDay("vienna", "westbahnhof", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
                 dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+                /*dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
                 dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Plane);
+                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Ship);
+                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Mix);*/
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "frankfurt", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train);
                 Log.d("malte", "Ergebnis database size: " + dataBaseMockUp.getDataBaseMockUp().size());
 
                 // [3] filter database
-                filteredDataConnection1 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(0).getStartDate(), incomingData.get(0).getStartTime(), incomingData.get(0).getStartCity(), incomingData.get(0).getStartLocation());
-                filteredDataConnection2 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(1).getStartDate(), incomingData.get(1).getStartTime(), incomingData.get(1).getStartCity(), incomingData.get(1).getStartLocation());
+                filteredDataConnection1 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(0).getStartDate(), incomingData.get(0).getStartTime(), incomingData.get(0).getStartCity(), incomingData.get(0).getDestinationCity());
+                filteredDataConnection2 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(1).getStartDate(), incomingData.get(1).getStartTime(), incomingData.get(1).getStartCity(), incomingData.get(1).getDestinationCity());
 
                 // [4] show result
                 String loggerResult = "Result { ";
