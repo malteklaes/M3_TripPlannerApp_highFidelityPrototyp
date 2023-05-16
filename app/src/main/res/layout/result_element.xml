@@ -99,4 +99,17 @@
         app:layout_constraintStart_toEndOf="@+id/tripStops"
         app:layout_constraintTop_toBottomOf="@+id/tripPriceAndEmissions" />
 
+    <Button
+        android:id="@+id/button_home"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:text="Home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="412dp"
+        tools:ignore="MissingConstraints" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,8 @@ public class resultScreen4 extends AppCompatActivity {
         setContentView(R.layout.activity_result_screen4);
 
         createRecyclerView();
+
+        setupButtonListeners(); //Buttons Listener Method
     }
 
     public void createRecyclerView(){
@@ -50,5 +54,15 @@ public class resultScreen4 extends AppCompatActivity {
 
         adapter=new ResultAdapter(inputDataConnections,context);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setupButtonListeners(){
+        Button HomeButton = findViewById(R.id.button_home);
+        HomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
