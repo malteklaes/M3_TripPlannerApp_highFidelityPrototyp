@@ -49,6 +49,7 @@ public class sortScreen3 extends AppCompatActivity {
         // incoming data
         incomingData.add(new DataConnection("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), new DataTime(42,12)));
         incomingData.add(new DataConnection("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), new DataTime(42,18)));
+        //incomingData.add(new DataConnection("", "","","")); // if there is no return ticket
 
         // [0] general set up
         super.onCreate(savedInstanceState);
