@@ -20,9 +20,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     public void addFragment(Fragment fragment, String title) {
-        Log.d("malte3", "diese Liste null: " + (fragments == null));
-        Log.d("malte3", "diese Liste fragments.size(): " + fragments.size());
-        Log.d("malte3", "methode param fragment: " + fragment);
         fragments.add(fragment);
         fragmentTitles.add(title);
     }
@@ -30,7 +27,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        Log.d("malte2" , " im getItem(): position: " + position + " und was: " + fragments.get(position));
         return fragments.get(position);
     }
 

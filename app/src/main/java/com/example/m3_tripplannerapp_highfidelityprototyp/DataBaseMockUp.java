@@ -277,7 +277,19 @@ public class DataBaseMockUp {
         return result;
     }
 
-
+    // FILTER FUNCTIONS -----------------------------------------------------------------------
+    public List<DataConnection> filterByParameters(List<DataConnection> database, List<DataEnumTransportProperties> filterProperties, DataDate filterDate, DataTime filterTime, String filterCity, String filterLocation){
+        List<DataConnection> filteredResult = new ArrayList<>();
+        // [1] filter by property
+        filteredResult = this.retrieveDataByTransportProperties(database, filterProperties);
+        // [2] fitler by date
+        filteredResult = this.retrieveDataByStartDateEqual(filteredResult, filterDate);
+        // [3] fitler by time
+        filteredResult = this.retrieveDataByStartTimeLater(filteredResult, filterTime);
+        // [4] fitler by city and location
+        filteredResult = this.retrieveDataByStartCityAndLocation(filteredResult, filterCity, filterLocation);
+        return filteredResult;
+    }
 
 
     // HELP FUNCTIONS -----------------------------------------------------------------------

@@ -22,7 +22,8 @@ public class sortScreen3 extends AppCompatActivity {
     // mocked dataBase
     List<DataConnection> dataBaseMock = new ArrayList<>();
     DataBaseMockUp dataBaseMockUp = new DataBaseMockUp();
-    List<DataConnection> special = new ArrayList<>();
+    List<DataConnection> filteredDataConnection1 = new ArrayList<>();
+    List<DataConnection> filteredDataConnection2 = new ArrayList<>();
     List<DataEnumTransportProperties> properties = new ArrayList<>();
 
     List<DataConnection> incomingData = new ArrayList<>();
@@ -49,6 +50,19 @@ public class sortScreen3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_screen3);
 
+
+
+        // ------------------------------------------------------------------------------------------------------------------
+        // [1] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
+        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
+        dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+
+        Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
+
+        // ------------------------------------------------------------------------------------------------------------------
+        // [1] send initially data to tab1 and tab2
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.toReturnTabLayout);
 
@@ -59,26 +73,6 @@ public class sortScreen3 extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
         SortScreen3fragment1 neu = SortScreen3fragment1.newInstance("hallo");
-
-        // klappt nicht mehr
-        //adapterView.addFragment(neu, "To");
-        //adapterView.addFragment(SortScreen3fragment1.newInstance("hallo"), "To");
-        //adapterView.addFragment(SortScreen3fragment2.newInstance("hallo", "ulli"), "Return");
-        /*SortScreen3fragment1 fragment1 = new SortScreen3fragment1();
-        Log.d("malte1" , "ergebnis: " + fragment1.toString() + " und ists null: " + (fragment1==null)) ;
-        getSupportFragmentManager().beginTransaction().replace(R.id.containterScreen3Frag1, fragment1).commit();
-        Log.d("malte1" , "ergebnis2: " + fragment1.toString() + " und ists null: " + (fragment1==null)) ;*/
-
-
-        // ------------------------------------------------------------------------------------------------------------------
-        // [1] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
-        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
-        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
-        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
-
-        Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
-
-
 
         // ------------------------------------------------------------------------------------------------------------------
         // [2] set up drop down filter menu and interaction
@@ -99,16 +93,7 @@ public class sortScreen3 extends AppCompatActivity {
         // ------------------------------------------------------------------------------------------------------------------
         // [3] show data to the tablayouts
 
-        /*
-        => diese Stelle in externe Methode auslagern, weil sie sich mit dem DropDown-Menu ändern muss
-        an dieser Stelle 3 Daten weitergeben:
-        - filterResultProperty
-        - database
-        - dataConnection aus der incomingData (0 für hin und 1 für zurück)
-        => Daten filtern und dann als Ergebnis List<DataConnection> weiterschicken
 
-        [schließlich wird in jedem Fragment der tabLayout eigentlich gefiltert
-         */
     }
 
 
@@ -122,47 +107,56 @@ public class sortScreen3 extends AppCompatActivity {
                 selectedOption[0] = (String) options[position];
                 filterResult = selectedOption[0];
                 Log.d("malte", "Ergebnis filter drop down: " + selectedOption[0]);
-                // send data to tab1 "to"
-                SortScreen3fragment1 neuFrag1 = SortScreen3fragment1.newInstance(filterResult);
-                neuFrag1.setArgParam1(filterResult);
-                SortScreen3fragment2 neuFrag2 = SortScreen3fragment2.newInstance(filterResult);
-                neuFrag2.setArgParam1(filterResult+" for return");
-                Log.d("malte2", "neu2 Instanz" + neuFrag1.getArguments());
-                adapterView = new ViewPagerAdapter(getSupportFragmentManager());
-                adapterView.addFragment(neuFrag1, "To");
-                adapterView.addFragment(neuFrag2, "Return");
-                viewPager.setAdapter(adapterView);
-                // database related
+
+
+
+
+
+                // [1] database related
                 filterResultProperty = convertStringToTransportProperty(filterResult);
                 properties.clear();
                 properties.add(filterResultProperty);
-                // refill data base
+                // [2] refill data base
                 dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Plane);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "frankfurt", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train);
                 Log.d("malte", "Ergebnis database size: " + dataBaseMockUp.getDataBaseMockUp().size());
-                // filter database
-                special = dataBaseMockUp.retrieveDataByTransportProperties(dataBaseMockUp.getDataBaseMockUp(), properties);
-                Log.d("malte", "special details: "  + special.toString());
 
-                // actual filter due to incoming data
-                special = dataBaseMockUp.retrieveDataByStartDateEqual(special, incomingData.get(0).getStartDate());
-                special = dataBaseMockUp.retrieveDataByStartTimeLater(special, incomingData.get(0).getStartTime());
-                //special = dataBaseMockUp.retrieveDataByStartTimeLater(special, new DataTime(40,12));
-                special = dataBaseMockUp.retrieveDataByStartCityAndLocation(special, incomingData.get(0).getStartCity(), incomingData.get(0).getStartLocation());
+                // [3] filter database
+                filteredDataConnection1 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(0).getStartDate(), incomingData.get(0).getStartTime(), incomingData.get(0).getStartCity(), incomingData.get(0).getStartLocation());
+                filteredDataConnection2 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(1).getStartDate(), incomingData.get(1).getStartTime(), incomingData.get(1).getStartCity(), incomingData.get(1).getStartLocation());
 
+                // [4] show result
                 String loggerResult = "Result { ";
-                for (DataConnection c: special) {
+                for (DataConnection c: filteredDataConnection1) {
                     loggerResult += c.toStringShort();
                 }
                 loggerResult += " }";
                 Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + loggerResult);
-                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + special.size());
+                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + filteredDataConnection1.size());
+
+                String loggerResult2 = "Result2 { ";
+                for (DataConnection c: filteredDataConnection2) {
+                    loggerResult2 += c.toStringShort();
+                }
+                loggerResult2 += " }";
+                Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + loggerResult2);
+                Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + filteredDataConnection2.size());
 
 
-
+                // [5] send fresh data to tab1 and tab2
+                SortScreen3fragment1 neuFrag1 = SortScreen3fragment1.newInstance(filterResult);
+                neuFrag1.setArgParam(filteredDataConnection1);
+                SortScreen3fragment2 neuFrag2 = SortScreen3fragment2.newInstance(filterResult);
+                neuFrag2.setArgParam(filteredDataConnection2);
+                adapterView = new ViewPagerAdapter(getSupportFragmentManager());
+                adapterView.addFragment(neuFrag1, "To");
+                adapterView.addFragment(neuFrag2, "Return");
+                viewPager.setAdapter(adapterView);
 
             }
 
