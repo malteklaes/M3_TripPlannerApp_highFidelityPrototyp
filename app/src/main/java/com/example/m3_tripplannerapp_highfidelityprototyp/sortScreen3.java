@@ -1,6 +1,7 @@
 package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,11 @@ public class sortScreen3 extends AppCompatActivity {
     final String[] selectedOption = {""};
     String[] options = {"eco-friendly", "fast", "reliable", "comfortable", "cheap", "few stops", "nothing"};
 
+    // tablayout
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ViewPagerAdapter adapterView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // incoming data
@@ -38,6 +47,27 @@ public class sortScreen3 extends AppCompatActivity {
         // [0] general set up
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_screen3);
+
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.toReturnTabLayout);
+
+        adapterView = new ViewPagerAdapter(getSupportFragmentManager());
+        adapterView.addFragment(new SortScreen3fragment1(), "To");
+        adapterView.addFragment(new SortScreen3fragment2(), "Return");
+        viewPager.setAdapter(adapterView);
+
+        tabLayout.setupWithViewPager(viewPager);
+        SortScreen3fragment1 neu = SortScreen3fragment1.newInstance("hallo");
+
+        // klappt nicht mehr
+        //adapterView.addFragment(neu, "To");
+        //adapterView.addFragment(SortScreen3fragment1.newInstance("hallo"), "To");
+        //adapterView.addFragment(SortScreen3fragment2.newInstance("hallo", "ulli"), "Return");
+        /*SortScreen3fragment1 fragment1 = new SortScreen3fragment1();
+        Log.d("malte1" , "ergebnis: " + fragment1.toString() + " und ists null: " + (fragment1==null)) ;
+        getSupportFragmentManager().beginTransaction().replace(R.id.containterScreen3Frag1, fragment1).commit();
+        Log.d("malte1" , "ergebnis2: " + fragment1.toString() + " und ists null: " + (fragment1==null)) ;*/
+
 
         // ------------------------------------------------------------------------------------------------------------------
         // [1] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
@@ -91,6 +121,16 @@ public class sortScreen3 extends AppCompatActivity {
                 selectedOption[0] = (String) options[position];
                 filterResult = selectedOption[0];
                 Log.d("malte", "Ergebnis filter drop down: " + selectedOption[0]);
+                // send data to tab1 "to"
+                SortScreen3fragment1 neuFrag1 = SortScreen3fragment1.newInstance(filterResult);
+                neuFrag1.setArgParam1(filterResult);
+                SortScreen3fragment2 neuFrag2 = SortScreen3fragment2.newInstance(filterResult);
+                neuFrag2.setArgParam1(filterResult+" for return");
+                Log.d("malte2", "neu2 Instanz" + neuFrag1.getArguments());
+                adapterView = new ViewPagerAdapter(getSupportFragmentManager());
+                adapterView.addFragment(neuFrag1, "To");
+                adapterView.addFragment(neuFrag2, "Return");
+                viewPager.setAdapter(adapterView);
                 // database related
                 filterResultProperty = convertStringToTransportProperty(filterResult);
                 properties.clear();
