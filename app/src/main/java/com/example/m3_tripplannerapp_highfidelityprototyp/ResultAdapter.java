@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -41,6 +43,12 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         viewHolder.tripDuration.setText(printTripDuration(inputDataConnections.get(position)));
         viewHolder.tripPriceAndEmissions.setText(printTripPriceAndEmissions(inputDataConnections.get(position)));
         viewHolder.tripStops.setText(printTripStops(inputDataConnections.get(position)));
+
+        LinearLayoutManager layoutManager=new LinearLayoutManager(context);
+        viewHolder.stopsRecyclerView.setLayoutManager(layoutManager);
+
+        StopAdapter adapter=new StopAdapter(inputDataConnections.get(position).getIntermediatStations(),context);
+        viewHolder.stopsRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -57,6 +65,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         private TextView tripPriceAndEmissions;
         private TextView tripStops;
         private ImageButton bookmarkButton;
+        private RecyclerView stopsRecyclerView;
 
 
         public ViewHolder(View view) {
@@ -69,6 +78,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             tripPriceAndEmissions = (TextView) view.findViewById(R.id.tripPriceAndEmissions);
             tripStops = (TextView) view.findViewById(R.id.tripStops);
             bookmarkButton=(ImageButton) view.findViewById(R.id.bookmarkButton);
+            stopsRecyclerView=(RecyclerView) view.findViewById(R.id.stopsRecyclerView);
 
             bookmarkButton.setOnClickListener(new View.OnClickListener() {
                 @Override

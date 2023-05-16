@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 
@@ -93,7 +94,7 @@ public class sortScreen3 extends AppCompatActivity {
         List<DataEnumTransportProperties> properties = new ArrayList<>();
         properties.add(DataEnumTransportProperties.Nothing);
 
-
+        setupButtonListeners(); //Buttons Listener Method
 
         // ------------------------------------------------------------------------------------------------------------------
         // [3] show data to the tablayouts
@@ -192,5 +193,23 @@ public class sortScreen3 extends AppCompatActivity {
         }
     }
 
+    private void setupButtonListeners(){
+        Button HomeButton = findViewById(R.id.button_home);
+        Button LetsGo = findViewById(R.id.button_letsgo);
+        HomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        LetsGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
 
 }
