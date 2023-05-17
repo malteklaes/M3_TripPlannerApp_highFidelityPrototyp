@@ -39,19 +39,21 @@
         android:id="@+id/sort_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sort"
         android:layout_alignTop="@id/search_badge"
+        android:layout_marginEnd="1dp"
         android:layout_toStartOf="@id/search_badge"
-        android:layout_marginEnd="1dp" />
+        android:backgroundTint="#C4BBDF"
+        android:text="Sort" />
 
     <Button
         android:id="@+id/result_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Result"
         android:layout_alignTop="@id/search_badge"
+        android:layout_marginStart="1dp"
         android:layout_toEndOf="@id/search_badge"
-        android:layout_marginStart="1dp" />
+        android:backgroundTint="#C4BBDF"
+        android:text="Result" />
 
     <Spinner
         android:id="@+id/filterSpinner"

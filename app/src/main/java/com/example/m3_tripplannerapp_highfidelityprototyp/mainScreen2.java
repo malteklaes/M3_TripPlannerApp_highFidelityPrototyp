@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -79,7 +80,7 @@ public class mainScreen2 extends AppCompatActivity {
         oneWay.setChecked(true);
 
         date1 = findViewById(R.id.editTextDate1); //initializing date1 with EditText editTextDate1
-        date2 = findViewById(R.id.editTextDate2); //initializing date1 with EditText editTextDate2
+        date2 = findViewById(R.id.editTextDate2); //initializing date2 with EditText editTextDate2
         date2.setVisibility(View.INVISIBLE);   //sets date2 invisible
 
         date1.setOnClickListener(new View.OnClickListener() {  //managing onClick from date1 to diplay Calendar and output selected date on date1
@@ -211,25 +212,75 @@ public class mainScreen2 extends AppCompatActivity {
     }
 
 
+    //Initiating the search - sending retrieved data
+    private void performSearch(){
+        //getting data
+        String startCity = editStart.getText().toString();
+        String destinationCity = editDestination.getText().toString();
+        String startDate = date1.getText().toString();
+        String startTime = time1.getText().toString();
+        String returnDate = date2.getText().toString();
+        String returnTime = time2.getText().toString();
+        boolean isOneWay = oneWay.isChecked();
+
+        //passing operation
+        Intent intent = new Intent(mainScreen2.this, sortScreen3.class);
+        intent.putExtra("startCity", startCity);
+        intent.putExtra("destinationCity", destinationCity);
+        intent.putExtra("startDate", startDate);
+        intent.putExtra("startTime", startTime);
+        intent.putExtra("returnDate", returnDate);
+        intent.putExtra("returnTime", returnTime);
+        intent.putExtra("isOneWay", isOneWay);
+
+        startActivity(intent);
+    }
 
     //Managing buttons
     // @Override
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
         Button SearchButton = findViewById(R.id.button_search);
+        Button SwitchButton = findViewById(R.id.switch_CityInputs_button);
+        Button SortBadge = findViewById(R.id.sort_badge);
+        Button ResultBadge = findViewById(R.id.result_badge);
 
         HomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(mainScreen2.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
         SearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                performSearch();
             }
         });
+
+        SwitchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch_CityInputs(v);
+            }
+        });
+
+        SortBadge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mainScreen2.this, sortScreen3.class);
+                startActivity(intent);
+            }
+        });
+        ResultBadge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mainScreen2.this, resultScreen4.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

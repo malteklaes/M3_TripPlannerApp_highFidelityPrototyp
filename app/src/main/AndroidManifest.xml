@@ -30,6 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".bookmarksScreen5"
+            android:label="Bookmarks Screen 5">
+        </activity>
     </application>
 
 </manifest>

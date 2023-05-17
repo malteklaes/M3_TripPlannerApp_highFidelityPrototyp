@@ -3,6 +3,7 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,16 @@ public class sortScreen3 extends AppCompatActivity {
 
     private static List<DataConnection> dtoResultTo = new ArrayList<>();
     private static List<DataConnection> dtoResultReturn = new ArrayList<>();
+
+    //User input data retrieval
+    String startCity;
+    String destinationCity;
+    String startDate;
+    String startTime;
+    String returnDate;
+    String returnTime;
+    boolean isOneWay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // incoming data
@@ -103,6 +114,24 @@ public class sortScreen3 extends AppCompatActivity {
         /*
         hier dtoResultTo und dtoResultReturn (bei dem vorher noch testen, ob überhaupt return gewählt) abgreifen
          */
+
+        //retrieving data inputs from search fields
+        Intent intent = getIntent();
+        startCity = intent.getStringExtra("startCity");
+        destinationCity = intent.getStringExtra("destinationCity");
+        startDate = intent.getStringExtra("startDate");
+        startTime = intent.getStringExtra("startTime");
+        returnDate = intent.getStringExtra("returnDate");
+        returnTime = intent.getStringExtra("returnTime");
+        isOneWay = intent.getBooleanExtra("isOneWay", false);
+
+        //getting chosen trip
+        String selectedTrip;
+        Intent intent2 = getIntent();
+        DataConnection selectedToTrip = (DataConnection) intent2.getSerializableExtra("selectedToTrip");
+        if (intent2.hasExtra("selectedReturnTrip")) {
+            DataConnection selectedReturnTrip = (DataConnection) intent2.getSerializableExtra("selectedReturnTrip");
+        }
     }
 
 
@@ -219,17 +248,42 @@ public class sortScreen3 extends AppCompatActivity {
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
         Button LetsGo = findViewById(R.id.button_letsgo);
+        Button SearchBadge = findViewById(R.id.search_badge);
+        Button ResultBadge = findViewById(R.id.result_badge);
+
         HomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(sortScreen3.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
         LetsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
+                intent.putExtra("selectedToTrip", resultFrag1Data);
+                if(!isOneWay){
+                    intent.putExtra("selectedReturnTrip", resultFrag2Data);
+                }
 
+                startActivity(intent);
+            }
+        });
+
+        SearchBadge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(sortScreen3.this, mainScreen2.class);
+                startActivity(intent);
+            }
+        });
+        ResultBadge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
+                startActivity(intent);
             }
         });
 

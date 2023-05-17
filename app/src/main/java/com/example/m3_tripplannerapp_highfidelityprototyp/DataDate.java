@@ -2,11 +2,13 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 /**
  * structures a date due to format: day-month-year
  * @author TripPlannerApp-Team
  */
-public class DataDate implements Comparable<DataDate> {
+public class DataDate implements Comparable<DataDate>, Serializable {
 
     private int day;
     private int month;

@@ -2,13 +2,14 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * structures a date due to format: hour(s):minute(s)
  * @author TripPlannerApp-Team
  */
-public class DataTime implements Comparable<DataTime>{
+public class DataTime implements Comparable<DataTime>, Serializable {
 
     private int minute;
     private int hour;

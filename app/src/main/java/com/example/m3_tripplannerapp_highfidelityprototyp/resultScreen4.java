@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,12 @@ public class resultScreen4 extends AppCompatActivity {
         createRecyclerView();
 
         setupButtonListeners(); //Buttons Listener Method
+
+        //retrieving chosen trip
+        Intent intent = getIntent();
+
+        DataConnection resultTo = (DataConnection) intent.getSerializableExtra("selectedToTrip");
+        DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("selectedReturnTrip");
     }
 
     public void createRecyclerView(){
@@ -58,10 +65,29 @@ public class resultScreen4 extends AppCompatActivity {
 
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
+        Button SearchBadge = findViewById(R.id.search_badge);
+        Button SortBadge = findViewById(R.id.result_badge);
+
         HomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(resultScreen4.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        SearchBadge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(resultScreen4.this, mainScreen2.class);
+                startActivity(intent);
+            }
+        });
+        SortBadge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(resultScreen4.this, sortScreen3.class);
+                startActivity(intent);
             }
         });
     }

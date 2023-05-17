@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Random;
  * main data communication class
  * @author TripPlannerApp-Team
  */
-public class DataConnection {
+public class DataConnection implements Serializable {
 
     // essential data
     private String startCity;
