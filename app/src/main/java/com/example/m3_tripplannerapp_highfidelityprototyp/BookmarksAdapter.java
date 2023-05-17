@@ -7,55 +7,52 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder> {
+public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.ViewHolder>{
 
-    List<DataConnection> inputDataConnections;
+    List<DataConnection> bookmarks;
     Context context;
-    List<DataConnection> savedTrips=new ArrayList<>();
 
-    public ResultAdapter(List<DataConnection> inputDataConnections, Context context) {
-        this.inputDataConnections = inputDataConnections;
+    public BookmarksAdapter(List<DataConnection> inputDataConnections, Context context) {
+        this.bookmarks = inputDataConnections;
         this.context = context;
     }
 
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public BookmarksAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.result_element, viewGroup, false);
 
-        return new ViewHolder(view);
+        return new BookmarksAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.trip.setText(printTrip(inputDataConnections.get(position)));
-        viewHolder.tripDate.setText(printTripDate(inputDataConnections.get(position)));
-        viewHolder.tripTime.setText(printTripTime(inputDataConnections.get(position)));
-        viewHolder.tripDuration.setText(printTripDuration(inputDataConnections.get(position)));
-        viewHolder.tripPriceAndEmissions.setText(printTripPriceAndEmissions(inputDataConnections.get(position)));
-        viewHolder.tripStops.setText(printTripStops(inputDataConnections.get(position)));
+    public void onBindViewHolder(BookmarksAdapter.ViewHolder viewHolder, final int position) {
+        viewHolder.trip.setText(printTrip(bookmarks.get(position)));
+        viewHolder.tripDate.setText(printTripDate(bookmarks.get(position)));
+        viewHolder.tripTime.setText(printTripTime(bookmarks.get(position)));
+        viewHolder.tripDuration.setText(printTripDuration(bookmarks.get(position)));
+        viewHolder.tripPriceAndEmissions.setText(printTripPriceAndEmissions(bookmarks.get(position)));
+        viewHolder.tripStops.setText(printTripStops(bookmarks.get(position)));
+        viewHolder.bookmarkButton.setSelected(true);
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(context);
         viewHolder.stopsRecyclerView.setLayoutManager(layoutManager);
 
-        StopAdapter adapter=new StopAdapter(inputDataConnections.get(position).getIntermediatStations(),context);
+        StopAdapter adapter=new StopAdapter(bookmarks.get(position).getIntermediatStations(),context);
         viewHolder.stopsRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public int getItemCount() {
-        return inputDataConnections.size();
+        return bookmarks.size();
     }
 
 
@@ -85,35 +82,24 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             bookmarkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    AlertDialog.Builder confirmationAlert=new AlertDialog.Builder(context);
+                    confirmationAlert.setTitle("Warning");
+                    confirmationAlert.setMessage("Are you sure that you want to remove the bookmark?");
 
-                    if(!savedTrips.contains(inputDataConnections.get(getAdapterPosition()))) {
-                        savedTrips.add(inputDataConnections.get(getAdapterPosition()));
-                        bookmarkButton.setSelected(true);
-                        //System.out.println(savedTrips.size());
-                        bookmarksScreen5.addBookmark(inputDataConnections.get(getAdapterPosition()));
-                    }
-                    else{
-                        AlertDialog.Builder confirmationAlert=new AlertDialog.Builder(context);
-                        confirmationAlert.setTitle("Warning");
-                        confirmationAlert.setMessage("Are you sure that you want to remove the bookmark?");
+                    confirmationAlert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ((bookmarksScreen5) context).removeBookmark(bookmarks.get(getAdapterPosition()));
+                            ((bookmarksScreen5) context).createRecyclerView();
+                        }
+                    });
+                    confirmationAlert.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
 
-                        confirmationAlert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                savedTrips.remove(inputDataConnections.get(getAdapterPosition()));
-                                bookmarkButton.setSelected(false);
-                                //System.out.println(savedTrips.size());
-                                bookmarksScreen5.removeBookmark(inputDataConnections.get(getAdapterPosition()));
-                            }
-                        });
-                        confirmationAlert.setNegativeButton("no", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        });
-
-                        confirmationAlert.create().show();
-                    }
+                    confirmationAlert.create().show();
                 }
             });
         }

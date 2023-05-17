@@ -32,7 +32,8 @@
         </activity>
         <activity
             android:name=".bookmarksScreen5"
-            android:label="Bookmarks Screen 5">
+            android:label="Bookmarks Screen 5"
+            android:exported="true">
         </activity>
     </application>
 

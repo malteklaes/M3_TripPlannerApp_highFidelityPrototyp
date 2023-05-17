@@ -23,7 +23,6 @@ public class resultScreen4 extends AppCompatActivity {
 
     private Context context=this;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DataConnection mockedResult1=new DataConnection("Vienna","Hbf","München","Hbf",new DataDate(20,4,2004),new DataTime(14,13));
@@ -50,6 +49,11 @@ public class resultScreen4 extends AppCompatActivity {
 
         DataConnection resultTo = (DataConnection) intent.getSerializableExtra("selectedToTrip");
         DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("selectedReturnTrip");
+
+        if(resultTo!=null)
+            inputDataConnections.add(resultTo);
+        if(resultReturn!=null)
+            inputDataConnections.add(resultReturn);
     }
 
     public void createRecyclerView(){
