@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
-    private List<DataConnection> stops;
+    private List<DataConnection> stops;  //all stops of the trip
     Context context;
 
     public StopAdapter(List<DataConnection> stops, Context context) {
@@ -24,7 +24,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
     @Override
     public StopAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.stop_element, viewGroup, false);
+                .inflate(R.layout.stop_element, viewGroup, false);  // elements of recyclerView are in style of stop_element
 
         return new StopAdapter.ViewHolder(view);
     }

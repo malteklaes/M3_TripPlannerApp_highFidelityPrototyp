@@ -28,21 +28,23 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     @Override
     public BookmarksAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.result_element, viewGroup, false);
+                .inflate(R.layout.result_element, viewGroup, false);  // elements of recyclerView are in style of result_element
 
         return new BookmarksAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(BookmarksAdapter.ViewHolder viewHolder, final int position) {
+        //setting data of recyclerView element
         viewHolder.trip.setText(printTrip(bookmarks.get(position)));
         viewHolder.tripDate.setText(printTripDate(bookmarks.get(position)));
         viewHolder.tripTime.setText(printTripTime(bookmarks.get(position)));
         viewHolder.tripDuration.setText(printTripDuration(bookmarks.get(position)));
         viewHolder.tripPriceAndEmissions.setText(printTripPriceAndEmissions(bookmarks.get(position)));
         viewHolder.tripStops.setText(printTripStops(bookmarks.get(position)));
-        viewHolder.bookmarkButton.setSelected(true);
+        viewHolder.bookmarkButton.setSelected(true);  //in bookmarkView the bookmark-star is always filled with color
 
+        //creating recyclerView for stops of the trip element (nested recyclerView)
         LinearLayoutManager layoutManager=new LinearLayoutManager(context);
         viewHolder.stopsRecyclerView.setLayoutManager(layoutManager);
 
@@ -82,6 +84,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
             bookmarkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //if the user wants to "unbookmark" a trip he needs to confirm it
                     AlertDialog.Builder confirmationAlert=new AlertDialog.Builder(context);
                     confirmationAlert.setTitle("Warning");
                     confirmationAlert.setMessage("Are you sure that you want to remove the bookmark?");
@@ -89,8 +92,9 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
                     confirmationAlert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            // if the user confirms the chosen bookmark is removed from the view
                             ((bookmarksScreen5) context).removeBookmark(bookmarks.get(getAdapterPosition()));
-                            ((bookmarksScreen5) context).createRecyclerView();
+                            ((bookmarksScreen5) context).createRecyclerView();  //to update the recyclerView it is created again
                         }
                     });
                     confirmationAlert.setNegativeButton("no", new DialogInterface.OnClickListener() {

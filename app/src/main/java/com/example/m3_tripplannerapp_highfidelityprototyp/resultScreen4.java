@@ -15,9 +15,9 @@ import java.util.List;
 
 public class resultScreen4 extends AppCompatActivity {
 
-    private List<DataConnection> inputDataConnections=new ArrayList<DataConnection>();
+    private List<DataConnection> inputDataConnections=new ArrayList<DataConnection>(); //data received from sortScreen3
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView;   //recyclerview for input data
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -50,6 +50,7 @@ public class resultScreen4 extends AppCompatActivity {
         DataConnection resultTo = (DataConnection) intent.getSerializableExtra("selectedToTrip");
         DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("selectedReturnTrip");
 
+        //if DataConnections are set, they are added to the received data list
         if(resultTo!=null)
             inputDataConnections.add(resultTo);
         if(resultReturn!=null)

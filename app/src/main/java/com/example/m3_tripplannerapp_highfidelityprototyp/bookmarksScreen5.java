@@ -15,9 +15,9 @@ import java.util.List;
 
 public class bookmarksScreen5 extends AppCompatActivity {
 
-    private static List<DataConnection> bookmarks=new ArrayList<DataConnection>();
+    private static List<DataConnection> bookmarks=new ArrayList<DataConnection>();  //all trips the user saved
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView;   //recyclerview for input data
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
