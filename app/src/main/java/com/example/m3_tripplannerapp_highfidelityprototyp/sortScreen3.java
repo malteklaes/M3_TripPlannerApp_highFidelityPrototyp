@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -282,6 +283,7 @@ public class sortScreen3 extends AppCompatActivity {
         ResultBadge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(sortScreen3.this, "Nothing chosen, showing only suggested trips", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
                 startActivity(intent);
             }

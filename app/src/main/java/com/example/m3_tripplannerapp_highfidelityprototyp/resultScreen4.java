@@ -70,7 +70,7 @@ public class resultScreen4 extends AppCompatActivity {
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
         Button SearchBadge = findViewById(R.id.search_badge);
-        Button SortBadge = findViewById(R.id.result_badge);
+        Button SortBadge = findViewById(R.id.sort_badge);
 
         HomeButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,6 +17,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.google.android.material.chip.Chip;
@@ -270,6 +271,7 @@ public class mainScreen2 extends AppCompatActivity {
         SortBadge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(mainScreen2.this, "Showing only suggested trips", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mainScreen2.this, sortScreen3.class);
                 startActivity(intent);
             }
@@ -277,6 +279,7 @@ public class mainScreen2 extends AppCompatActivity {
         ResultBadge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(mainScreen2.this, "Nothing chosen, showing only suggested trips", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mainScreen2.this, resultScreen4.class);
                 startActivity(intent);
             }
