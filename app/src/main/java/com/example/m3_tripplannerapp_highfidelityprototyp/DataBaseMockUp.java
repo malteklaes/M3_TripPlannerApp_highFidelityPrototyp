@@ -33,11 +33,11 @@ public class DataBaseMockUp {
      * @param destinationCity
      * @param destinationLocation
      */
-    public DataBaseMockUp(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType) {
+    public DataBaseMockUp(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, boolean isReturn) {
         this.dataBaseMockUp = new ArrayList<>();
         double randomPrize = this.calculateRandomPrizeDependingOnType(transportType); // in euro
         String company = "randomTransportCompany";
-        this.addAnotherDay(startCity, startLocation, destinationCity, destinationLocation, startDate, transportType, company, randomPrize);
+        this.addAnotherDay(startCity, startLocation, destinationCity, destinationLocation, startDate, transportType, company, randomPrize, isReturn);
     }
 
 
@@ -56,11 +56,11 @@ public class DataBaseMockUp {
      * @param startDate
      * @param transportType
      */
-    public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType){
+    public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, boolean isReturn){
         Random random = new Random();
         int randomMinute = random.nextInt(60);
         for (int i = 0; i < 24; i++) {
-            DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i));
+            DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i), isReturn);
             connection.setType(transportType);
             dataBaseMockUp.add(connection);
 
@@ -79,11 +79,11 @@ public class DataBaseMockUp {
      * @param company
      * @param prize
      */
-    public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, String company, double prize){
+    public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, String company, double prize, boolean isReturn){
         Random random = new Random();
         int randomMinute = random.nextInt(60);
         for (int i = 0; i < 24; i++) {
-            DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i));
+            DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i), isReturn);
             connection.setType(transportType);
             connection.setPrize(prize);
             connection.setCompany(company);
@@ -102,12 +102,12 @@ public class DataBaseMockUp {
      * @param transportType
      * @param prize
      */
-    public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, double prize){
+    public void addAnotherDay(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataEnumTransport transportType, double prize, boolean isReturn){
         Random random = new Random();
         int randomMinute = random.nextInt(60);
 
         for (int i = 0; i < 24; i++) {
-            DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i));
+            DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i), isReturn);
             connection.setType(transportType);
             connection.setPrize(prize);
             dataBaseMockUp.add(connection);
@@ -132,19 +132,19 @@ public class DataBaseMockUp {
 
         Random randomTransport1 = new Random();
         int index1 = randomTransport1.nextInt(transports.length);
-        this.addAnotherDay("vienna", "hbf", "frankfurt", "hbf", this.calculateRandomDate(), transports[index1]);
+        this.addAnotherDay("vienna", "hbf", "frankfurt", "hbf", this.calculateRandomDate(), transports[index1], false);
 
         Random randomTransport2 = new Random();
         int index2 = randomTransport2.nextInt(transports.length);
-        this.addAnotherDay("frankfurt", "hbf", "vienna", "hbf", this.calculateRandomDate(), transports[index2]);
+        this.addAnotherDay("frankfurt", "hbf", "vienna", "hbf", this.calculateRandomDate(), transports[index2], true);
 
         Random randomTransport3 = new Random();
         int index3 = randomTransport3.nextInt(transports.length);
-        this.addAnotherDay("vienna", "hbf", "paris", "Gare du Nord", this.calculateRandomDate(), transports[index3]);
+        this.addAnotherDay("vienna", "hbf", "paris", "Gare du Nord", this.calculateRandomDate(), transports[index3], false);
 
         Random randomTransport4 = new Random();
         int index4 = randomTransport4.nextInt(transports.length);
-        this.addAnotherDay("paris", "Gare du Nord", "vienna", "hbf", this.calculateRandomDate(), transports[index4]);
+        this.addAnotherDay("paris", "Gare du Nord", "vienna", "hbf", this.calculateRandomDate(), transports[index4], true);
 
     }
 

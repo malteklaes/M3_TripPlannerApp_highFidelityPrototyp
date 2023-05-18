@@ -67,7 +67,7 @@ public class SortScreen3fragment1 extends Fragment {
             SortScreen3RecylerViewAdapter adapter = new SortScreen3RecylerViewAdapter(getActivity(), DATA_CONNECTION);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            ((sortScreen3) getActivity()).setResultFrag1Data(new DataConnection("", "", "", ""));
+            ((sortScreen3) getActivity()).setResultFrag1Data(new DataConnection("", "", "", "", false));
         } else {
             shownText = v.findViewById(R.id.screen3frag1textView);
             shownText.setText("nothing found!");

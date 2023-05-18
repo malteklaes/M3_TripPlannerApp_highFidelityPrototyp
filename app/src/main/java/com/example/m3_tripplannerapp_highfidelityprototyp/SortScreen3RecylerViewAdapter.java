@@ -57,7 +57,7 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
             @Override
             public void onClick(View view) {
                 // data will be processed, when row item will be clicked
-                handleRowItemClick(data, position);
+                handleRowItemClick(data);
                 // for changing color of row item when clicked on it
                 chosenRowItem = position;
                 notifyDataSetChanged();
@@ -77,11 +77,13 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
 
     }
 
-    private void handleRowItemClick(DataConnection data, int position) {
+    private void handleRowItemClick(DataConnection data) {
         // execute action, when row element was clicked
-        if(position == 0){
+        if(!data.isReturn()){
+            Log.d("transaction4" , "1 data.isReturn(): " + data.isReturn());
             ((sortScreen3) context).setResultFrag1Data(data);
         } else {
+            Log.d("transaction4" , "2 data.isReturn(): " + data.isReturn());
             ((sortScreen3) context).setResultFrag2Data(data);
         }
     }

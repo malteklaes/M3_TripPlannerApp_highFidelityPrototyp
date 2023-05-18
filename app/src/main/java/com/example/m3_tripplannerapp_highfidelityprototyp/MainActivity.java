@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DataConnection dataConnection = new DataConnection("Vienna", "Hbf", "Köln", "Hbf");
+        DataConnection dataConnection = new DataConnection("Vienna", "Hbf", "Köln", "Hbf", false);
 
         Log.d("logger", "Ergebnis: " + dataConnection.toString());
         Log.d("logger", "Test Martina");

@@ -36,14 +36,14 @@ public class sortScreen3 extends AppCompatActivity {
     String filterResult = "";
     DataEnumTransportProperties filterResultProperty = DataEnumTransportProperties.Nothing;
     final String[] selectedOption = {""};
-    String[] options = {"eco-friendly", "fast", "reliable", "comfortable", "cheap", "few stops", "nothing"};
+    String[] options = {"eco-friendly", "fast", "reliable", "comfortable", "cheap", "few stops"};
 
     // tablayout
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapterView;
-    private static DataConnection resultFrag1Data = new DataConnection("","","","");
-    private static DataConnection resultFrag2Data = new DataConnection("","","","");
+    private static DataConnection resultFrag1Data = new DataConnection("","","","", false);
+    private static DataConnection resultFrag2Data = new DataConnection("","","","", true);
 
     private static List<DataConnection> dtoResultTo = new ArrayList<>();
     private static List<DataConnection> dtoResultReturn = new ArrayList<>();
@@ -78,21 +78,21 @@ public class sortScreen3 extends AppCompatActivity {
         //getting chosen trip
         incomingData.clear();
         if(!isOneWay) {
-            incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime));
-            incomingData.add(new DataConnection(destinationCity, "", startCity, "", returnDate, returnTime));
+            incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime, false));
+            incomingData.add(new DataConnection(destinationCity, "", startCity, "", returnDate, returnTime, true));
         } else {
-            incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime));
-            incomingData.add(new DataConnection("", "", "", "", new DataDate(0,0,0), new DataTime(0,0)));
+            incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime, false));
+            incomingData.add(new DataConnection("", "", "", "", new DataDate(0,0,0), new DataTime(0,0), true));
         }
 
 
 
         // ------------------------------------------------------------------------------------------------------------------
         // [1] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
-        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
-        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car_Sharing);
-        dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train);
-        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
+        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train, false);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car_Sharing, false);
+        dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train, true);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus, false);
 
         Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
 
@@ -158,15 +158,15 @@ public class sortScreen3 extends AppCompatActivity {
                 properties.clear();
                 properties.add(filterResultProperty);
                 // [2] refill data base
-                dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car_Sharing);
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
-                dataBaseMockUp.addAnotherDay("vienna", "westbahnhof", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
-                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
-                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus);
+                dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train, false);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car_Sharing, false);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus, false);
+                dataBaseMockUp.addAnotherDay("vienna", "westbahnhof", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus, false);
+                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus, true);
+                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus, true);
 
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus);
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "frankfurt", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus, false);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "frankfurt", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train, false);
                 Log.d("malte", "Ergebnis database size: " + dataBaseMockUp.getDataBaseMockUp().size());
 
                 // [3] filter database
@@ -236,6 +236,8 @@ public class sortScreen3 extends AppCompatActivity {
         dtoResultTo.clear();
         dtoResultTo.add(this.resultFrag1Data);
         Log.d("transaction2", "AUFRUF (isOneWay) dtoResultTo: " + dtoResultTo.get(0) + " listenLänge: " + dtoResultTo.size());
+        Log.d("transaction2", "ÜBERSICHT dtoResultTo: " + dtoResultTo.size());
+        Log.d("transaction2", "ÜBERSICHT dtoResultReturn: " + dtoResultReturn.size());
     }
 
     public void setResultFrag2Data(DataConnection resultFrag2Data) {
@@ -243,6 +245,8 @@ public class sortScreen3 extends AppCompatActivity {
         dtoResultReturn.clear();
         dtoResultReturn.add(this.resultFrag2Data);
         Log.d("transaction2", "AUFRUF (isOneWay) dtoResultReturn: " + dtoResultReturn.get(0) + " listenLänge: " + dtoResultReturn.size());
+        Log.d("transaction2", "ÜBERSICHT dtoResultTo: " + dtoResultTo.size());
+        Log.d("transaction2", "ÜBERSICHT dtoResultReturn: " + dtoResultReturn.size());
     }
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
@@ -267,9 +271,12 @@ public class sortScreen3 extends AppCompatActivity {
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
                 if(isOneWay){
                     intent.putExtra("firstResult", dtoResultTo.get(0));
+                    Log.d("transaction2" , "isOneWay firstResult: " + dtoResultTo.get(0));
                 } else {
                     intent.putExtra("firstResult", dtoResultTo.get(0));
                     intent.putExtra("secondResult", dtoResultReturn.get(0));
+                    Log.d("transaction2" , "!isOneWay firstResult: " + dtoResultTo.get(0));
+                    Log.d("transaction2" , "!isOneWay secondResult: " + dtoResultReturn.get(0));
                 }
                 startActivity(intent);
             }

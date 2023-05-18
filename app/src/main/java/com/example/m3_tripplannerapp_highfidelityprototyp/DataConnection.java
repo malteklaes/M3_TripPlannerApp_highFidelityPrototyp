@@ -30,6 +30,8 @@ public class DataConnection implements Serializable {
     private DataDate returnDate;
     private DataTime returnTime;
 
+    private boolean isReturn;
+
     // has to be set additionally, not via constructor
     private List<DataConnection> intermediatStations; // all additional stopps between start and destination
 
@@ -46,7 +48,7 @@ public class DataConnection implements Serializable {
     private List<DataEnumTransportProperties> transportProperties;
 
 
-    public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation) {
+    public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation, boolean isReturn) {
         this.startCity = startCity;
         this.startLocation = startLocation;
         this.destinationCity = destinationCity;
@@ -58,9 +60,10 @@ public class DataConnection implements Serializable {
         this.companyLogo = 0;
         this.prize = this.calculateRandomPrizeDependingOnType(type);
         this.distance = 0.;
-        this.duration = new DataTime(0,0);
+        this.duration = this.calculateRandomDurationDependingOnType(type);
         this.transportProperties = new ArrayList<>();
         this.calculateTransportProperties();
+        this.isReturn = isReturn;
     }
 
     /**
@@ -72,7 +75,7 @@ public class DataConnection implements Serializable {
      * @param startDate
      * @param startTime
      */
-    public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataTime startTime) {
+    public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataTime startTime, boolean isReturn) {
         this.startCity = startCity;
         this.startLocation = startLocation;
         this.destinationCity = destinationCity;
@@ -86,9 +89,10 @@ public class DataConnection implements Serializable {
         this.companyLogo = 0;
         this.prize = this.calculateRandomPrizeDependingOnType(type);;
         this.distance = 0.;
-        this.duration = new DataTime(0,0);
+        this.duration = this.calculateRandomDurationDependingOnType(type);
         this.transportProperties = new ArrayList<>();
         this.calculateTransportProperties();
+        this.isReturn = isReturn;
     }
 
     /**
@@ -102,7 +106,7 @@ public class DataConnection implements Serializable {
      * @param returnDate
      * @param returnTime
      */
-    public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataTime startTime, DataDate returnDate, DataTime returnTime) {
+    public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate startDate, DataTime startTime, DataDate returnDate, DataTime returnTime, boolean isReturn) {
         this.startCity = startCity;
         this.startLocation = startLocation;
         this.destinationCity = destinationCity;
@@ -118,9 +122,10 @@ public class DataConnection implements Serializable {
         this.companyLogo = 0;
         this.prize = this.calculateRandomPrizeDependingOnType(type);;
         this.distance = 0.;
-        this.duration = new DataTime(0,0);
+        this.duration = this.calculateRandomDurationDependingOnType(type);
         this.transportProperties = new ArrayList<>();
         this.calculateTransportProperties();
+        this.isReturn = isReturn;
     }
 
     public DataConnection(DataConnection source){
@@ -141,6 +146,7 @@ public class DataConnection implements Serializable {
         this.distance = source.getDistance();
         this.duration = source.getDuration();
         this.transportProperties = source.getTransportProperties();
+        this.isReturn = source.isReturn();
     }
 
     // internal logic ---------------------------------------------------------------
@@ -237,6 +243,11 @@ public class DataConnection implements Serializable {
         }
     }
 
+    /**
+     * calculates a random prize depending on the transport type
+     * @param transportType
+     * @return
+     */
     private double calculateRandomPrizeDependingOnType(DataEnumTransport transportType){
         Random random = new Random();
         int randomElementPrize = random.nextInt(500) + 1;
@@ -258,6 +269,41 @@ public class DataConnection implements Serializable {
         }
     }
 
+    /**
+     * calculates a random duration depending on the transport type
+     * @param transportType
+     * @return
+     */
+    private DataTime calculateRandomDurationDependingOnType(DataEnumTransport transportType){
+        Random random = new Random();
+        Random random2 = new Random();
+        DataTime randomElementDuration = new DataTime(random.nextInt(58) + 1,random2.nextInt(23) + 1);
+        double fastFactor = 0.1;
+        switch (transportType){
+            case Car_Sharing:
+                fastFactor = 0.2;
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+            case Bus:
+                fastFactor = 0.9;
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+            case Ship:
+                fastFactor = 0.7;
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+            case Train:
+                fastFactor = 0.8;
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+            case Plane:
+                fastFactor = 0.1;
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+            case Mix:
+                fastFactor = 0.5;
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+            default:
+                fastFactor = 0.7;
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+        }
+    }
+
     // SETTER -----------------------------------------------------------------------
 
     public void setIntermediatStations(List<DataConnection> intermediatStations) {
@@ -267,6 +313,7 @@ public class DataConnection implements Serializable {
     public void setType(DataEnumTransport type) {
         this.type = type;
         this.prize = this.calculateRandomPrizeDependingOnType(this.type);
+        this.duration = this.calculateRandomDurationDependingOnType(this.type);
         this.calculateTransportProperties();
     }
 
@@ -383,6 +430,10 @@ public class DataConnection implements Serializable {
 
     public List<DataEnumTransportProperties> getTransportProperties() {
         return transportProperties;
+    }
+
+    public boolean isReturn() {
+        return isReturn;
     }
 
     public boolean hasTransportProperty(DataEnumTransportProperties property){
