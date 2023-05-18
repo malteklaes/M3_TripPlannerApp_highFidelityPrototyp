@@ -165,7 +165,7 @@ public class DataConnection implements Serializable {
     private double calculateCO2Bilance(){
         double fundamentalEmission = 0.1234; // kg CO2/km
         switch (this.type) {
-            case Car:
+            case Car_Sharing:
                 return fundamentalEmission * 4;
             case Bus:
                 return fundamentalEmission * 2;
@@ -202,7 +202,7 @@ public class DataConnection implements Serializable {
 
     private void calculateTransportProperties(){
         switch (this.type) {
-            case Car:
+            case Car_Sharing:
                 this.transportProperties.add(DataEnumTransportProperties.Fast);
                 this.transportProperties.add(DataEnumTransportProperties.Reliable);
                 this.transportProperties.add(DataEnumTransportProperties.Few_stops);
@@ -241,7 +241,7 @@ public class DataConnection implements Serializable {
         Random random = new Random();
         int randomElementPrize = random.nextInt(500) + 1;
         switch (transportType){
-            case Car:
+            case Car_Sharing:
                 return randomElementPrize * 0.4;
             case Bus:
                 return randomElementPrize * 0.2;

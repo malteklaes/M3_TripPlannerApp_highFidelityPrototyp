@@ -5,5 +5,5 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
  * @author TripPlannerApp-Team
  */
 public enum DataEnumTransport {
-    Car, Bus, Ship, Train, Plane, Mix, Nothing
+    Car_Sharing, Bus, Ship, Train, Plane, Mix, Nothing
 }

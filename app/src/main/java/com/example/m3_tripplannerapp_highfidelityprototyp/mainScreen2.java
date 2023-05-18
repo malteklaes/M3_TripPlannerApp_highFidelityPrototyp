@@ -7,8 +7,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -33,7 +36,7 @@ public class mainScreen2 extends AppCompatActivity {
     private DataConnection outwardConnection;
     private DataConnection inwardConnection;
 
-    private static final String[] Cities = new String[]{"Wien", "Prag", "Paris", "Berlin", "Rom", "Warschau", "Budapest"}; //String[] Cities that are in AutoCompleteTextview startCity_input and destinationCity_input
+    private static final String[] Cities = new String[]{"vienna", "innsbruck", "Prag", "Paris", "Berlin", "Rom", "Warschau", "Budapest"}; //String[] Cities that are in AutoCompleteTextview startCity_input and destinationCity_input
     private AutoCompleteTextView editStart;
     private AutoCompleteTextView editDestination;
     private String startCity;
@@ -50,10 +53,14 @@ public class mainScreen2 extends AppCompatActivity {
     private EditText time1;
     private EditText time2;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen2);
+
 
         editStart = findViewById(R.id.startCity_input); //initializing editStart with AutoCompleteTextView startCity_input
         editDestination = findViewById(R.id.destinationCity_input); //initializing editStart with AutoCompleteTextView destinationCity_input
@@ -98,11 +105,12 @@ public class mainScreen2 extends AppCompatActivity {
                                                      @Override
                                                      public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) { //setting date to Edittext
                                                          date1.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+                                                         startDate = new DataDate(dayOfMonth, month+1, year); //initializing startDate
                                                      }
                                                  },
                                                  year, month, day);  //recieved variables from calendar
 
-                                         startDate = new DataDate(day, month, year); //initializing startDate
+
 
                                          datePickerDialog.show(); //displaying DatePickerDialog
                                      }
@@ -124,11 +132,12 @@ public class mainScreen2 extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) { //setting date to Edittext
                                 date2.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+                                returnDate = new DataDate(dayOfMonth, month + 1, year);  //initializing returnDate
                             }
                         },
                         year, month, day);  //recieved variables from calendar
 
-                returnDate = new DataDate(day, month, year);  //initializing returnDate
+
 
                 datePickerDialog.show(); //displaying DatePickerDialog
             }
@@ -153,11 +162,12 @@ public class mainScreen2 extends AppCompatActivity {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 time1.setText(hourOfDay + " : " + minute);
+                                startTime = new DataTime(minute, hourOfDay);  //initializing startTime
                             }
                         },
                         hour, minute, true); //recieved variables from calendar and setting 24Hour Format
 
-                startTime = new DataTime(minute, hour);  //initializing startTime
+
 
                 timePickerDialog.show();
             }
@@ -176,11 +186,12 @@ public class mainScreen2 extends AppCompatActivity {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 time2.setText(hourOfDay + " : " + minute);
+                                returnTime = new DataTime(minute, hourOfDay);  //initializing returnTime
                             }
                         },
                         hour, minute, true);
 
-                returnTime = new DataTime(minute, hour);  //initializing returnTime
+
 
                 timePickerDialog.show();
             }
@@ -218,10 +229,12 @@ public class mainScreen2 extends AppCompatActivity {
         //getting data
         String startCity = editStart.getText().toString();
         String destinationCity = editDestination.getText().toString();
-        String startDate = date1.getText().toString();
-        String startTime = time1.getText().toString();
-        String returnDate = date2.getText().toString();
-        String returnTime = time2.getText().toString();
+        //String startDate = date1.getText().toString();
+        DataDate startDate = this.startDate;
+        Log.d("transaction", "startDate screen2:" + startDate);
+        DataTime startTime =  this.startTime; //  time1.getText().toString();
+        DataDate returnDate = this.returnDate; // date2.getText().toString();
+        DataTime returnTime = this.returnTime; // time2.getText().toString();
         boolean isOneWay = oneWay.isChecked();
 
         //passing operation
@@ -233,7 +246,7 @@ public class mainScreen2 extends AppCompatActivity {
         intent.putExtra("returnDate", returnDate);
         intent.putExtra("returnTime", returnTime);
         intent.putExtra("isOneWay", isOneWay);
-
+        Log.d("transaction" , " transaction1 intent: " + intent);
         startActivity(intent);
     }
 
@@ -245,6 +258,8 @@ public class mainScreen2 extends AppCompatActivity {
         Button SwitchButton = findViewById(R.id.switch_CityInputs_button);
         Button SortBadge = findViewById(R.id.sort_badge);
         Button ResultBadge = findViewById(R.id.result_badge);
+
+
 
         HomeButton.setOnClickListener(new View.OnClickListener() {
             @Override

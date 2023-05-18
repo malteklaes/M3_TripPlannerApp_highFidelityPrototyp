@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,29 +51,59 @@ public class sortScreen3 extends AppCompatActivity {
     //User input data retrieval
     String startCity;
     String destinationCity;
-    String startDate;
-    String startTime;
-    String returnDate;
-    String returnTime;
+    DataDate startDate;
+    DataTime startTime;
+    DataDate returnDate;
+    DataTime returnTime;
     boolean isOneWay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // [0] general set up
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sort_screen3);
+
+//retrieving data inputs from search fields
+        Intent intent = getIntent();
+        startCity = intent.getStringExtra("startCity");
+        destinationCity = intent.getStringExtra("destinationCity");
+        startDate = (DataDate) intent.getSerializableExtra("startDate");
+        Log.d("transaction", " startDate: " + startDate);
+        startTime = (DataTime) intent.getSerializableExtra("startTime");
+        returnDate = (DataDate) intent.getSerializableExtra("returnDate");
+        returnTime = (DataTime) intent.getSerializableExtra("returnTime");
+        isOneWay = intent.getBooleanExtra("isOneWay", false);
+
+
         // incoming data
         incomingData.add(new DataConnection("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), new DataTime(42,12)));
         incomingData.add(new DataConnection("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), new DataTime(42,18)));
         //incomingData.add(new DataConnection("", "","","")); // if there is no return ticket
 
-        // [0] general set up
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sort_screen3);
+
+        //getting chosen trip
+        //DataConnection selectedToTrip = new DataConnection(startCity, "", destinationCity, "", startDate, startTime);
+        incomingData.clear();
+        incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime));
+        incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime));
+        if (getIntent().hasExtra("selectedReturnTrip")) {
+            DataConnection selectedReturnTrip = (DataConnection) getIntent().getSerializableExtra("selectedReturnTrip");
+        }
+
+        Log.d("transaction", " Ergbenis selectedToTrip: " +  incomingData.get(0) + " and intent2 not null: " + (incomingData.get(0) == null));
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 
 
         // ------------------------------------------------------------------------------------------------------------------
         // [1] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
         dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
-        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
+        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car_Sharing);
         dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train);
         dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
 
@@ -116,23 +147,7 @@ public class sortScreen3 extends AppCompatActivity {
         hier dtoResultTo und dtoResultReturn (bei dem vorher noch testen, ob überhaupt return gewählt) abgreifen
          */
 
-        //retrieving data inputs from search fields
-        Intent intent = getIntent();
-        startCity = intent.getStringExtra("startCity");
-        destinationCity = intent.getStringExtra("destinationCity");
-        startDate = intent.getStringExtra("startDate");
-        startTime = intent.getStringExtra("startTime");
-        returnDate = intent.getStringExtra("returnDate");
-        returnTime = intent.getStringExtra("returnTime");
-        isOneWay = intent.getBooleanExtra("isOneWay", false);
 
-        //getting chosen trip
-        String selectedTrip;
-        Intent intent2 = getIntent();
-        DataConnection selectedToTrip = (DataConnection) intent2.getSerializableExtra("selectedToTrip");
-        if (intent2.hasExtra("selectedReturnTrip")) {
-            DataConnection selectedReturnTrip = (DataConnection) intent2.getSerializableExtra("selectedReturnTrip");
-        }
     }
 
 
@@ -157,7 +172,7 @@ public class sortScreen3 extends AppCompatActivity {
                 properties.add(filterResultProperty);
                 // [2] refill data base
                 dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train);
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
+                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car_Sharing);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
                 dataBaseMockUp.addAnotherDay("vienna", "westbahnhof", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
                 dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
@@ -264,7 +279,14 @@ public class sortScreen3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
-                intent.putExtra("selectedToTrip", resultFrag1Data);
+                //intent.putExtra("selectedToTrip", resultFrag1Data);
+                List<DataConnection> dto = dtoResultTo;
+                Log.d("transaction2", "firstResult: " + dto.get(0));
+                /*intent.putExtra("firstResult", dto.get(0));
+                intent.putExtra("secondResult", dto.get(1));
+                Log.d("transaction2", "firstResult: " + dto.get(0));
+                Log.d("transaction2", "firstResult: " + dto.get(1));*/
+                intent.putExtra("firstResult", dto.get(0));
                 if(!isOneWay){
                     intent.putExtra("selectedReturnTrip", resultFrag2Data);
                 }

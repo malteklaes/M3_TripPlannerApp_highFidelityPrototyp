@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -46,12 +47,19 @@ public class resultScreen4 extends AppCompatActivity {
 
         //retrieving chosen trip
         Intent intent = getIntent();
-        DataConnection resultTo = (DataConnection) intent.getSerializableExtra("selectedToTrip");
-        DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("selectedReturnTrip");
+        //DataConnection resultTo = (DataConnection) intent.getSerializableExtra("selectedToTrip");
+        DataConnection resultTo = (DataConnection) intent.getSerializableExtra("firstResult");
+        Log.d("transaction3", " incoming data" + resultTo);
+        DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("firstResult");
+        //DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("selectedReturnTrip");
+
+
 
         //if DataConnections are set, they are added to the received data list
-        if(resultTo!=null)
+        if(resultTo!=null) {
             inputDataConnections.add(resultTo);
+            Log.d("transaction3", " incoming data im if: " + resultTo);
+        }
         if(resultReturn!=null)
             inputDataConnections.add(resultReturn);
     }

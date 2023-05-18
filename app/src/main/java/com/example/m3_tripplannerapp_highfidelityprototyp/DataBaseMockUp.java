@@ -330,7 +330,7 @@ public class DataBaseMockUp {
         Random random = new Random();
         int randomElementPrize = random.nextInt(500) + 1;
         switch (transportType){
-            case Car:
+            case Car_Sharing:
                 return randomElementPrize * 0.4;
             case Bus:
                 return randomElementPrize * 0.2;
