@@ -49,13 +49,13 @@ public class sortScreen3 extends AppCompatActivity {
     private static List<DataConnection> dtoResultReturn = new ArrayList<>();
 
     //User input data retrieval
-    String startCity;
-    String destinationCity;
-    DataDate startDate;
-    DataTime startTime;
-    DataDate returnDate;
-    DataTime returnTime;
-    boolean isOneWay;
+    private String startCity;
+    private String destinationCity;
+    private DataDate startDate;
+    private DataTime startTime;
+    private DataDate returnDate;
+    private DataTime returnTime;
+    private boolean isOneWay = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,8 @@ public class sortScreen3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_screen3);
 
-//retrieving data inputs from search fields
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // [1] retrieving data inputs from search fields
         Intent intent = getIntent();
         startCity = intent.getStringExtra("startCity");
         destinationCity = intent.getStringExtra("destinationCity");
@@ -74,29 +75,15 @@ public class sortScreen3 extends AppCompatActivity {
         returnTime = (DataTime) intent.getSerializableExtra("returnTime");
         isOneWay = intent.getBooleanExtra("isOneWay", false);
 
-
-        // incoming data
-        incomingData.add(new DataConnection("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), new DataTime(42,12)));
-        incomingData.add(new DataConnection("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), new DataTime(42,18)));
-        //incomingData.add(new DataConnection("", "","","")); // if there is no return ticket
-
-
         //getting chosen trip
-        //DataConnection selectedToTrip = new DataConnection(startCity, "", destinationCity, "", startDate, startTime);
         incomingData.clear();
-        incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime));
-        incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime));
-        if (getIntent().hasExtra("selectedReturnTrip")) {
-            DataConnection selectedReturnTrip = (DataConnection) getIntent().getSerializableExtra("selectedReturnTrip");
+        if(!isOneWay) {
+            incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime));
+            incomingData.add(new DataConnection(destinationCity, "", startCity, "", returnDate, returnTime));
+        } else {
+            incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime));
+            incomingData.add(new DataConnection("", "", "", "", new DataDate(0,0,0), new DataTime(0,0)));
         }
-
-        Log.d("transaction", " Ergbenis selectedToTrip: " +  incomingData.get(0) + " and intent2 not null: " + (incomingData.get(0) == null));
-
-
-        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
 
 
 
@@ -176,10 +163,8 @@ public class sortScreen3 extends AppCompatActivity {
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
                 dataBaseMockUp.addAnotherDay("vienna", "westbahnhof", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
                 dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus);
-                /*dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car);
-                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Plane);
-                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Ship);
-                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Mix);*/
+                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus);
+
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus);
                 dataBaseMockUp.addAnotherDay("vienna", "hbf", "frankfurt", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train);
                 Log.d("malte", "Ergebnis database size: " + dataBaseMockUp.getDataBaseMockUp().size());
@@ -207,13 +192,14 @@ public class sortScreen3 extends AppCompatActivity {
 
 
                 // [5] send fresh data to tab1 and tab2
-                SortScreen3fragment1 neuFrag1 = SortScreen3fragment1.newInstance(filterResult);
-                neuFrag1.setArgParam(filteredDataConnection1);
-                SortScreen3fragment2 neuFrag2 = SortScreen3fragment2.newInstance(filterResult);
-                neuFrag2.setArgParam(filteredDataConnection2);
+                SortScreen3fragment1 newFrag1 = SortScreen3fragment1.newInstance(filterResult);
+                newFrag1.setDATACONNECTION(filteredDataConnection1);
+                SortScreen3fragment2 newFrag2 = SortScreen3fragment2.newInstance(filterResult);
+                newFrag2.setIsOneWay(isOneWay);
+                newFrag2.setDATACONNECTION(filteredDataConnection2);
                 adapterView = new ViewPagerAdapter(getSupportFragmentManager());
-                adapterView.addFragment(neuFrag1, "To");
-                adapterView.addFragment(neuFrag2, "Return");
+                adapterView.addFragment(newFrag1, "To");
+                adapterView.addFragment(newFrag2, "Return");
                 viewPager.setAdapter(adapterView);
 
             }
@@ -246,20 +232,17 @@ public class sortScreen3 extends AppCompatActivity {
     }
 
     public void setResultFrag1Data(DataConnection resultFrag1Data) {
-        //Log.d("malte4", " resultFrag1Data: " + this.resultFrag1Data);
         this.resultFrag1Data = resultFrag1Data;
         dtoResultTo.clear();
-        dtoResultTo.add(resultFrag1Data);
-        /*Log.d("malte4", " Ergebnis der result.size(): " + dtoResultTo.size());
-        Log.d("malte4", " Ergebnis der result: " + dtoResultTo.toString());*/
+        dtoResultTo.add(this.resultFrag1Data);
+        Log.d("transaction2", "AUFRUF (isOneWay) dtoResultTo: " + dtoResultTo.get(0) + " listenLänge: " + dtoResultTo.size());
     }
 
     public void setResultFrag2Data(DataConnection resultFrag2Data) {
         this.resultFrag2Data = resultFrag2Data;
-        dtoResultTo.clear();
-        dtoResultTo.add(resultFrag1Data);
-        /*Log.d("malte4", " Ergebnis der result.size(): " + dtoResultTo.size());
-        Log.d("malte4", " Ergebnis der result: " + dtoResultTo.toString());*/
+        dtoResultReturn.clear();
+        dtoResultReturn.add(this.resultFrag2Data);
+        Log.d("transaction2", "AUFRUF (isOneWay) dtoResultReturn: " + dtoResultReturn.get(0) + " listenLänge: " + dtoResultReturn.size());
     }
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
@@ -275,22 +258,19 @@ public class sortScreen3 extends AppCompatActivity {
             }
         });
 
+        /**
+         * sends data from this screen3 to screen4
+         */
         LetsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
-                //intent.putExtra("selectedToTrip", resultFrag1Data);
-                List<DataConnection> dto = dtoResultTo;
-                Log.d("transaction2", "firstResult: " + dto.get(0));
-                /*intent.putExtra("firstResult", dto.get(0));
-                intent.putExtra("secondResult", dto.get(1));
-                Log.d("transaction2", "firstResult: " + dto.get(0));
-                Log.d("transaction2", "firstResult: " + dto.get(1));*/
-                intent.putExtra("firstResult", dto.get(0));
-                if(!isOneWay){
-                    intent.putExtra("selectedReturnTrip", resultFrag2Data);
+                if(isOneWay){
+                    intent.putExtra("firstResult", dtoResultTo.get(0));
+                } else {
+                    intent.putExtra("firstResult", dtoResultTo.get(0));
+                    intent.putExtra("secondResult", dtoResultReturn.get(0));
                 }
-
                 startActivity(intent);
             }
         });

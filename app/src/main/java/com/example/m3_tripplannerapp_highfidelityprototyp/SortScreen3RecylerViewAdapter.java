@@ -3,6 +3,7 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
             @Override
             public void onClick(View view) {
                 // data will be processed, when row item will be clicked
-                handleRowItemClick(data);
+                handleRowItemClick(data, position);
                 // for changing color of row item when clicked on it
                 chosenRowItem = position;
                 notifyDataSetChanged();
@@ -76,9 +77,13 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
 
     }
 
-    private void handleRowItemClick(DataConnection data) {
+    private void handleRowItemClick(DataConnection data, int position) {
         // execute action, when row element was clicked
-        ((sortScreen3) context).setResultFrag1Data(data);
+        if(position == 0){
+            ((sortScreen3) context).setResultFrag1Data(data);
+        } else {
+            ((sortScreen3) context).setResultFrag2Data(data);
+        }
     }
 
     @Override

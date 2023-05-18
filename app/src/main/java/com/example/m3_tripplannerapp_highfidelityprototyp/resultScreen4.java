@@ -47,11 +47,9 @@ public class resultScreen4 extends AppCompatActivity {
 
         //retrieving chosen trip
         Intent intent = getIntent();
-        //DataConnection resultTo = (DataConnection) intent.getSerializableExtra("selectedToTrip");
         DataConnection resultTo = (DataConnection) intent.getSerializableExtra("firstResult");
-        Log.d("transaction3", " incoming data" + resultTo);
-        DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("firstResult");
-        //DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("selectedReturnTrip");
+        DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("secondResult");
+        // falls nur one way, dann ist resultReturn == NULL !
 
 
 

@@ -26,8 +26,8 @@ public class SortScreen3fragment1 extends Fragment {
 
     private TextView shownText;
 
-    private static String ARG_PARAM1 = "param1";
-    private static List<DataConnection> ARG_PARAM = new ArrayList<>();
+    private static String Data_CONNECTION_INFO = "";
+    private static List<DataConnection> DATA_CONNECTION = new ArrayList<>();
 
 
 
@@ -40,23 +40,22 @@ public class SortScreen3fragment1 extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param dataConnection Parameter 1.
      * @return A new instance of fragment sortScreen3fragment1.
      */
-    public static SortScreen3fragment1 newInstance(String param1) {
+    public static SortScreen3fragment1 newInstance(String dataConnection) {
         SortScreen3fragment1 fragment = new SortScreen3fragment1();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(Data_CONNECTION_INFO, dataConnection);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static void setArgParam1(String argParam1) {
-        ARG_PARAM1 = argParam1;
-    }
 
-    public static void setArgParam(List<DataConnection> argParam) {
-        ARG_PARAM = argParam;
+
+
+    public static void setDATACONNECTION(List<DataConnection> argParam) {
+        DATA_CONNECTION = argParam;
     }
 
     @Override
@@ -64,8 +63,8 @@ public class SortScreen3fragment1 extends Fragment {
         View v = inflater.inflate(R.layout.fragment_sort_screen3fragment1, container, false);
         RecyclerView recyclerView = v.findViewById(R.id.RecyclerViewFrag1);
 
-        if(ARG_PARAM != null && ARG_PARAM.size() > 0) {
-            SortScreen3RecylerViewAdapter adapter = new SortScreen3RecylerViewAdapter(getActivity(), ARG_PARAM);
+        if(DATA_CONNECTION != null && DATA_CONNECTION.size() > 0) {
+            SortScreen3RecylerViewAdapter adapter = new SortScreen3RecylerViewAdapter(getActivity(), DATA_CONNECTION);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             ((sortScreen3) getActivity()).setResultFrag1Data(new DataConnection("", "", "", ""));
