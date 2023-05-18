@@ -7,57 +7,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder> {
+public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.ViewHolder>{
 
-    List<DataConnection> inputDataConnections;
+    List<DataConnection> bookmarks;
     Context context;
-    List<DataConnection> savedTrips=new ArrayList<>();   //trips which the user wants to bookmark
 
-    public ResultAdapter(List<DataConnection> inputDataConnections, Context context) {
-        this.inputDataConnections = inputDataConnections;
+    public BookmarksAdapter(List<DataConnection> inputDataConnections, Context context) {
+        this.bookmarks = inputDataConnections;
         this.context = context;
     }
 
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public BookmarksAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.result_element, viewGroup, false);  // elements of recyclerView are in style of result_element
 
-        return new ViewHolder(view);
+        return new BookmarksAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(BookmarksAdapter.ViewHolder viewHolder, final int position) {
         //setting data of recyclerView element
-        viewHolder.trip.setText(printTrip(inputDataConnections.get(position)));
-        viewHolder.tripDate.setText(printTripDate(inputDataConnections.get(position)));
-        viewHolder.tripTime.setText(printTripTime(inputDataConnections.get(position)));
-        viewHolder.tripDuration.setText(printTripDuration(inputDataConnections.get(position)));
-        viewHolder.tripPriceAndEmissions.setText(printTripPriceAndEmissions(inputDataConnections.get(position)));
-        viewHolder.tripStops.setText(printTripStops(inputDataConnections.get(position)));
+        viewHolder.trip.setText(printTrip(bookmarks.get(position)));
+        viewHolder.tripDate.setText(printTripDate(bookmarks.get(position)));
+        viewHolder.tripTime.setText(printTripTime(bookmarks.get(position)));
+        viewHolder.tripDuration.setText(printTripDuration(bookmarks.get(position)));
+        viewHolder.tripPriceAndEmissions.setText(printTripPriceAndEmissions(bookmarks.get(position)));
+        viewHolder.tripStops.setText(printTripStops(bookmarks.get(position)));
+        viewHolder.bookmarkButton.setSelected(true);  //in bookmarkView the bookmark-star is always filled with color
 
         //creating recyclerView for stops of the trip element (nested recyclerView)
         LinearLayoutManager layoutManager=new LinearLayoutManager(context);
         viewHolder.stopsRecyclerView.setLayoutManager(layoutManager);
 
-        StopAdapter adapter=new StopAdapter(inputDataConnections.get(position).getIntermediatStations(),context);
+        StopAdapter adapter=new StopAdapter(bookmarks.get(position).getIntermediatStations(),context);
         viewHolder.stopsRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public int getItemCount() {
-        return inputDataConnections.size();
+        return bookmarks.size();
     }
 
 
@@ -87,33 +84,26 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             bookmarkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(!savedTrips.contains(inputDataConnections.get(getAdapterPosition()))) {  //trip is not saved and user clicks bookmark-star
-                        savedTrips.add(inputDataConnections.get(getAdapterPosition()));  //added to list of trips the user wants to save
-                        bookmarkButton.setSelected(true);   //star is is now filled with color
-                        bookmarksScreen5.addBookmark(inputDataConnections.get(getAdapterPosition()));   //add data in bookmarkScreen5 so it is presented there as well
-                    }
-                    else{
-                        //if the user wants to "unbookmark" a trip he needs to confirm it
-                        AlertDialog.Builder confirmationAlert=new AlertDialog.Builder(context);
-                        confirmationAlert.setTitle("Warning");
-                        confirmationAlert.setMessage("Are you sure that you want to remove the bookmark?");
+                    //if the user wants to "unbookmark" a trip he needs to confirm it
+                    AlertDialog.Builder confirmationAlert=new AlertDialog.Builder(context);
+                    confirmationAlert.setTitle("Warning");
+                    confirmationAlert.setMessage("Are you sure that you want to remove the bookmark?");
 
-                        confirmationAlert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {   //if the user confirms
-                                savedTrips.remove(inputDataConnections.get(getAdapterPosition()));
-                                bookmarkButton.setSelected(false);  //star is unfilled with color again
-                                bookmarksScreen5.removeBookmark(inputDataConnections.get(getAdapterPosition()));
-                            }
-                        });
-                        confirmationAlert.setNegativeButton("no", new DialogInterface.OnClickListener() {  // if he neglects nothing happens
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        });
+                    confirmationAlert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // if the user confirms the chosen bookmark is removed from the view
+                            ((bookmarksScreen5) context).removeBookmark(bookmarks.get(getAdapterPosition()));
+                            ((bookmarksScreen5) context).createRecyclerView();  //to update the recyclerView it is created again
+                        }
+                    });
+                    confirmationAlert.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
 
-                        confirmationAlert.create().show();
-                    }
+                    confirmationAlert.create().show();
                 }
             });
         }
@@ -121,20 +111,18 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     }
 
 
-    //String of from-to information of resultElement (place)
     private String printTrip(DataConnection connection) {
         return connection.getStartCity() + " -> " + connection.getDestinationCity() + "  (" + connection.getType().toString() + ")";
     }
 
-    //String of from-to information of resultElement (date)
     private String printTripDate(DataConnection connection) {
         String ret = "";
-        if(connection.getStartDate().getDay()<10)   //to make sure always two numbers are used for the date view
+        if(connection.getStartDate().getDay()<10)
             ret+="0"+connection.getStartDate().getDay()+ ".";
         else
             ret+=connection.getStartDate().getDay()+ ".";
 
-        if(connection.getStartDate().getMonth()<10)   //to make sure always two numbers are used for the moth view
+        if(connection.getStartDate().getMonth()<10)
             ret+="0"+connection.getStartDate().getMonth()+ ".";
         else
             ret+=connection.getStartDate().getMonth()+ ".";
@@ -142,29 +130,25 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         return ret+connection.getStartDate().getYear();
     }
 
-    //String of from-to information of resultElement (time)
     private String printTripTime(DataConnection connection) {
         String ret = "";
-
-        //start time
         DataTime startTime = connection.getStartTime();
-        if(startTime.getHour()<10)  //to make sure always two numbers are used for the hour view
+        if(startTime.getHour()<10)
             ret+="0"+startTime.getHour()+ ":";
         else
             ret+=startTime.getHour()+ ":";
-        if(startTime.getMinute()<10)  //to make sure always two numbers are used for the minute view
+        if(startTime.getMinute()<10)
             ret+="0"+startTime.getMinute()+ ": ";
         else
             ret+=startTime.getMinute()+ ": ";
         ret += connection.getStartLocation() + "\n";
 
-        //return time
         DataTime returnTime = connection.getReturnTime();
-        if(returnTime.getHour()<10)  //to make sure always two numbers are used for the hour view
+        if(returnTime.getHour()<10)
             ret+="0"+returnTime.getHour()+ ":";
         else
             ret+=returnTime.getHour()+ ":";
-        if(returnTime.getMinute()<10)  //to make sure always two numbers are used for the minute view
+        if(returnTime.getMinute()<10)
             ret+="0"+returnTime.getMinute()+ ": ";
         else
             ret+=returnTime.getMinute()+ ": ";
