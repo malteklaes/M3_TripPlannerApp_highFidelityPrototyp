@@ -2,11 +2,12 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,13 +24,15 @@ import android.widget.TimePicker;
 import android.view.View;
 import android.widget.Toast;
 
-
 import com.google.android.material.chip.Chip;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class mainScreen2 extends AppCompatActivity {
 
@@ -54,7 +57,9 @@ public class mainScreen2 extends AppCompatActivity {
     private EditText date2;
     private EditText time1;
     private EditText time2;
-    private SharedPreferences sharedPreferences;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,29 +75,16 @@ public class mainScreen2 extends AppCompatActivity {
 
         setupButtonListeners(); //Buttons Listener Method
 
-        //Saving user input
-         sharedPreferences = getSharedPreferences("Inputs", Context.MODE_PRIVATE);
-
         editStart.setOnItemClickListener(new AdapterView.OnItemClickListener(){    //onItemClick of editStart String startCity gets overwritten with the text of editStart
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){     //overriding of startCity
                 startCity = editStart.getText().toString();
-
-                //saving user input
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("startCity", startCity);
-                editor.apply();
             }
         });
         editDestination.setOnItemClickListener(new AdapterView.OnItemClickListener(){     //onItemClick of editDestination String destinationCity gets overwritten with the text of editDestination
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){    //overriding of destinationCity
                 destinationCity = editDestination.getText().toString();
-
-                //saving user input
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("destinationCity", destinationCity);
-                editor.apply();
             }
         });
 
@@ -119,13 +111,6 @@ public class mainScreen2 extends AppCompatActivity {
                                                      public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) { //setting date to Edittext
                                                          date1.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
                                                          startDate = new DataDate(dayOfMonth, month+1, year); //initializing startDate
-
-                                                         //saving User Input
-                                                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                                                         editor.putInt("startDay", startDate.getDay());
-                                                         editor.putInt("startMonth", startDate.getMonth());
-                                                         editor.putInt("startYear", startDate.getYear());
-                                                         editor.apply();
                                                      }
                                                  },
                                                  year, month, day);  //recieved variables from calendar
@@ -153,13 +138,6 @@ public class mainScreen2 extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) { //setting date to Edittext
                                 date2.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
                                 returnDate = new DataDate(dayOfMonth, month + 1, year);  //initializing returnDate
-
-                                //saving User Input
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putInt("returnDay", returnDate.getDay());
-                                editor.putInt("returnMonth", returnDate.getMonth());
-                                editor.putInt("returnYear", returnDate.getYear());
-                                editor.apply();
                             }
                         },
                         year, month, day);  //recieved variables from calendar
@@ -190,12 +168,6 @@ public class mainScreen2 extends AppCompatActivity {
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 time1.setText(hourOfDay + " : " + minute);
                                 startTime = new DataTime(minute, hourOfDay);  //initializing startTime
-
-                                //saving User Input
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putInt("startMinute", startTime.getMinute());
-                                editor.putInt("startHour", startTime.getHour());
-                                editor.apply();
                             }
                         },
                         hour, minute, true); //recieved variables from calendar and setting 24Hour Format
@@ -220,12 +192,6 @@ public class mainScreen2 extends AppCompatActivity {
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 time2.setText(hourOfDay + " : " + minute);
                                 returnTime = new DataTime(minute, hourOfDay);  //initializing returnTime
-
-                                //saving User Input
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putInt("returnMinute", returnTime.getMinute());
-                                editor.putInt("returnHour", returnTime.getHour());
-                                editor.apply();
                             }
                         },
                         hour, minute, true);
@@ -235,62 +201,7 @@ public class mainScreen2 extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
-    }
 
-    //Saving User Input
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        String savedStart = sharedPreferences.getString("startCity", "");
-        String savedDest = sharedPreferences.getString("destinationCity", "");
-
-        int savedStartDay = sharedPreferences.getInt("startDay", -1);
-        int savedStartMonth = sharedPreferences.getInt("startMonth", -1);
-        int savedStartYear = sharedPreferences.getInt("startYear", -1);
-
-        int savedReturnDay = sharedPreferences.getInt("returnDay", -1);
-        int savedReturnMonth = sharedPreferences.getInt("returnMonth", -1);
-        int savedReturnYear = sharedPreferences.getInt("returnYear", -1);
-
-        int savedStartMinute = sharedPreferences.getInt("startMinute", -1);
-        int savedStartHour = sharedPreferences.getInt("startHour", -1);
-
-        int savedReturnMinute = sharedPreferences.getInt("returnMinute", -1);
-        int savedReturnHour = sharedPreferences.getInt("returnHour", -1);
-
-        boolean isOneWayChecked = sharedPreferences.getBoolean("isOneWayChecked", false);
-
-        editStart.setText(savedStart);
-        editDestination.setText(savedDest);
-
-        if (isOneWayChecked) {
-            oneWay.setChecked(true);
-            bothWay.setChecked(false);
-        } else {
-            oneWay.setChecked(false);
-            bothWay.setChecked(true);
-        }
-
-
-        if (savedStartDay != -1 && savedStartMonth != -1 && savedStartYear != -1) {
-            startDate = new DataDate(savedStartDay, savedStartMonth, savedStartYear);
-            date1.setText(startDate.toString());
-        }
-
-        if (savedReturnDay != -1 && savedReturnMonth != -1 && savedReturnYear != -1){
-            returnDate = new DataDate(savedReturnDay, savedReturnMonth, savedReturnYear);
-            date2.setText(returnDate.toString());
-        }
-
-        if(savedStartMinute != -1 && savedStartHour != 1) {
-            startTime = new DataTime(savedStartMinute, savedStartHour);
-            time1.setText(startTime.toString());
-        }
-        if(savedReturnMinute != -1 && savedReturnHour != 1) {
-            returnTime = new DataTime(savedReturnMinute, savedReturnHour);
-            time2.setText(returnTime.toString());
-        }
     }
 
     public void switch_CityInputs (View view) {
@@ -308,12 +219,6 @@ public class mainScreen2 extends AppCompatActivity {
         bothWay.setChecked(false);
         date2.setVisibility(View.INVISIBLE);
         time2.setVisibility(View.INVISIBLE);
-
-        //saving the User Input State
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isOneWayChecked", true);
-        editor.apply();
-
     }
 
     public void select_chip_bothWays (View view) {
@@ -321,39 +226,68 @@ public class mainScreen2 extends AppCompatActivity {
         bothWay.setChecked(true);
         date2.setVisibility(View.VISIBLE);
         time2.setVisibility(View.VISIBLE);
-
-        //saving the User Input State
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isOneWayChecked", false);
-        editor.apply();
-
     }
 
 
     //Initiating the search - sending retrieved data
     private void performSearch(){
         //getting data
+        Set<String> CitiesSet = new HashSet<>(Arrays.asList(Cities));
         String startCity = editStart.getText().toString();
         String destinationCity = editDestination.getText().toString();
+
+
         //String startDate = date1.getText().toString();
         DataDate startDate = this.startDate;
         Log.d("transaction", "startDate screen2:" + startDate);
-        DataTime startTime =  this.startTime; //  time1.getText().toString();
+        DataTime startTime = this.startTime; //  time1.getText().toString();
         DataDate returnDate = this.returnDate; // date2.getText().toString();
         DataTime returnTime = this.returnTime; // time2.getText().toString();
         boolean isOneWay = oneWay.isChecked();
 
-        //passing operation
-        Intent intent = new Intent(mainScreen2.this, sortScreen3.class);
-        intent.putExtra("startCity", startCity);
-        intent.putExtra("destinationCity", destinationCity);
-        intent.putExtra("startDate", startDate);
-        intent.putExtra("startTime", startTime);
-        intent.putExtra("returnDate", returnDate);
-        intent.putExtra("returnTime", returnTime);
-        intent.putExtra("isOneWay", isOneWay);
-        Log.d("transaction" , " transaction1 intent: " + intent);
-        startActivity(intent);
+        //Dialog if City not found
+        if(startCity==null || !CitiesSet.contains(startCity) || destinationCity==null || !CitiesSet.contains(destinationCity)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("City not found!");
+            builder.setMessage("Please select city from list!")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        //Dialog if for return Date incorrect
+        else if(startDate==null || !(isOneWay) && (returnDate==null || startDate.compareThisDateToThatDate(returnDate)==DataEnumTimeComparison.Later)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Date incorrect!");
+            builder.setMessage("Please check your Dates")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else {
+            //passing operation
+            Intent intent = new Intent(mainScreen2.this, sortScreen3.class);
+            intent.putExtra("startCity", startCity);
+            intent.putExtra("destinationCity", destinationCity);
+            intent.putExtra("startDate", startDate);
+            intent.putExtra("startTime", startTime);
+            intent.putExtra("returnDate", returnDate);
+            intent.putExtra("returnTime", returnTime);
+            intent.putExtra("isOneWay", isOneWay);
+            Log.d("transaction", " transaction1 intent: " + intent);
+
+            startActivity(intent);
+        }
     }
 
     //Managing buttons
@@ -379,10 +313,6 @@ public class mainScreen2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 performSearch();
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.apply();
             }
         });
 
