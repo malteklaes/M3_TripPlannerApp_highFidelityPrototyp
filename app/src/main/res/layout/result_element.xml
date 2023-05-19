@@ -99,6 +99,16 @@
         app:layout_constraintStart_toEndOf="@+id/tripStops"
         app:layout_constraintTop_toBottomOf="@+id/tripPriceAndEmissions" />
 
+    <Button
+        android:id="@+id/purchaseButton"
+        android:layout_width="344dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="20dp"
+        android:text="Purchase"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stopsRecyclerView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -3,9 +3,12 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,6 +73,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         private TextView tripStops;
         private ImageButton bookmarkButton;
         private RecyclerView stopsRecyclerView;
+        private Button purchaseButton;
 
 
         public ViewHolder(View view) {
@@ -83,6 +87,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             tripStops = (TextView) view.findViewById(R.id.tripStops);
             bookmarkButton=(ImageButton) view.findViewById(R.id.bookmarkButton);
             stopsRecyclerView=(RecyclerView) view.findViewById(R.id.stopsRecyclerView);
+            purchaseButton=(Button) view.findViewById(R.id.purchaseButton);
 
             bookmarkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,6 +119,14 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
 
                         confirmationAlert.create().show();
                     }
+                }
+            });
+
+            purchaseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent ticketVendor=new Intent(Intent.ACTION_VIEW,inputDataConnections.get(getAdapterPosition()).getType().getVendorURL());
+                    context.startActivity(ticketVendor);
                 }
             });
         }
