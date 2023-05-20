@@ -267,7 +267,7 @@ public class mainScreen2 extends AppCompatActivity {
         int savedReturnMinute = sharedPreferences.getInt("returnMinute", -1);
         int savedReturnHour = sharedPreferences.getInt("returnHour", -1);
 
-        boolean isOneWayChecked = sharedPreferences.getBoolean("isOneWayChecked", false);
+        boolean isOneWayChecked = sharedPreferences.getBoolean("isOneWayChecked", true);
 
         editStart.setText(savedStart);
         editDestination.setText(savedDest);
@@ -278,6 +278,8 @@ public class mainScreen2 extends AppCompatActivity {
         } else {
             oneWay.setChecked(false);
             bothWay.setChecked(true);
+            date2.setVisibility(View.VISIBLE);
+            time2.setVisibility(View.VISIBLE);
         }
 
 
@@ -308,6 +310,12 @@ public class mainScreen2 extends AppCompatActivity {
         destinationCity = startText;
         editStart.setText(destinationText);
         editDestination.setText(startText);
+
+        //saving user input
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("startCity", startCity);
+        editor.putString("destinationCity", destinationCity);
+        editor.apply();
 
     }
 
