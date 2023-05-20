@@ -2,13 +2,16 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupButtonListeners();
 
+        sharedPreferences = getSharedPreferences("Inputs", Context.MODE_PRIVATE);
     }
 
 
@@ -41,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, mainScreen2.class);
                 startActivity(intent);
+
+                //Setting saved user inputs free
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
             }
         });
 
