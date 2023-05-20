@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -470,4 +471,36 @@ public class DataConnection implements Serializable {
                 ", time: " + startTime + ") ";
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        DataConnection compareData = (DataConnection) o;
+        System.out.println(this.startDate+"  "+compareData.startDate);
+        if(this.startCity!=compareData.startCity)
+            return false;
+        if(this.startLocation!=compareData.startLocation)
+            return false;
+        if(this.destinationCity!=compareData.destinationCity)
+            return false;
+        if(this.destinationLocation!=compareData.destinationLocation)
+            return false;
+        if(!this.startDate.equals(compareData.startDate))
+            return false;
+        if(!this.startTime.equals(compareData.startTime))
+            return false;
+        /*if(!this.returnDate.equals(compareData.returnDate))
+            return false;
+        if(!this.returnTime.equals(compareData.returnTime))
+            return false;
+        if(this.isReturn!=compareData.isReturn)
+            return false;*/
+        if(this.duration!=compareData.duration)
+            return false;
+        if(this.prize!=compareData.prize)
+            return false;
+        if(this.CO2Bilance!=compareData.CO2Bilance)
+            return false;
+        return true;
+    }
+
 }

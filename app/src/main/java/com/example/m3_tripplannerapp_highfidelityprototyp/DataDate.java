@@ -3,6 +3,7 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * structures a date due to format: day-month-year
@@ -86,4 +87,17 @@ public class DataDate implements Comparable<DataDate>, Serializable {
         }
         return ""+day+"."+monthString+"."+year+"";
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DataDate)) return false;
+        DataDate dataDate = (DataDate) o;
+        return day == dataDate.day && month == dataDate.month && year == dataDate.year;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(day, month, year);
+    }
+
 }
