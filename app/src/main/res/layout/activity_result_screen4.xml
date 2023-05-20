@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg14"
     tools:context=".resultScreen4">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resultsRecyclerView"
-        android:layout_width="395dp"
-        android:layout_height="478dp"
-        android:layout_marginTop="88dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="90dp"
+        android:paddingBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

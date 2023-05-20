@@ -144,27 +144,33 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
 
     private String printTripTime(DataConnection connection) {
         String ret = "";
+
+        //start time
         DataTime startTime = connection.getStartTime();
-        if(startTime.getHour()<10)
+        if(startTime.getHour()<10)  //to make sure always two numbers are used for the hour view
             ret+="0"+startTime.getHour()+ ":";
         else
             ret+=startTime.getHour()+ ":";
-        if(startTime.getMinute()<10)
+        if(startTime.getMinute()<10)  //to make sure always two numbers are used for the minute view
             ret+="0"+startTime.getMinute()+ ": ";
         else
             ret+=startTime.getMinute()+ ": ";
-        ret += connection.getStartLocation() + "\n";
+        ret += connection.getStartCity()+" "+connection.getStartLocation() + "\n";
 
-        DataTime returnTime = connection.getReturnTime();
-        if(returnTime.getHour()<10)
+        //return time
+        DataTime returnTime = connection.getReturnTimeWithDuration();
+        if(returnTime.getHour()<10)  //to make sure always two numbers are used for the hour view
             ret+="0"+returnTime.getHour()+ ":";
         else
             ret+=returnTime.getHour()+ ":";
-        if(returnTime.getMinute()<10)
+        if(returnTime.getMinute()<10)  //to make sure always two numbers are used for the minute view
             ret+="0"+returnTime.getMinute()+ ": ";
         else
             ret+=returnTime.getMinute()+ ": ";
-        ret += connection.getDestinationLocation();
+        ret += connection.getDestinationCity()+" "+connection.getDestinationLocation();
+
+        if(connection.isReturnOnNextDay())
+            ret+=" (arrival is next day)";
         return ret;
     }
 

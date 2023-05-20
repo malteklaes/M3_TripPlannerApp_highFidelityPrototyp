@@ -4,14 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -169,10 +166,10 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             ret+="0"+startTime.getMinute()+ ": ";
         else
             ret+=startTime.getMinute()+ ": ";
-        ret += connection.getStartLocation() + "\n";
+        ret += connection.getStartCity()+" "+connection.getStartLocation() + "\n";
 
         //return time
-        DataTime returnTime = connection.getReturnTime();
+        DataTime returnTime = connection.getReturnTimeWithDuration();
         if(returnTime.getHour()<10)  //to make sure always two numbers are used for the hour view
             ret+="0"+returnTime.getHour()+ ":";
         else
@@ -181,7 +178,10 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             ret+="0"+returnTime.getMinute()+ ": ";
         else
             ret+=returnTime.getMinute()+ ": ";
-        ret += connection.getDestinationLocation();
+        ret += connection.getDestinationCity()+" "+connection.getDestinationLocation();
+
+        if(connection.isReturnOnNextDay())
+            ret+=" (arrival is next day)";
         return ret;
     }
 

@@ -57,7 +57,7 @@ public class bookmarksScreen5 extends AppCompatActivity {
     }
 
     public static void addBookmark(DataConnection bookmark){
-        System.out.println("Bookmark already set: "+bookmarks.contains(bookmark));
+        //System.out.println("Bookmark already set: "+bookmarks.contains(bookmark));
         if(!bookmarks.contains(bookmark))
             bookmarks.add(bookmark);
     }

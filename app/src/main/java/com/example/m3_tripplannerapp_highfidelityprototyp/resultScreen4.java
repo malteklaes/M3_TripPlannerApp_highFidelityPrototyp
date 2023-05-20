@@ -26,16 +26,16 @@ public class resultScreen4 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DataConnection mockedResult1=new DataConnection("Vienna","Hbf","München","Hbf",new DataDate(20,4,2004),new DataTime(14,13), false);
-        DataConnection mockedResult1_1=new DataConnection("Vienna","Hbf","Linz","Hbf",new DataDate(20,4,2004),new DataTime(14,13), false);
+        /*DataConnection mockedResult1=new DataConnection("Vienna","Hbf","München","Hbf",new DataDate(20,4,2004),new DataTime(56,13), false);
+        DataConnection mockedResult1_1=new DataConnection("Vienna","Hbf","Linz","Hbf",new DataDate(20,4,2004),new DataTime(56,13), false);
         DataConnection mockedResult1_2=new DataConnection("Linz","Hbf","München","Hbf",new DataDate(20,4,2004),new DataTime(14,13), false);
         ArrayList<DataConnection> stops=new ArrayList<>();
         stops.add(mockedResult1_1);
         stops.add(mockedResult1_2);
         mockedResult1.setIntermediatStations(stops);
         inputDataConnections.add(mockedResult1);
-        DataConnection mockedResult2=new DataConnection("Graz","Hbf","St. Pölten","Hbf",new DataDate(20,4,2004),new DataTime(14,13), false);
-        inputDataConnections.add(mockedResult2);
+        DataConnection mockedResult2=new DataConnection("Graz","Hbf","St. Pölten","Hbf",new DataDate(20,4,2004),new DataTime(56,23), false);
+        inputDataConnections.add(mockedResult2);*/
 
 
         super.onCreate(savedInstanceState);

@@ -482,7 +482,6 @@ public class DataConnection implements Serializable {
     @Override
     public boolean equals(Object o) {
         DataConnection compareData = (DataConnection) o;
-        System.out.println(this.startDate+"  "+compareData.startDate);
         if(this.startCity!=compareData.startCity)
             return false;
         if(this.startLocation!=compareData.startLocation)
@@ -508,6 +507,49 @@ public class DataConnection implements Serializable {
         if(this.CO2Bilance!=compareData.CO2Bilance)
             return false;
         return true;
+    }
+
+    DataTime getReturnTimeWithDuration(){
+        int startHour=startTime.getHour();
+        int startMinute=startTime.getMinute();
+        int durationHour=duration.getHour();
+        int durationMinute=duration.getMinute();
+
+        int returnMinute=0;
+        int returnHour=0;
+        if(startMinute+durationMinute>=60){
+            returnMinute+=startMinute+durationMinute-60;
+            returnHour+=1;
+        }
+        else
+            returnMinute=startMinute+durationMinute;
+
+        if(returnHour+startHour+durationHour>=24)
+            returnHour+=startHour+durationHour-24;
+        else
+            returnHour+=startHour+durationHour;
+
+        return new DataTime(returnMinute,returnHour);
+    }
+
+    boolean isReturnOnNextDay(){
+        int startHour=startTime.getHour();
+        int startMinute=startTime.getMinute();
+        int durationHour=duration.getHour();
+        int durationMinute=duration.getMinute();
+
+        int returnMinute=0;
+        int returnHour=0;
+        if(startMinute+durationMinute>=60){
+            returnMinute+=startMinute+durationMinute-60;
+            returnHour+=1;
+        }
+        else
+            returnMinute=startMinute+durationMinute;
+
+        if(returnHour+startHour+durationHour>=24)
+            return true;
+        return false;
     }
 
 }
