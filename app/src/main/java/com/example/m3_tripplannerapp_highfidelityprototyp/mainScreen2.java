@@ -389,6 +389,22 @@ public class mainScreen2 extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.show();
         }
+
+        //Dialog if return Date same and time incorrect
+        else if(!isOneWay && startDate.compareThisDateToThatDate(returnDate)==DataEnumTimeComparison.Equal && startTime.compareThisTimeToThatTime(returnTime)==DataEnumTimeComparison.Later) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Time incorrect!");
+            builder.setMessage("Please check your Time")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
         else {
             //passing operation
             Intent intent = new Intent(mainScreen2.this, sortScreen3.class);
