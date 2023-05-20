@@ -347,6 +347,11 @@ public class DataBaseMockUp {
         }
     }
 
+    public void calculateRandomDataEntries(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate date, boolean isReturn, DataEnumTransport... types){
+        for (DataEnumTransport type: types) {
+            this.addAnotherDay(startCity, startLocation, destinationCity, destinationLocation, date, type, isReturn);
+        }
+    }
     public List<DataConnection> getDataBaseMockUp() {
         return dataBaseMockUp;
     }

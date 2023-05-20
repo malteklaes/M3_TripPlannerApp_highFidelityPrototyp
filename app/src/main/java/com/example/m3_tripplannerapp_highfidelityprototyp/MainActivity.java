@@ -20,13 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
         DataConnection dataConnection = new DataConnection("Vienna", "Hbf", "Köln", "Hbf", false);
 
-        Log.d("logger", "Ergebnis: " + dataConnection.toString());
-        Log.d("logger", "Test Martina");
-        Log.d("logger", "Test Martina2");
-        Log.d("logger", "Test Martina3");
-        Log.d("logger", "Test Malte");
-        Log.d("logger", "Test Milenko");
-        Log.d("logger", "Test Felix");
 
         setupButtonListeners();
 

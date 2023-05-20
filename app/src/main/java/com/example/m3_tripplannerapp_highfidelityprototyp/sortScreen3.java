@@ -88,13 +88,14 @@ public class sortScreen3 extends AppCompatActivity {
 
 
         // ------------------------------------------------------------------------------------------------------------------
-        // [1] example mock data: scenario back and forth (vienna->frankfurt, frankfurt->vienna)
-        dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train, false);
-        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car_Sharing, false);
-        dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train, true);
-        dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus, false);
+        // [1] example mock database-data with incoming data
+        dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate,  DataEnumTransport.Car_Sharing, false);
+        dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
 
-        Log.d("malte", "Ergbnis mocked db: " + dataBaseMockUp.toString());
+        if(!isOneWay){
+            dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+        }
+
 
         // ------------------------------------------------------------------------------------------------------------------
         // [1] send initially data to tab1 and tab2
@@ -124,17 +125,6 @@ public class sortScreen3 extends AppCompatActivity {
         properties.add(DataEnumTransportProperties.Nothing);
 
         setupButtonListeners(); //Buttons Listener Method
-
-        // ------------------------------------------------------------------------------------------------------------------
-        // [3] RESULT-DATEN
-
-        Log.d("malte4", " Ergebnis der Auswahl: " + resultFrag1Data.toString());
-        Log.d("malte4", " Ergebnis der Auswahl: " + resultFrag2Data.toString());
-        /*
-        hier dtoResultTo und dtoResultReturn (bei dem vorher noch testen, ob überhaupt return gewählt) abgreifen
-         */
-
-
     }
 
 
@@ -158,23 +148,18 @@ public class sortScreen3 extends AppCompatActivity {
                 properties.clear();
                 properties.add(filterResultProperty);
                 // [2] refill data base
-                dataBaseMockUp = new DataBaseMockUp("vienna", "hbf", "innsbruck", "hbf", new DataDate(15,5,2023), DataEnumTransport.Train, false);
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Car_Sharing, false);
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus, false);
-                dataBaseMockUp.addAnotherDay("vienna", "westbahnhof", "innsbruck", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus, false);
-                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(15,5,2023), DataEnumTransport.Bus, true);
-                dataBaseMockUp.addAnotherDay("innsbruck", "hbf", "vienna", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus, true);
-
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "innsbruck", "hbf",new DataDate(16,5,2023), DataEnumTransport.Bus, false);
-                dataBaseMockUp.addAnotherDay("vienna", "hbf", "frankfurt", "hbf",new DataDate(15,5,2023), DataEnumTransport.Train, false);
-                Log.d("malte", "Ergebnis database size: " + dataBaseMockUp.getDataBaseMockUp().size());
+                dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate,  DataEnumTransport.Car_Sharing, false);
+                dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
+                if(!isOneWay){
+                    dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+                }
 
                 // [3] filter database
                 filteredDataConnection1 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(0).getStartDate(), incomingData.get(0).getStartTime(), incomingData.get(0).getStartCity(), incomingData.get(0).getDestinationCity());
                 filteredDataConnection2 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(1).getStartDate(), incomingData.get(1).getStartTime(), incomingData.get(1).getStartCity(), incomingData.get(1).getDestinationCity());
 
                 // [4] show result
-                String loggerResult = "Result { ";
+                /*String loggerResult = "Result { ";
                 for (DataConnection c: filteredDataConnection1) {
                     loggerResult += c.toStringShort();
                 }
@@ -188,7 +173,7 @@ public class sortScreen3 extends AppCompatActivity {
                 }
                 loggerResult2 += " }";
                 Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + loggerResult2);
-                Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + filteredDataConnection2.size());
+                Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + filteredDataConnection2.size());*/
 
 
                 // [5] send fresh data to tab1 and tab2
@@ -235,18 +220,12 @@ public class sortScreen3 extends AppCompatActivity {
         this.resultFrag1Data = resultFrag1Data;
         dtoResultTo.clear();
         dtoResultTo.add(this.resultFrag1Data);
-        Log.d("transaction2", "AUFRUF (isOneWay) dtoResultTo: " + dtoResultTo.get(0) + " listenLänge: " + dtoResultTo.size());
-        Log.d("transaction2", "ÜBERSICHT dtoResultTo: " + dtoResultTo.size());
-        Log.d("transaction2", "ÜBERSICHT dtoResultReturn: " + dtoResultReturn.size());
     }
 
     public void setResultFrag2Data(DataConnection resultFrag2Data) {
         this.resultFrag2Data = resultFrag2Data;
         dtoResultReturn.clear();
         dtoResultReturn.add(this.resultFrag2Data);
-        Log.d("transaction2", "AUFRUF (isOneWay) dtoResultReturn: " + dtoResultReturn.get(0) + " listenLänge: " + dtoResultReturn.size());
-        Log.d("transaction2", "ÜBERSICHT dtoResultTo: " + dtoResultTo.size());
-        Log.d("transaction2", "ÜBERSICHT dtoResultReturn: " + dtoResultReturn.size());
     }
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
@@ -271,12 +250,9 @@ public class sortScreen3 extends AppCompatActivity {
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
                 if(isOneWay){
                     intent.putExtra("firstResult", dtoResultTo.get(0));
-                    Log.d("transaction2" , "isOneWay firstResult: " + dtoResultTo.get(0));
                 } else {
                     intent.putExtra("firstResult", dtoResultTo.get(0));
                     intent.putExtra("secondResult", dtoResultReturn.get(0));
-                    Log.d("transaction2" , "!isOneWay firstResult: " + dtoResultTo.get(0));
-                    Log.d("transaction2" , "!isOneWay secondResult: " + dtoResultReturn.get(0));
                 }
                 startActivity(intent);
             }
