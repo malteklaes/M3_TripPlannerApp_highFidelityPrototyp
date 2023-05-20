@@ -278,30 +278,30 @@ public class DataConnection implements Serializable {
     private DataTime calculateRandomDurationDependingOnType(DataEnumTransport transportType){
         Random random = new Random();
         Random random2 = new Random();
-        DataTime randomElementDuration = new DataTime(random.nextInt(58) + 1,random2.nextInt(23) + 1);
+        DataTime randomElementDuration = new DataTime(random.nextInt(30) + 1,random2.nextInt(2) + 1);
         double fastFactor = 0.1;
         switch (transportType){
             case Car_Sharing:
                 fastFactor = 0.2;
-                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(2))*fastFactor));
             case Bus:
                 fastFactor = 0.9;
-                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(2))*fastFactor));
             case Ship:
                 fastFactor = 0.7;
-                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(2))*fastFactor));
             case Train:
                 fastFactor = 0.8;
-                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(2))*fastFactor));
             case Plane:
                 fastFactor = 0.1;
-                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(2))*fastFactor));
             case Mix:
                 fastFactor = 0.5;
-                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(2))*fastFactor));
             default:
                 fastFactor = 0.7;
-                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(58))*fastFactor));
+                return randomElementDuration = new DataTime((int)((random.nextInt(58) + 1)*fastFactor),(int)((random2.nextInt(2))*fastFactor));
         }
     }
 
