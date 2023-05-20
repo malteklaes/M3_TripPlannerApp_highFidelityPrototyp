@@ -444,11 +444,6 @@ public class mainScreen2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 performSearch();
-
-                //Setting saved user inputs free
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.apply();
             }
         });
 
