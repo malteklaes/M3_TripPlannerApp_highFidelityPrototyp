@@ -105,13 +105,15 @@ public class resultScreen4 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultScreen4.this, sortScreen3.class);
-                intent.putExtra("startCity", originalIncomingData.getStartCity());
-                intent.putExtra("destinationCity", originalIncomingData.getDestinationCity());
-                intent.putExtra("startDate", originalIncomingData.getStartDate());
-                intent.putExtra("startTime", originalIncomingData.getStartTime());
-                intent.putExtra("returnDate", originalIncomingData.getReturnDate());
-                intent.putExtra("returnTime", originalIncomingData.getReturnTime());
-                intent.putExtra("isOneWay", originalIncomingData.isReturn());
+                if(originalIncomingData != null) {
+                    intent.putExtra("startCity", originalIncomingData.getStartCity());
+                    intent.putExtra("destinationCity", originalIncomingData.getDestinationCity());
+                    intent.putExtra("startDate", originalIncomingData.getStartDate());
+                    intent.putExtra("startTime", originalIncomingData.getStartTime());
+                    intent.putExtra("returnDate", originalIncomingData.getReturnDate());
+                    intent.putExtra("returnTime", originalIncomingData.getReturnTime());
+                    intent.putExtra("isOneWay", originalIncomingData.isReturn());
+                }
                 startActivity(intent);
             }
         });

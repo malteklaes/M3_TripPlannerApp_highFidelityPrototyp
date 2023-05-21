@@ -67,16 +67,27 @@ public class sortScreen3 extends AppCompatActivity {
         // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // [1] retrieving data inputs from search fields
         Intent intent = getIntent();
-        startCity = intent.getStringExtra("startCity");
-        destinationCity = intent.getStringExtra("destinationCity");
-        startDate = (DataDate) intent.getSerializableExtra("startDate");
-        Log.d("transaction", " startDate: " + startDate);
-        startTime = (DataTime) intent.getSerializableExtra("startTime");
-        returnDate = (DataDate) intent.getSerializableExtra("returnDate");
-        returnTime = (DataTime) intent.getSerializableExtra("returnTime");
-        isOneWay = intent.getBooleanExtra("isOneWay", false);
+        if(intent == null || intent.getStringExtra("startCity") == null){
+            Log.d("change", " intent1: " + (intent == null));
+            startCity = "";
+            destinationCity = "";
+            startDate = new DataDate(0,0,0);
+            startTime = new DataTime(0,0);
+            returnDate = new DataDate(0,0,0);
+            returnTime = new DataTime(0,0);
+            isOneWay = false;
+        } else {
+            Log.d("change", " intent2: " + (intent == null) + " erster Ergebnis: " + intent.getStringExtra("startCity"));
+            startCity = intent.getStringExtra("startCity");
+            destinationCity = intent.getStringExtra("destinationCity");
+            startDate = (DataDate) intent.getSerializableExtra("startDate");
+            Log.d("transaction", " startDate: " + startDate);
+            startTime = (DataTime) intent.getSerializableExtra("startTime");
+            returnDate = (DataDate) intent.getSerializableExtra("returnDate");
+            returnTime = (DataTime) intent.getSerializableExtra("returnTime");
+            isOneWay = intent.getBooleanExtra("isOneWay", false);
+        }
         originalIncomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime, isOneWay));
-
 
         //getting chosen trip
         incomingData.clear();
@@ -94,11 +105,13 @@ public class sortScreen3 extends AppCompatActivity {
 
         // ------------------------------------------------------------------------------------------------------------------
         // [1] example mock database-data with incoming data
-        dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate,  DataEnumTransport.Car_Sharing, false);
-        dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
+        if(!startCity.equals("")) {
+            dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate, DataEnumTransport.Car_Sharing, false);
+            dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
 
-        if(!isOneWay){
-            dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+            if (!isOneWay) {
+                dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+            }
         }
 
 
@@ -148,10 +161,12 @@ public class sortScreen3 extends AppCompatActivity {
                 properties.clear();
                 properties.add(filterResultProperty);
                 // [2] refill data base
-                dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate,  DataEnumTransport.Car_Sharing, false);
-                dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
-                if(!isOneWay){
-                    dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+                if(!startCity.equals("")) {
+                    dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate, DataEnumTransport.Car_Sharing, false);
+                    dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
+                    if (!isOneWay) {
+                        dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+                    }
                 }
 
                 // [3] filter database
