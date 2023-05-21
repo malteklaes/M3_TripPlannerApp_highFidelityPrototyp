@@ -38,14 +38,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * this class ....
+ */
 public class mainScreen2 extends AppCompatActivity {
 
-    private List<DataConnection> inputDataConnections=new ArrayList<DataConnection>();
 
-    private DataConnection outwardConnection;
-    private DataConnection inwardConnection;
-
-    private static final String[] Cities = new String[]{"Hamburg", "Cologne", "Graz", "Vienna", "Innsbruck", "Prag", "Paris", "Berlin", "Rom", "Warschau", "Budapest"}; //String[] Cities that are in AutoCompleteTextview startCity_input and destinationCity_input
+    private static final String[] Cities = new String[]{"Hamburg", "Cologne", "Graz", "Vienna", "Innsbruck", "Prague", "Paris", "Berlin", "Rome", "Warsaw", "Budapest"}; //String[] Cities that are in AutoCompleteTextview startCity_input and destinationCity_input
     private AutoCompleteTextView editStart;
     private AutoCompleteTextView editDestination;
     private String startCity;
@@ -65,7 +64,13 @@ public class mainScreen2 extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
 
-
+    /**
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -249,9 +254,12 @@ public class mainScreen2 extends AppCompatActivity {
 
     }
 
-    //Saving User Input
+
+    /**
+     * Saving User Input
+     */
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         String savedStart = sharedPreferences.getString("startCity", "");
@@ -307,6 +315,10 @@ public class mainScreen2 extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * @param view
+     */
     public void switch_CityInputs (View view) {
         String startText = editStart.getText().toString();
         String destinationText = editDestination.getText().toString();
@@ -323,6 +335,10 @@ public class mainScreen2 extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param view
+     */
     public void select_chip_oneWay (View view) {
         oneWay.setChecked(true);
         bothWay.setChecked(false);
@@ -337,6 +353,10 @@ public class mainScreen2 extends AppCompatActivity {
         editor.apply();
     }
 
+    /**
+     *
+     * @param view
+     */
     public void select_chip_bothWays (View view) {
         oneWay.setChecked(false);
         bothWay.setChecked(true);
@@ -351,21 +371,18 @@ public class mainScreen2 extends AppCompatActivity {
         editor.apply();
     }
 
-
-    //Initiating the search - sending retrieved data
+    /**
+     *  Initiating the search - sending retrieved data
+     */
     private void performSearch(){
         //getting data
         Set<String> CitiesSet = new HashSet<>(Arrays.asList(Cities));
         String startCity = editStart.getText().toString();
         String destinationCity = editDestination.getText().toString();
-
-
-        //String startDate = date1.getText().toString();
         DataDate startDate = this.startDate;
-        Log.d("transaction", "startDate screen2:" + startDate);
-        DataTime startTime = this.startTime; //  time1.getText().toString();
-        DataDate returnDate = this.returnDate; // date2.getText().toString();
-        DataTime returnTime = this.returnTime; // time2.getText().toString();
+        DataTime startTime = this.startTime;
+        DataDate returnDate = this.returnDate;
+        DataTime returnTime = this.returnTime;
         boolean isOneWay = oneWay.isChecked();
 
         //Dialog if City not found
@@ -423,13 +440,15 @@ public class mainScreen2 extends AppCompatActivity {
             intent.putExtra("returnDate", returnDate);
             intent.putExtra("returnTime", returnTime);
             intent.putExtra("isOneWay", isOneWay);
-            Log.d("transaction", " transaction1 intent: " + intent);
 
             startActivity(intent);
         }
     }
 
-    //Managing buttons
+
+    /**
+     * Managing buttons
+     */
     // @Override
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);

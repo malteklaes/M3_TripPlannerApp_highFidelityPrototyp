@@ -66,7 +66,7 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
 
         // for changing color of row item when clicked on it
         if(chosenRowItem==position){
-            String chosenRowItemColor = "#FFA500";
+            String chosenRowItemColor = "#52307C";
             int chosenRowItemCOLOR = Color.parseColor(chosenRowItemColor);
             holder.cardView.setBackgroundColor(chosenRowItemCOLOR);
         } else {
