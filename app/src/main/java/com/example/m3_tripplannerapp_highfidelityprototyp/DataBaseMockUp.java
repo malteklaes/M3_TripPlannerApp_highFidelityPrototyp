@@ -12,6 +12,7 @@ import java.util.Random;
 
 /**
  * mocks a fictive database with random entries (dataConnections)
+ * @author TripPlannerApp-Team
  */
 public class DataBaseMockUp {
 
@@ -279,24 +280,36 @@ public class DataBaseMockUp {
     }
 
     // FILTER FUNCTIONS -----------------------------------------------------------------------
+
+    /**
+     * filters according to given parameters
+     * @param database
+     * @param filterProperties
+     * @param filterDate
+     * @param filterTime
+     * @param filterStartCity
+     * @param filterDestinationCity
+     * @return
+     */
     public List<DataConnection> filterByParameters(List<DataConnection> database, List<DataEnumTransportProperties> filterProperties, DataDate filterDate, DataTime filterTime, String filterStartCity, String filterDestinationCity){
         List<DataConnection> filteredResult = new ArrayList<>();
         filteredResult = this.deepCopyListOfDataConnection(database);
         // [1] filter by property
         filteredResult = this.retrieveDataByTransportProperties(filteredResult, filterProperties);
-        Log.d("malte5", "Ergebnis1: " + filteredResult);
         // [2] fitler by date
         filteredResult = this.retrieveDataByStartDateEqual(filteredResult, filterDate);
-        Log.d("malte5", "Ergebnis2: " + filteredResult.size());
         // [3] fitler by time
         filteredResult = this.retrieveDataByStartTimeLater(filteredResult, filterTime);
-        Log.d("malte5", "Ergebnis3: " + filteredResult.size());
         // [4] fitler by city and location
         filteredResult = this.retrieveDataByStartCityAndDestinatioCity(filteredResult, filterStartCity, filterDestinationCity);
-        Log.d("malte5", "Ergebnis4: " + filteredResult.size());
         return filteredResult;
     }
 
+    /**
+     * copies incoming source deeply to this list
+     * @param source
+     * @return
+     */
     private List<DataConnection> deepCopyListOfDataConnection(List<DataConnection> source){
         List<DataConnection> copyObject = new ArrayList<>();
         if(source != null && source.size() > 0){
@@ -326,6 +339,11 @@ public class DataBaseMockUp {
         return new DataDate(randomDay, randomMonth, 2023);
     }
 
+    /**
+     * calculate random prize depending on transport type
+     * @param transportType
+     * @return
+     */
     private double calculateRandomPrizeDependingOnType(DataEnumTransport transportType){
         Random random = new Random();
         int randomElementPrize = random.nextInt(500) + 1;
@@ -347,11 +365,22 @@ public class DataBaseMockUp {
         }
     }
 
+    /**
+     * s
+     * @param startCity
+     * @param startLocation
+     * @param destinationCity
+     * @param destinationLocation
+     * @param date
+     * @param isReturn
+     * @param types
+     */
     public void calculateRandomDataEntries(String startCity, String startLocation, String destinationCity, String destinationLocation, DataDate date, boolean isReturn, DataEnumTransport... types){
         for (DataEnumTransport type: types) {
             this.addAnotherDay(startCity, startLocation, destinationCity, destinationLocation, date, type, isReturn);
         }
     }
+
     public List<DataConnection> getDataBaseMockUp() {
         return dataBaseMockUp;
     }

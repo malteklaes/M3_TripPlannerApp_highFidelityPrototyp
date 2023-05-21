@@ -20,10 +20,12 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this class manages to filter (preferences) and sort (alphabetically)
+ * depending on the input of screen 2
+ */
 public class sortScreen3 extends AppCompatActivity {
 
-    // mocked dataBase
-    List<DataConnection> dataBaseMock = new ArrayList<>();
     DataBaseMockUp dataBaseMockUp = new DataBaseMockUp();
     List<DataConnection> filteredDataConnection1 = new ArrayList<>();
     List<DataConnection> filteredDataConnection2 = new ArrayList<>();
@@ -58,14 +60,22 @@ public class sortScreen3 extends AppCompatActivity {
     private DataTime returnTime;
     private boolean isOneWay = true;
 
+    /**
+     * manages main actions: handles incoming data, sort out data from the database and
+     * bundles result for further transaction
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // [0] general set up
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_screen3);
 
-        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        // [1] retrieving data inputs from search fields
+       // [1] retrieving data inputs from search fields
         Intent intent = getIntent();
         if(intent == null || intent.getStringExtra("startCity") == null){
             Log.d("change", " intent1: " + (intent == null));
@@ -99,11 +109,6 @@ public class sortScreen3 extends AppCompatActivity {
             incomingData.add(new DataConnection("", "", "", "", new DataDate(0,0,0), new DataTime(0,0), true));
         }
 
-
-
-
-
-        // ------------------------------------------------------------------------------------------------------------------
         // [1] example mock database-data with incoming data
         if(!startCity.equals("")) {
             dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate, DataEnumTransport.Car_Sharing, false);
@@ -115,7 +120,6 @@ public class sortScreen3 extends AppCompatActivity {
         }
 
 
-        // ------------------------------------------------------------------------------------------------------------------
         // [1] send initially data to tab1 and tab2
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.toReturnTabLayout);
@@ -128,7 +132,6 @@ public class sortScreen3 extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         SortScreen3fragment1 neu = SortScreen3fragment1.newInstance("hallo");
 
-        // ------------------------------------------------------------------------------------------------------------------
         // [2] set up drop down filter menu and interaction
         filterSpinner = findViewById(R.id.filterSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options);
@@ -172,8 +175,6 @@ public class sortScreen3 extends AppCompatActivity {
                 // [3] filter database
                 filteredDataConnection1 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(0).getStartDate(), incomingData.get(0).getStartTime(), incomingData.get(0).getStartCity(), incomingData.get(0).getDestinationCity());
                 filteredDataConnection2 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(1).getStartDate(), incomingData.get(1).getStartTime(), incomingData.get(1).getStartCity(), incomingData.get(1).getDestinationCity());
-                Log.d("check", "properties: " + properties);
-                Log.d("check", "filteredDataConnection1: " + filteredDataConnection1);
 
                 // [4] send fresh data to tab1 and tab2
                 SortScreen3fragment1 newFrag1 = SortScreen3fragment1.newInstance(filterResult);
@@ -191,7 +192,6 @@ public class sortScreen3 extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 filterResult = selectedOption[0];
-                Log.d("malte", "Ergebnis, dass nichts gemacht wurde: " + filterResult);
             }
         });
     }
@@ -226,6 +226,10 @@ public class sortScreen3 extends AppCompatActivity {
         dtoResultReturn.clear();
         dtoResultReturn.add(this.resultFrag2Data);
     }
+
+    /**
+     * setup all necessary buttons
+     */
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
         Button LetsGo = findViewById(R.id.button_letsgo);

@@ -36,6 +36,11 @@ public class DataDate implements Comparable<DataDate>, Serializable {
     }
 
 
+    /**
+     * compare Date according to year, than month, than day
+     * @param other the object to be compared.
+     * @return
+     */
     @Override
     public int compareTo(DataDate other) {
         if (this.year < other.year) {
@@ -59,6 +64,11 @@ public class DataDate implements Comparable<DataDate>, Serializable {
         }
     }
 
+    /**
+     * compares Date using compareTo
+     * @param thatDate
+     * @return
+     */
     public DataEnumTimeComparison compareThisDateToThatDate(DataDate thatDate){
         if(this == null) return DataEnumTimeComparison.Later;
         if(thatDate == null) return DataEnumTimeComparison.Earlier;

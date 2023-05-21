@@ -19,6 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+/**
+ * this class manages both fragments to show results
+ */
 public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScreen3RecylerViewAdapter.MyViewHolder> {
 
     Context context;
@@ -28,12 +31,24 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
     private int chosenRowItem = -1;
 
 
-
+    /**
+     * sets context and connectionList
+     * @param context
+     * @param connectionList
+     */
     public SortScreen3RecylerViewAdapter(Context context, List<DataConnection> connectionList){
         this.context = context;
         this.connectionList = connectionList;
     }
 
+    /**
+     * sets up the inflator for the view
+     * @param parent The ViewGroup into which the new View will be added after it is bound to
+     *               an adapter position.
+     * @param viewType The view type of the new View.
+     *
+     * @return
+     */
     @NonNull
     @Override
     public SortScreen3RecylerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,6 +57,12 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
         return new SortScreen3RecylerViewAdapter.MyViewHolder(view);
     }
 
+    /**
+     * manages to set information into each row element for showing the result
+     * @param holder The ViewHolder which should be updated to represent the contents of the
+     *        item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(@NonNull SortScreen3RecylerViewAdapter.MyViewHolder holder, int position) {
         DataConnection data = this.connectionList.get(position);
@@ -70,20 +91,23 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
             int chosenRowItemCOLOR = Color.parseColor(chosenRowItemColor);
             holder.cardView.setBackgroundColor(chosenRowItemCOLOR);
         } else {
-            String normalRowItemColor = "#111f28";
+            String darkBlueColor = "#111f28";
+            String normalRowItemColor = darkBlueColor;
             int normalRowItemCOLOR = Color.parseColor(normalRowItemColor);
             holder.cardView.setBackgroundColor(normalRowItemCOLOR);
         }
 
     }
 
+    /**
+     * delegates data to right fragment
+     * @param data
+     */
     private void handleRowItemClick(DataConnection data) {
         // execute action, when row element was clicked
         if(!data.isReturn()){
-            Log.d("transaction4" , "1 data.isReturn(): " + data.isReturn());
             ((sortScreen3) context).setResultFrag1Data(data);
         } else {
-            Log.d("transaction4" , "2 data.isReturn(): " + data.isReturn());
             ((sortScreen3) context).setResultFrag2Data(data);
         }
     }
@@ -93,6 +117,9 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
         return this.connectionList.size();
     }
 
+    /**
+     * inner class to manages viewHolder for RecyclerView
+     */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         // to change row item color
@@ -101,7 +128,10 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
         TextView tvDirection, tvPrize, tvStartTime, tvType;
 
 
-
+        /**
+         * main constructor to set all necessary object variables
+         * @param itemView
+         */
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 

@@ -49,6 +49,14 @@ public class DataConnection implements Serializable {
     private List<DataEnumTransportProperties> transportProperties;
 
 
+    /**
+     *
+     * @param startCity
+     * @param startLocation
+     * @param destinationCity
+     * @param destinationLocation
+     * @param isReturn
+     */
     public DataConnection(String startCity, String startLocation, String destinationCity, String destinationLocation, boolean isReturn) {
         this.startCity = startCity;
         this.startLocation = startLocation;
@@ -129,6 +137,10 @@ public class DataConnection implements Serializable {
         this.isReturn = isReturn;
     }
 
+    /**
+     * constructor for quick copy
+     * @param source
+     */
     public DataConnection(DataConnection source){
         this.startCity = source.getStartCity();
         this.startLocation = source.getStartLocation();;
@@ -207,6 +219,9 @@ public class DataConnection implements Serializable {
         return new DataTime(date.getMinutes(), date.getHours());
     }
 
+    /**
+     * calculates transport properties according to transport type
+     */
     private void calculateTransportProperties(){
         switch (this.type) {
             case Car_Sharing:
@@ -315,7 +330,6 @@ public class DataConnection implements Serializable {
     }
 
     // SETTER -----------------------------------------------------------------------
-
     public void setIntermediatStations(List<DataConnection> intermediatStations) {
         this.intermediatStations = intermediatStations;
     }
@@ -347,9 +361,8 @@ public class DataConnection implements Serializable {
         this.duration = duration;
     }
 
+
     // GETTER -----------------------------------------------------------------------
-
-
     public String getStartCity() {
         return startCity;
     }
@@ -496,12 +509,6 @@ public class DataConnection implements Serializable {
             return false;
         if(!this.startTime.equals(compareData.startTime))
             return false;
-        /*if(!this.returnDate.equals(compareData.returnDate))
-            return false;
-        if(!this.returnTime.equals(compareData.returnTime))
-            return false;
-        if(this.isReturn!=compareData.isReturn)
-            return false;*/
         if(this.duration!=compareData.duration)
             return false;
         if(this.prize!=compareData.prize)

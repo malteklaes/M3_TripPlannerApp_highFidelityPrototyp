@@ -30,6 +30,11 @@ public class DataTime implements Comparable<DataTime>, Serializable {
     }
 
 
+    /**
+     * compares Time by first hour, than minute
+     * @param other the object to be compared.
+     * @return
+     */
     @Override
     public int compareTo(DataTime other) {
         if (this.hour < other.hour) {
@@ -47,6 +52,11 @@ public class DataTime implements Comparable<DataTime>, Serializable {
         }
     }
 
+    /**
+     * compares time by using compareTo
+     * @param thatTime
+     * @return
+     */
     public DataEnumTimeComparison compareThisTimeToThatTime(DataTime thatTime){
         if(this == null) return DataEnumTimeComparison.Later;
         if(thatTime == null) return DataEnumTimeComparison.Earlier;

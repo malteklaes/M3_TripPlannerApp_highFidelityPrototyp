@@ -30,8 +30,9 @@ public class SortScreen3fragment1 extends Fragment {
     private static List<DataConnection> DATA_CONNECTION = new ArrayList<>();
 
 
-
-
+    /**
+     * general constructor
+     */
     public SortScreen3fragment1() {
         // Required empty public constructor
     }
@@ -52,12 +53,22 @@ public class SortScreen3fragment1 extends Fragment {
     }
 
 
-
-
     public static void setDATACONNECTION(List<DataConnection> argParam) {
         DATA_CONNECTION = argParam;
     }
 
+    /**
+     * manaages main action to either control showing list-results or nothing at all
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sort_screen3fragment1, container, false);
