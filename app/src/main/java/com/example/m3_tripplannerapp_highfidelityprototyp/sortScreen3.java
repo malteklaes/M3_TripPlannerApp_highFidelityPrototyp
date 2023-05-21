@@ -47,6 +47,7 @@ public class sortScreen3 extends AppCompatActivity {
 
     private static List<DataConnection> dtoResultTo = new ArrayList<>();
     private static List<DataConnection> dtoResultReturn = new ArrayList<>();
+    private static List<DataConnection> originalIncomingData = new ArrayList<>();
 
     //User input data retrieval
     private String startCity;
@@ -66,14 +67,27 @@ public class sortScreen3 extends AppCompatActivity {
         // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // [1] retrieving data inputs from search fields
         Intent intent = getIntent();
-        startCity = intent.getStringExtra("startCity");
-        destinationCity = intent.getStringExtra("destinationCity");
-        startDate = (DataDate) intent.getSerializableExtra("startDate");
-        Log.d("transaction", " startDate: " + startDate);
-        startTime = (DataTime) intent.getSerializableExtra("startTime");
-        returnDate = (DataDate) intent.getSerializableExtra("returnDate");
-        returnTime = (DataTime) intent.getSerializableExtra("returnTime");
-        isOneWay = intent.getBooleanExtra("isOneWay", false);
+        if(intent == null || intent.getStringExtra("startCity") == null){
+            Log.d("change", " intent1: " + (intent == null));
+            startCity = "";
+            destinationCity = "";
+            startDate = new DataDate(0,0,0);
+            startTime = new DataTime(0,0);
+            returnDate = new DataDate(0,0,0);
+            returnTime = new DataTime(0,0);
+            isOneWay = false;
+        } else {
+            Log.d("change", " intent2: " + (intent == null) + " erster Ergebnis: " + intent.getStringExtra("startCity"));
+            startCity = intent.getStringExtra("startCity");
+            destinationCity = intent.getStringExtra("destinationCity");
+            startDate = (DataDate) intent.getSerializableExtra("startDate");
+            Log.d("transaction", " startDate: " + startDate);
+            startTime = (DataTime) intent.getSerializableExtra("startTime");
+            returnDate = (DataDate) intent.getSerializableExtra("returnDate");
+            returnTime = (DataTime) intent.getSerializableExtra("returnTime");
+            isOneWay = intent.getBooleanExtra("isOneWay", false);
+        }
+        originalIncomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime, isOneWay));
 
         //getting chosen trip
         incomingData.clear();
@@ -87,13 +101,17 @@ public class sortScreen3 extends AppCompatActivity {
 
 
 
+
+
         // ------------------------------------------------------------------------------------------------------------------
         // [1] example mock database-data with incoming data
-        dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate,  DataEnumTransport.Car_Sharing, false);
-        dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
+        if(!startCity.equals("")) {
+            dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate, DataEnumTransport.Car_Sharing, false);
+            dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
 
-        if(!isOneWay){
-            dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+            if (!isOneWay) {
+                dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+            }
         }
 
 
@@ -137,46 +155,27 @@ public class sortScreen3 extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedOption[0] = (String) options[position];
                 filterResult = selectedOption[0];
-                Log.d("malte", "Ergebnis filter drop down: " + selectedOption[0]);
-
-
-
-
 
                 // [1] database related
                 filterResultProperty = convertStringToTransportProperty(filterResult);
                 properties.clear();
                 properties.add(filterResultProperty);
                 // [2] refill data base
-                dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate,  DataEnumTransport.Car_Sharing, false);
-                dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
-                if(!isOneWay){
-                    dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+                if(!startCity.equals("")) {
+                    dataBaseMockUp = new DataBaseMockUp(startCity, "Hbf", destinationCity, "Hbf", startDate, DataEnumTransport.Car_Sharing, false);
+                    dataBaseMockUp.calculateRandomDataEntries(startCity, "Hbf", destinationCity, "Hbf", startDate, false, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus, DataEnumTransport.Train);
+                    if (!isOneWay) {
+                        dataBaseMockUp.calculateRandomDataEntries(destinationCity, "Hbf", startCity, "Hbf", returnDate, true, DataEnumTransport.Car_Sharing, DataEnumTransport.Bus);
+                    }
                 }
 
                 // [3] filter database
                 filteredDataConnection1 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(0).getStartDate(), incomingData.get(0).getStartTime(), incomingData.get(0).getStartCity(), incomingData.get(0).getDestinationCity());
                 filteredDataConnection2 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(1).getStartDate(), incomingData.get(1).getStartTime(), incomingData.get(1).getStartCity(), incomingData.get(1).getDestinationCity());
+                Log.d("check", "properties: " + properties);
+                Log.d("check", "filteredDataConnection1: " + filteredDataConnection1);
 
-                // [4] show result
-                /*String loggerResult = "Result { ";
-                for (DataConnection c: filteredDataConnection1) {
-                    loggerResult += c.toStringShort();
-                }
-                loggerResult += " }";
-                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + loggerResult);
-                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + filteredDataConnection1.size());
-
-                String loggerResult2 = "Result2 { ";
-                for (DataConnection c: filteredDataConnection2) {
-                    loggerResult2 += c.toStringShort();
-                }
-                loggerResult2 += " }";
-                Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + loggerResult2);
-                Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + filteredDataConnection2.size());*/
-
-
-                // [5] send fresh data to tab1 and tab2
+                // [4] send fresh data to tab1 and tab2
                 SortScreen3fragment1 newFrag1 = SortScreen3fragment1.newInstance(filterResult);
                 newFrag1.setDATACONNECTION(filteredDataConnection1);
                 SortScreen3fragment2 newFrag2 = SortScreen3fragment2.newInstance(filterResult);
@@ -250,9 +249,12 @@ public class sortScreen3 extends AppCompatActivity {
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
                 if(isOneWay){
                     intent.putExtra("firstResult", dtoResultTo.get(0));
+                    intent.putExtra("originalIncomingData", originalIncomingData.get(0));
+
                 } else {
                     intent.putExtra("firstResult", dtoResultTo.get(0));
                     intent.putExtra("secondResult", dtoResultReturn.get(0));
+                    intent.putExtra("originalIncomingData", originalIncomingData.get(0));
                 }
                 startActivity(intent);
             }

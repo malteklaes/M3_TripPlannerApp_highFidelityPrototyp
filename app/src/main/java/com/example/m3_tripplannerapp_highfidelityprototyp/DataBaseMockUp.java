@@ -284,16 +284,16 @@ public class DataBaseMockUp {
         filteredResult = this.deepCopyListOfDataConnection(database);
         // [1] filter by property
         filteredResult = this.retrieveDataByTransportProperties(filteredResult, filterProperties);
-        Log.d("malte5", "Ergebnis: " + filteredResult.size());
+        Log.d("malte5", "Ergebnis1: " + filteredResult);
         // [2] fitler by date
         filteredResult = this.retrieveDataByStartDateEqual(filteredResult, filterDate);
-        Log.d("malte5", "Ergebnis: " + filteredResult.size());
+        Log.d("malte5", "Ergebnis2: " + filteredResult.size());
         // [3] fitler by time
         filteredResult = this.retrieveDataByStartTimeLater(filteredResult, filterTime);
-        Log.d("malte5", "Ergebnis: " + filteredResult.size());
+        Log.d("malte5", "Ergebnis3: " + filteredResult.size());
         // [4] fitler by city and location
         filteredResult = this.retrieveDataByStartCityAndDestinatioCity(filteredResult, filterStartCity, filterDestinationCity);
-        Log.d("malte5", "Ergebnis: " + filteredResult.size());
+        Log.d("malte5", "Ergebnis4: " + filteredResult.size());
         return filteredResult;
     }
 
