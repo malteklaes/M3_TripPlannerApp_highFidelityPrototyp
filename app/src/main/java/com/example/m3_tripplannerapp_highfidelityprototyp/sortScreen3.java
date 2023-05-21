@@ -137,11 +137,6 @@ public class sortScreen3 extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedOption[0] = (String) options[position];
                 filterResult = selectedOption[0];
-                Log.d("malte", "Ergebnis filter drop down: " + selectedOption[0]);
-
-
-
-
 
                 // [1] database related
                 filterResultProperty = convertStringToTransportProperty(filterResult);
@@ -157,26 +152,10 @@ public class sortScreen3 extends AppCompatActivity {
                 // [3] filter database
                 filteredDataConnection1 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(0).getStartDate(), incomingData.get(0).getStartTime(), incomingData.get(0).getStartCity(), incomingData.get(0).getDestinationCity());
                 filteredDataConnection2 = dataBaseMockUp.filterByParameters(dataBaseMockUp.getDataBaseMockUp(), properties, incomingData.get(1).getStartDate(), incomingData.get(1).getStartTime(), incomingData.get(1).getStartCity(), incomingData.get(1).getDestinationCity());
+                Log.d("check", "properties: " + properties);
+                Log.d("check", "filteredDataConnection1: " + filteredDataConnection1);
 
-                // [4] show result
-                /*String loggerResult = "Result { ";
-                for (DataConnection c: filteredDataConnection1) {
-                    loggerResult += c.toStringShort();
-                }
-                loggerResult += " }";
-                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + loggerResult);
-                Log.d("malte", "Ergebnis Suche nach property: " + properties.toString() + " ist: " + filteredDataConnection1.size());
-
-                String loggerResult2 = "Result2 { ";
-                for (DataConnection c: filteredDataConnection2) {
-                    loggerResult2 += c.toStringShort();
-                }
-                loggerResult2 += " }";
-                Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + loggerResult2);
-                Log.d("malte", "Ergebnis Suche nach property2: " + properties.toString() + " ist: " + filteredDataConnection2.size());*/
-
-
-                // [5] send fresh data to tab1 and tab2
+                // [4] send fresh data to tab1 and tab2
                 SortScreen3fragment1 newFrag1 = SortScreen3fragment1.newInstance(filterResult);
                 newFrag1.setDATACONNECTION(filteredDataConnection1);
                 SortScreen3fragment2 newFrag2 = SortScreen3fragment2.newInstance(filterResult);
