@@ -34,6 +34,9 @@ public class bookmarksScreen5 extends AppCompatActivity {
     }
 
 
+    /**
+     * sets up ClickListener for home button
+     */
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
         HomeButton.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +48,9 @@ public class bookmarksScreen5 extends AppCompatActivity {
         });
     }
 
+    /**
+     * creates RecyclerView for Bookmarks
+     */
     public void createRecyclerView(){
         recyclerView=findViewById(R.id.bookmarksRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -56,11 +62,22 @@ public class bookmarksScreen5 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * adds bookmark to list if not already added
+     *
+     * @param bookmark
+     */
     public static void addBookmark(DataConnection bookmark){
         //System.out.println("Bookmark already set: "+bookmarks.contains(bookmark));
         if(!bookmarks.contains(bookmark))
             bookmarks.add(bookmark);
     }
+
+    /**
+     * removes bookmark from bookmark list
+     *
+     * @param bookmark
+     */
     public static void removeBookmark(DataConnection bookmark){
         if(bookmarks.contains(bookmark))
             bookmarks.remove(bookmark);

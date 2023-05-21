@@ -30,18 +30,6 @@ public class resultScreen4 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*DataConnection mockedResult1=new DataConnection("Vienna","Hbf","München","Hbf",new DataDate(20,4,2004),new DataTime(56,13), false);
-        DataConnection mockedResult1_1=new DataConnection("Vienna","Hbf","Linz","Hbf",new DataDate(20,4,2004),new DataTime(56,13), false);
-        DataConnection mockedResult1_2=new DataConnection("Linz","Hbf","München","Hbf",new DataDate(20,4,2004),new DataTime(14,13), false);
-        ArrayList<DataConnection> stops=new ArrayList<>();
-        stops.add(mockedResult1_1);
-        stops.add(mockedResult1_2);
-        mockedResult1.setIntermediatStations(stops);
-        inputDataConnections.add(mockedResult1);
-        DataConnection mockedResult2=new DataConnection("Graz","Hbf","St. Pölten","Hbf",new DataDate(20,4,2004),new DataTime(56,23), false);
-        inputDataConnections.add(mockedResult2);*/
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_screen4);
 
@@ -71,6 +59,9 @@ public class resultScreen4 extends AppCompatActivity {
             inputDataConnections.add(resultReturn);
     }
 
+    /**
+     * method for creating RecyclerView for Trips in result screen
+     */
     public void createRecyclerView(){
         recyclerView=findViewById(R.id.resultsRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -82,12 +73,21 @@ public class resultScreen4 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+
+    /**
+     * method for setting button listeners for Home-, Search- and Sort-Button
+     */
     private void setupButtonListeners(){
         Button HomeButton = findViewById(R.id.button_home);
         Button SearchBadge = findViewById(R.id.search_badge);
         Button SortBadge = findViewById(R.id.sort_badge);
 
         HomeButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * defines what happens when HomeButton is clicked
+             *
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultScreen4.this, MainActivity.class);
@@ -96,6 +96,11 @@ public class resultScreen4 extends AppCompatActivity {
         });
 
         SearchBadge.setOnClickListener(new View.OnClickListener() {
+            /**
+             * defines what happens when SearchButton is clicked
+             *
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultScreen4.this, mainScreen2.class);
@@ -103,6 +108,11 @@ public class resultScreen4 extends AppCompatActivity {
             }
         });
         SortBadge.setOnClickListener(new View.OnClickListener() {
+            /**
+             * defines what happens when SortButton is clicked
+             *
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultScreen4.this, sortScreen3.class);

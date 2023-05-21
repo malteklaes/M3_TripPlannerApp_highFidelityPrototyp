@@ -21,12 +21,27 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     List<DataConnection> bookmarks;
     Context context;
 
+    /**
+     * Constructor for creating BookmarksAdapter object
+     *
+     * @param inputDataConnections
+     * @param context
+     */
     public BookmarksAdapter(List<DataConnection> inputDataConnections, Context context) {
         this.bookmarks = inputDataConnections;
         this.context = context;
     }
 
 
+    /**
+     * sets up the inflator for the view
+     *
+     * @param viewGroup The ViewGroup into which the new View will be added after it is bound to
+     *               an adapter position.
+     * @param viewType The view type of the new View.
+     *
+     * @return
+     */
     @Override
     public BookmarksAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
@@ -35,6 +50,13 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         return new BookmarksAdapter.ViewHolder(view);
     }
 
+    /**
+     * sets information for bookmark element
+     *
+     * @param viewHolder The ViewHolder which should be updated to represent the contents of the
+     *        item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(BookmarksAdapter.ViewHolder viewHolder, final int position) {
         //setting data of recyclerView element
@@ -60,6 +82,9 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     }
 
 
+    /**
+     * inner class Viewholder for BookmarkAdapter
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView trip;
         private TextView tripDate;
@@ -72,6 +97,11 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         private Button purchaseButton;
 
 
+        /**
+         * binds data and view elements
+         *
+         * @param view
+         */
         public ViewHolder(View view) {
             super(view);
 
@@ -85,7 +115,15 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
             stopsRecyclerView=(RecyclerView) view.findViewById(R.id.stopsRecyclerView);
             purchaseButton=(Button) view.findViewById(R.id.purchaseButton);
 
+            /**
+             * sets up ClickListener for bookmark button
+             */
             bookmarkButton.setOnClickListener(new View.OnClickListener() {
+                /**
+                 * defines what happens when bookmark button is clicked
+                 *
+                 * @param view
+                 */
                 @Override
                 public void onClick(View view) {
                     //if the user wants to "unbookmark" a trip he needs to confirm it
@@ -111,6 +149,9 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
                 }
             });
 
+            /**
+             * sets up ClickListener for purchase button
+             */
             purchaseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -123,10 +164,22 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     }
 
 
+    /**
+     * Method for getting String of from-to information of resultElement (place)
+     *
+     * @param connection
+     * @return
+     */
     private String printTrip(DataConnection connection) {
         return connection.getStartCity() + " -> " + connection.getDestinationCity() + "  (" + connection.getType().toString() + ")";
     }
 
+    /**
+     * Method for getting String of from-to information of resultElement (date)
+     *
+     * @param connection
+     * @return
+     */
     private String printTripDate(DataConnection connection) {
         String ret = "";
         if(connection.getStartDate().getDay()<10)
@@ -142,6 +195,12 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         return ret+connection.getStartDate().getYear();
     }
 
+    /**
+     * Method for getting String of from-to information of resultElement (time)
+     *
+     * @param connection
+     * @return
+     */
     private String printTripTime(DataConnection connection) {
         String ret = "";
 
@@ -174,14 +233,32 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         return ret;
     }
 
+    /**
+     * Method for getting String of from-to information of resultElement (duration)
+     *
+     * @param connection
+     * @return
+     */
     private String printTripDuration(DataConnection connection) {
         return "Duration: " + connection.getDuration().getHour() + "h " + connection.getDuration().getMinute()+"min";
     }
 
+    /**
+     * Method for getting String of from-to information of resultElement (price and emissions)
+     *
+     * @param connection
+     * @return
+     */
     private String printTripPriceAndEmissions(DataConnection connection) {
         return connection.getPrize() + "€ | ~"+connection.getCO2Bilance()+"kg CO2";
     }
 
+    /**
+     * Method for getting String of from-to information of resultElement (stops)
+     *
+     * @param connection
+     * @return
+     */
     private String printTripStops(DataConnection connection) {
         return "Stops: "+connection.getSwitchTransfer();
     }
