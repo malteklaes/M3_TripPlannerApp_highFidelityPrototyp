@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * this class ....
+ * this class takes user inputs and creates filter to search in database in screen3
  */
 public class mainScreen2 extends AppCompatActivity {
 
@@ -65,7 +65,7 @@ public class mainScreen2 extends AppCompatActivity {
 
 
     /**
-     *
+     * manages main activities
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
      *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
@@ -316,7 +316,7 @@ public class mainScreen2 extends AppCompatActivity {
     }
 
     /**
-     *
+     * manages to switch city input
      * @param view
      */
     public void switch_CityInputs (View view) {
@@ -336,7 +336,7 @@ public class mainScreen2 extends AppCompatActivity {
     }
 
     /**
-     *
+     * manages to provide chip-functionality ("single")
      * @param view
      */
     public void select_chip_oneWay (View view) {
@@ -354,7 +354,7 @@ public class mainScreen2 extends AppCompatActivity {
     }
 
     /**
-     *
+     *manages to provide chip-functionality ("return run")
      * @param view
      */
     public void select_chip_bothWays (View view) {
