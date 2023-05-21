@@ -1,6 +1,7 @@
 package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -8,6 +9,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -106,6 +109,7 @@ public class mainScreen2 extends AppCompatActivity {
         oneWay = findViewById(R.id.oneWay_chip); //initializing oneWay with Chip oneWay_chip
         bothWay = findViewById(R.id.bothWays_chip); //initializing oneWay with Chip bothWays_chip
         oneWay.setChecked(true);
+        oneWay.setChipBackgroundColorResource(R.color.black);
 
         date1 = findViewById(R.id.editTextDate1); //initializing date1 with EditText editTextDate1
         date2 = findViewById(R.id.editTextDate2); //initializing date2 with EditText editTextDate2
@@ -322,6 +326,8 @@ public class mainScreen2 extends AppCompatActivity {
     public void select_chip_oneWay (View view) {
         oneWay.setChecked(true);
         bothWay.setChecked(false);
+        oneWay.setChipBackgroundColorResource(R.color.black);
+        bothWay.setChipBackgroundColorResource(R.color.white);
         date2.setVisibility(View.INVISIBLE);
         time2.setVisibility(View.INVISIBLE);
 
@@ -336,6 +342,8 @@ public class mainScreen2 extends AppCompatActivity {
         bothWay.setChecked(true);
         date2.setVisibility(View.VISIBLE);
         time2.setVisibility(View.VISIBLE);
+        oneWay.setChipBackgroundColorResource(R.color.white);
+        bothWay.setChipBackgroundColorResource(R.color.black);
 
         //saving the User Input State
         SharedPreferences.Editor editor = sharedPreferences.edit();
