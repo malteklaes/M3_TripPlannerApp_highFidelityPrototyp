@@ -47,6 +47,7 @@ public class sortScreen3 extends AppCompatActivity {
 
     private static List<DataConnection> dtoResultTo = new ArrayList<>();
     private static List<DataConnection> dtoResultReturn = new ArrayList<>();
+    private static List<DataConnection> originalIncomingData = new ArrayList<>();
 
     //User input data retrieval
     private String startCity;
@@ -74,6 +75,8 @@ public class sortScreen3 extends AppCompatActivity {
         returnDate = (DataDate) intent.getSerializableExtra("returnDate");
         returnTime = (DataTime) intent.getSerializableExtra("returnTime");
         isOneWay = intent.getBooleanExtra("isOneWay", false);
+        originalIncomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime, isOneWay));
+
 
         //getting chosen trip
         incomingData.clear();
@@ -84,6 +87,8 @@ public class sortScreen3 extends AppCompatActivity {
             incomingData.add(new DataConnection(startCity, "", destinationCity, "", startDate, startTime, false));
             incomingData.add(new DataConnection("", "", "", "", new DataDate(0,0,0), new DataTime(0,0), true));
         }
+
+
 
 
 
@@ -229,9 +234,12 @@ public class sortScreen3 extends AppCompatActivity {
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
                 if(isOneWay){
                     intent.putExtra("firstResult", dtoResultTo.get(0));
+                    intent.putExtra("originalIncomingData", originalIncomingData.get(0));
+
                 } else {
                     intent.putExtra("firstResult", dtoResultTo.get(0));
                     intent.putExtra("secondResult", dtoResultReturn.get(0));
+                    intent.putExtra("originalIncomingData", originalIncomingData.get(0));
                 }
                 startActivity(intent);
             }

@@ -24,6 +24,10 @@ public class resultScreen4 extends AppCompatActivity {
 
     private Context context=this;
 
+    DataConnection resultTo;
+    DataConnection resultReturn;
+    DataConnection originalIncomingData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*DataConnection mockedResult1=new DataConnection("Vienna","Hbf","München","Hbf",new DataDate(20,4,2004),new DataTime(56,13), false);
@@ -47,8 +51,9 @@ public class resultScreen4 extends AppCompatActivity {
 
         //retrieving chosen trip
         Intent intent = getIntent();
-        DataConnection resultTo = (DataConnection) intent.getSerializableExtra("firstResult");
-        DataConnection resultReturn = (DataConnection) intent.getSerializableExtra("secondResult");
+        resultTo = (DataConnection) intent.getSerializableExtra("firstResult");
+        resultReturn = (DataConnection) intent.getSerializableExtra("secondResult");
+        originalIncomingData = (DataConnection) intent.getSerializableExtra("originalIncomingData");
         // falls nur one way, dann ist resultReturn == NULL !
 
         Log.d("transaction2" , "4 firstResult: " + resultTo);
@@ -100,6 +105,13 @@ public class resultScreen4 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(resultScreen4.this, sortScreen3.class);
+                intent.putExtra("startCity", originalIncomingData.getStartCity());
+                intent.putExtra("destinationCity", originalIncomingData.getDestinationCity());
+                intent.putExtra("startDate", originalIncomingData.getStartDate());
+                intent.putExtra("startTime", originalIncomingData.getStartTime());
+                intent.putExtra("returnDate", originalIncomingData.getReturnDate());
+                intent.putExtra("returnTime", originalIncomingData.getReturnTime());
+                intent.putExtra("isOneWay", originalIncomingData.isReturn());
                 startActivity(intent);
             }
         });
