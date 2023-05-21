@@ -7,4 +7,7 @@
     <color name="blueBlack">#111f28</color>
     <color name="greyish_martina">#808080</color>
     <color name="greyish_milenko">#838996</color>
+    <color name="bluish_backgroud">#859CFD</color>
+    <color name="lilaish_background">#C3AFDF</color>
+    <color name="pinkish_background">#ECBECA</color>
 </resources>
