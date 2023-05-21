@@ -45,7 +45,7 @@ public class mainScreen2 extends AppCompatActivity {
     private DataConnection outwardConnection;
     private DataConnection inwardConnection;
 
-    private static final String[] Cities = new String[]{"vienna", "innsbruck", "Prag", "Paris", "Berlin", "Rom", "Warschau", "Budapest"}; //String[] Cities that are in AutoCompleteTextview startCity_input and destinationCity_input
+    private static final String[] Cities = new String[]{"Hamburg", "Cologne", "Graz", "Vienna", "Innsbruck", "Prag", "Paris", "Berlin", "Rom", "Warschau", "Budapest"}; //String[] Cities that are in AutoCompleteTextview startCity_input and destinationCity_input
     private AutoCompleteTextView editStart;
     private AutoCompleteTextView editDestination;
     private String startCity;

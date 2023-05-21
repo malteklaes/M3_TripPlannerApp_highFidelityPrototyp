@@ -37,8 +37,8 @@
 
             <TextView
                 android:id="@+id/textViewDirection"
-                android:layout_width="172dp"
-                android:layout_height="30dp"
+                android:layout_width="170dp"
+                android:layout_height="36dp"
                 android:text="TextView"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
