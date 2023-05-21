@@ -246,17 +246,24 @@ public class sortScreen3 extends AppCompatActivity {
         LetsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean validTransition = false;
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
                 if(isOneWay){
                     intent.putExtra("firstResult", dtoResultTo.get(0));
                     intent.putExtra("originalIncomingData", originalIncomingData.get(0));
+                    validTransition = !dtoResultTo.get(0).getStartCity().equals("");
 
                 } else {
                     intent.putExtra("firstResult", dtoResultTo.get(0));
                     intent.putExtra("secondResult", dtoResultReturn.get(0));
                     intent.putExtra("originalIncomingData", originalIncomingData.get(0));
+                    validTransition = !dtoResultTo.get(0).getStartCity().equals("") && !dtoResultReturn.get(0).getStartCity().equals("");
                 }
-                startActivity(intent);
+                if(validTransition){
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(sortScreen3.this, "No or not enough journeys were chosen. Please check your traveltransport-choice!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

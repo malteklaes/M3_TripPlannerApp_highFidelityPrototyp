@@ -58,6 +58,7 @@ public class resultScreen4 extends AppCompatActivity {
 
         Log.d("transaction2" , "4 firstResult: " + resultTo);
         Log.d("transaction2" , "4 secondResult: " + resultReturn);
+        Log.d("transaction2" , "4 originalIncomingData: " + originalIncomingData);
 
 
 
