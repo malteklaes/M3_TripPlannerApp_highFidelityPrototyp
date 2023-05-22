@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -204,10 +205,11 @@ public class mainScreen2 extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                time1.setText(hourOfDay + " : " + minute);
-                                startTime = new DataTime(minute, hourOfDay);  //initializing startTime
+                                String formattedMinute = String.format(Locale.getDefault(), "%02d", minute);
+                                time1.setText(hourOfDay + ":" + formattedMinute + " Uhr");
+                                startTime = new DataTime(minute, hourOfDay);  // initializing startTime
 
-                                //saving User Input
+                                // saving User Input
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putInt("startMinute", startTime.getMinute());
                                 editor.putInt("startHour", startTime.getHour());
@@ -234,7 +236,8 @@ public class mainScreen2 extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                time2.setText(hourOfDay + " : " + minute);
+                                String formattedMinute = String.format(Locale.getDefault(), "%02d", minute);
+                                time2.setText(hourOfDay + ":" + formattedMinute + " Uhr");
                                 returnTime = new DataTime(minute, hourOfDay);  //initializing returnTime
 
                                 //saving User Input
