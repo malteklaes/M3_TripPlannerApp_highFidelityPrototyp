@@ -4,12 +4,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -131,28 +135,51 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
                         savedTrips.add(inputDataConnections.get(getAdapterPosition()));  //added to list of trips the user wants to save
                         bookmarkButton.setSelected(true);   //star is is now filled with color
                         bookmarksScreen5.addBookmark(inputDataConnections.get(getAdapterPosition()));   //add data in bookmarkScreen5 so it is presented there as well
+                        Toast toast = Toast.makeText(context, "Bookmark was added", Toast.LENGTH_SHORT);
+                        View toastView = toast.getView();
+                        GradientDrawable drawable = new GradientDrawable();
+                        drawable.setShape(GradientDrawable.RECTANGLE);
+                        drawable.setColor(Color.parseColor("#8000FF00"));
+                        drawable.setCornerRadius(80); // Adjust the corner radius as needed
+                        toastView.setBackground(drawable);
+                        toast.show();
                     }
                     else{
                         //if the user wants to "unbookmark" a trip he needs to confirm it
+                        View confirmationAlertView= LayoutInflater.from(context).inflate(R.layout.save_bookmark_alert,null);
                         AlertDialog.Builder confirmationAlert=new AlertDialog.Builder(context);
-                        confirmationAlert.setTitle("Warning");
-                        confirmationAlert.setMessage("Are you sure that you want to remove the bookmark?");
+                        confirmationAlert.setView(confirmationAlertView);
 
-                        confirmationAlert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        Button buttonYes=(Button) confirmationAlertView.findViewById(R.id.deleteYes);
+                        Button buttonNo=(Button) confirmationAlertView.findViewById(R.id.deleteNo);
+
+                        AlertDialog confirmAlertDialog = confirmationAlert.create();
+                        confirmAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        confirmAlertDialog.show();
+                        buttonYes.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {   //if the user confirms
+                            public void onClick(View view) {
                                 savedTrips.remove(inputDataConnections.get(getAdapterPosition()));
                                 bookmarkButton.setSelected(false);  //star is unfilled with color again
                                 bookmarksScreen5.removeBookmark(inputDataConnections.get(getAdapterPosition()));
-                            }
-                        });
-                        confirmationAlert.setNegativeButton("no", new DialogInterface.OnClickListener() {  // if he neglects nothing happens
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        });
+                                confirmAlertDialog.dismiss();
 
-                        confirmationAlert.create().show();
+                                Toast toast = Toast.makeText(context, "Bookmark has been removed", Toast.LENGTH_SHORT);
+                                View toastView = toast.getView();
+                                GradientDrawable drawable = new GradientDrawable();
+                                drawable.setShape(GradientDrawable.RECTANGLE);
+                                drawable.setColor(Color.parseColor("#80FF0000"));
+                                drawable.setCornerRadius(80); // Adjust the corner radius as needed
+                                toastView.setBackground(drawable);
+                                toast.show();
+                            }
+                        });
+                        buttonNo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                confirmAlertDialog.dismiss();
+                            }
+                        });
                     }
                 }
             });
