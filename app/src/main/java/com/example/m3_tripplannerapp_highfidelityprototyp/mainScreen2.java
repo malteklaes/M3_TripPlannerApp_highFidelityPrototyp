@@ -81,8 +81,24 @@ public class mainScreen2 extends AppCompatActivity {
         editStart = findViewById(R.id.startCity_input); //initializing editStart with AutoCompleteTextView startCity_input
         editDestination = findViewById(R.id.destinationCity_input); //initializing editStart with AutoCompleteTextView destinationCity_input
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Cities); //prepares to add String[] Cities to AutoCompleteTextView
-        editStart.setAdapter(adapter); //adds String[] Citeies to AutoCompleteTextView startCity_input
-        editDestination.setAdapter(adapter); //adds String[] Citeies to AutoCompleteTextView destinationCity_input
+        editStart.setAdapter(adapter); //adds String[] Cities to AutoCompleteTextView startCity_input
+        editDestination.setAdapter(adapter); //adds String[] Cities to AutoCompleteTextView destinationCity_input
+
+        editStart.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {   //hides keyboard upon selection from autocomplete list
+            @Override
+            public void onDismiss() {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), 0);
+            }
+        });
+
+        editDestination.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {  //hides keyboard upon selection from autocomplete list
+            @Override
+            public void onDismiss() {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), 0);
+            }
+        });
 
         setupButtonListeners(); //Buttons Listener Method
 
