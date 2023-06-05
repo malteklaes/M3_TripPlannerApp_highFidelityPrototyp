@@ -2,6 +2,8 @@ package com.example.m3_tripplannerapp_highfidelityprototyp;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +73,26 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
         holder.tvDirection.setText("from: " + this.connectionList.get(position).getStartCity() + " " + this.connectionList.get(position).getStartLocation() + "\nto: " + this.connectionList.get(position).getDestinationCity() + " " + this.connectionList.get(position).getDestinationLocation());
         holder.tvPrize.setText(prize + " €");
         holder.tvStartTime.setText("at: " + this.connectionList.get(position).getStartTime().toString() + ",\non: " + this.connectionList.get(position).getStartDate().toString());
-        holder.tvType.setText(type);
+        //holder.tvType.setText(type);
+        Drawable drawable = null;
+        if(type.equals("Bus")){
+             drawable = ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bus);
+        } else if(type.equals("Car_Sharing")){
+             drawable = ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.car);
+        } else if(type.equals("Train")){
+             drawable = ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.train);
+        } else if(type.equals("Ship")){
+             drawable = ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.ship);
+        } else if(type.equals("Plane")){
+             drawable = ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.plane);
+        } else if(type.equals("Mix")){
+
+        }else {
+             drawable = ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.car);
+            holder.transportTyp.setImageDrawable(drawable);
+        }
+        holder.transportTyp.setImageDrawable(drawable);
+        Log.d("output", "onBindViewHolder: "+ type.getClass());
 
         // make each row element clickable
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -87,14 +108,29 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
 
         // for changing color of row item when clicked on it
         if(chosenRowItem==position){
-            String chosenRowItemColor = "#52307C";
+            String chosenRowItemColor = "#ecfc68"; //#52307C";
+            String chosenTextColor = "#3aab7e";
+            String chosenTextPrizeColor = "#E6196A";
             int chosenRowItemCOLOR = Color.parseColor(chosenRowItemColor);
+            Log.d("output", "choosen: "+ type);
             holder.cardView.setBackgroundColor(chosenRowItemCOLOR);
+            holder.tvDirection.setTextColor(Color.parseColor(chosenTextColor));
+            holder.tvDirection.setTypeface(null, Typeface.BOLD);
+            holder.tvPrize.setTextColor(Color.parseColor(chosenTextPrizeColor));
+            holder.tvPrize.setTypeface(null, Typeface.BOLD);
+            holder.tvStartTime.setTextColor(Color.parseColor(chosenTextColor));
+            holder.tvStartTime.setTypeface(null, Typeface.BOLD);
         } else {
             String darkBlueColor = "#111f28";
             String normalRowItemColor = darkBlueColor;
             int normalRowItemCOLOR = Color.parseColor(normalRowItemColor);
             holder.cardView.setBackgroundColor(normalRowItemCOLOR);
+            holder.tvDirection.setTextColor(Color.WHITE);
+            holder.tvDirection.setTypeface(null, Typeface.NORMAL);
+            holder.tvPrize.setTextColor(Color.WHITE);
+            holder.tvPrize.setTypeface(null, Typeface.NORMAL);
+            holder.tvStartTime.setTextColor(Color.WHITE);
+            holder.tvStartTime.setTypeface(null, Typeface.NORMAL);
         }
 
     }
@@ -124,8 +160,8 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
 
         // to change row item color
         CardView cardView;
-        ImageView imageView;
-        TextView tvDirection, tvPrize, tvStartTime, tvType;
+        ImageView imageView, transportTyp;
+        TextView tvDirection, tvPrize, tvStartTime; // tvType;
 
 
         /**
@@ -140,7 +176,8 @@ public class SortScreen3RecylerViewAdapter extends RecyclerView.Adapter<SortScre
             tvDirection = itemView.findViewById(R.id.textViewDirection);
             tvPrize = itemView.findViewById(R.id.textViewPrize);
             tvStartTime = itemView.findViewById(R.id.textViewStartTime);
-            tvType = itemView.findViewById(R.id.textViewType);
+            //tvType = itemView.findViewById(R.id.textViewType);
+            transportTyp = itemView.findViewById(R.id.transportType);
 
         }
 

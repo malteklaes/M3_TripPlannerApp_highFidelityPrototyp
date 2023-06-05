@@ -61,7 +61,7 @@ public class SortScreen3fragment2 extends Fragment {
     }
 
     /**
-     * manaages main action to either control showing list-results or nothing at all
+     * manaages main action to either control showing list-results or nothing at alltextViewType
      * @param inflater The LayoutInflater object that can be used to inflate
      * any views in the fragment,
      * @param container If non-null, this is the parent view that the fragment's

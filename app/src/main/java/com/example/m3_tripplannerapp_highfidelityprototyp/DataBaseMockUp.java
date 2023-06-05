@@ -62,6 +62,7 @@ public class DataBaseMockUp {
         int randomMinute = random.nextInt(60);
         for (int i = 0; i < 24; i++) {
             DataConnection connection = new DataConnection(startCity, startLocation, destinationCity, destinationLocation, startDate, new DataTime(randomMinute,i), isReturn);
+
             connection.setType(transportType);
             dataBaseMockUp.add(connection);
 

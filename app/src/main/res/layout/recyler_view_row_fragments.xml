@@ -41,6 +41,7 @@
                 android:layout_height="36dp"
                 android:text="TextView"
                 android:textColor="@color/white"
+                android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.354"
@@ -54,13 +55,14 @@
                 android:layout_height="35dp"
                 android:layout_marginStart="92dp"
                 android:text="TextView"
+                android:textSize="15dp"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.754"
+                app:layout_constraintHorizontal_bias="0.791"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.247" />
+                app:layout_constraintVertical_bias="0.179" />
 
             <TextView
                 android:id="@+id/textViewStartTime"
@@ -75,7 +77,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewDirection"
                 app:layout_constraintVertical_bias="0.613" />
 
-            <TextView
+            <ImageView
+                android:id="@+id/transportType"
+                android:layout_width="97dp"
+                android:layout_height="53dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.842"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.845" />
+            <!--<TextView
                 android:id="@+id/textViewType"
                 android:layout_width="84dp"
                 android:layout_height="27dp"
@@ -86,7 +100,7 @@
                 app:layout_constraintHorizontal_bias="0.84"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.742" />
+                app:layout_constraintVertical_bias="0.742" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
