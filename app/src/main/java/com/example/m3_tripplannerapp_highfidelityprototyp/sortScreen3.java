@@ -281,9 +281,15 @@ public class sortScreen3 extends AppCompatActivity {
         ResultBadge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(sortScreen3.this, "Nothing chosen, showing only suggested trips", Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(sortScreen3.this, "Nothing chosen, showing only suggested trips", Toast.LENGTH_SHORT);
                 Intent intent = new Intent(sortScreen3.this, resultScreen4.class);
                 startActivity(intent);
+
+                View toastView = toast.getView();
+                String colourString = "#ae5ae6";
+                int colour = android.graphics.Color.parseColor(colourString);
+                toastView.setBackgroundColor(colour);
+                toast.show();
             }
         });
 
