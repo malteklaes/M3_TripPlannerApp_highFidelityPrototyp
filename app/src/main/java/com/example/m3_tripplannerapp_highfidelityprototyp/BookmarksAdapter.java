@@ -6,15 +6,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,6 +75,24 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         viewHolder.tripStops.setText(printTripStops(bookmarks.get(position)));
         viewHolder.bookmarkButton.setSelected(true);  //in bookmarkView the bookmark-star is always filled with color
 
+        Drawable drawable = null;
+        String type = bookmarks.get(position).getType()+"";
+        if(type.equals("Bus")){
+            drawable = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.bus);
+        } else if(type.equals("Car_Sharing")){
+            drawable = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.car);
+        } else if(type.equals("Train")){
+            drawable = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.train);
+        } else if(type.equals("Ship")){
+            drawable = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.ship);
+        } else if(type.equals("Plane")){
+            drawable = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.plane);
+        } else if(type.equals("Mix")){
+
+        }else {
+            drawable = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.car);
+        }
+        viewHolder.transportType.setImageDrawable(drawable);
         //creating recyclerView for stops of the trip element (nested recyclerView)
         LinearLayoutManager layoutManager=new LinearLayoutManager(context);
         viewHolder.stopsRecyclerView.setLayoutManager(layoutManager);
@@ -99,6 +120,8 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         private ImageButton bookmarkButton;
         private RecyclerView stopsRecyclerView;
         private Button purchaseButton;
+        private ImageView transportType;
+
 
 
         /**
@@ -119,6 +142,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
             stopsRecyclerView=(RecyclerView) view.findViewById(R.id.stopsRecyclerView);
             purchaseButton=(Button) view.findViewById(R.id.purchaseButton);
 
+            transportType=(ImageView) view.findViewById(R.id.transportType);
             /**
              * sets up ClickListener for bookmark button
              */
@@ -189,7 +213,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
      * @return
      */
     private String printTrip(DataConnection connection) {
-        return connection.getStartCity() + " -> " + connection.getDestinationCity() + "  (" + connection.getType().toString() + ")";
+        return connection.getStartCity() + " -> " + connection.getDestinationCity();
     }
 
     /**
