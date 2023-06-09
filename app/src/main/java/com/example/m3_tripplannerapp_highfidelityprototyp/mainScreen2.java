@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.view.View;
 import android.widget.Toast;
@@ -511,6 +513,10 @@ public class mainScreen2 extends AppCompatActivity {
                 String colourString = "#ae5ae6";
                 int colour = android.graphics.Color.parseColor(colourString);
                 toastView.setBackgroundColor(colour);
+
+                TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+                toastMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
                 toast.show();
             }
         });
@@ -525,6 +531,11 @@ public class mainScreen2 extends AppCompatActivity {
                 String colourString = "#ae5ae6";
                 int colour = android.graphics.Color.parseColor(colourString);
                 toastView.setBackgroundColor(colour);
+
+                TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+                toastMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
+
                 toast.show();
             }
         });

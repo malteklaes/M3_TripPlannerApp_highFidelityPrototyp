@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -289,6 +291,10 @@ public class sortScreen3 extends AppCompatActivity {
                 String colourString = "#ae5ae6";
                 int colour = android.graphics.Color.parseColor(colourString);
                 toastView.setBackgroundColor(colour);
+
+                TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+                toastMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
                 toast.show();
             }
         });
