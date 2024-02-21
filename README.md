@@ -8,7 +8,7 @@ This was done in M3 based on a requirements analysis (necessary features, primar
 
 
 ## project and setup
-- a former university project (HCI, human computer interface of the University of Vienna) to develop an Android app prototype
+- a former university project (HCI, human computer interface of the University of Vienna, summer semester 2023) to develop an Android app prototype
   
 - team members:
   - Martina Ovcharova
